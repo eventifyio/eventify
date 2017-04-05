@@ -13,7 +13,7 @@ class Eventify(object):
     """
     Base Class for eventify
     """
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.ERROR)
     logger = logging.getLogger(__name__)
 
     def __init__(self, aws_access_key_id, aws_secret_access_key, stream_name, **kwargs):
@@ -131,11 +131,22 @@ class Eventify(object):
         Create stream on kinesis
         """
         try:
-            self.client.create_stream(
+            return self.client.create_stream(
                 StreamName=self.stream_name,
                 ShardCount=self.shard_count
             )
         except ClientError as err:
             # log message but do not block most cases are:
             # topic already exists
-            self.logger.debug(err)
+            self.logger.error(err)
+
+    def delete_topic(self):
+        """
+        Delete stream on kinesis
+        """
+        try:
+            return self.client.delete_stream(
+                StreamName=self.stream_name
+            )
+        except ClientError as err:
+            raise RuntimeError(err)
