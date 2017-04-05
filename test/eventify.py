@@ -12,7 +12,7 @@ class TestEventify:
 
     def test_create_topic(self):
         response = self.ev.create_topic()
-        print response
+        print(response)
 
     def test_delete_topic(self):
         assert True == True
