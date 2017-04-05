@@ -10,6 +10,6 @@ install: "pip install -r requirements.txt"
 before_install:
   - chmod +x test/test_eventify.py
 # command to run tests
-script: pytest test/test_eventify.py
+script: pytest test/test_eventify.py --pep8 coveralls --cov coveralls
 after_success:
   - coveralls
