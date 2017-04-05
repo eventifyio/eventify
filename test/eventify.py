@@ -5,9 +5,9 @@ import pytest
 class TestEventify:
 
     def setup_method(self):
-        access_key = os.get('ACCESS_KEY')
-        secret_key = os.get('SECRET_KEY')
-        region_name = os.get('REGION_NAME')
+        access_key = os.getenv('ACCESS_KEY')
+        secret_key = os.getenv('SECRET_KEY')
+        region_name = os.getenv('REGION_NAME')
         self.ev = eventify.Eventify(access_key, secret_key, 'TestStream', region_name=region_name)
 
     def test_create_topic(self):
