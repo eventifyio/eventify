@@ -12,7 +12,7 @@ class TestEventify:
         region_name = os.getenv('REGION_NAME')
         self.ev = Eventify(access_key, secret_key, 'TestStream', region_name=region_name)
 
-    def test_create_topic(self, capsys):
+    def test_create_topic(self):
         response = self.ev.create_topic()
         try:
             status_code = response.get('ResponseMetadata').get('HTTPStatusCode')
