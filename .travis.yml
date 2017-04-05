@@ -11,6 +11,6 @@ before_install:
 before_script:
   - pip install -r requirements.txt
 script:
-  - py.test test/test_eventify.py --doctest-modules --pep8 eventify -v --cov eventify --cov-report term-missing
+  - py.test test/test_eventify.py --doctest-modules -v --cov eventify --cov-report term-missing
 after_success:
   - coveralls
