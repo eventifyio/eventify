@@ -1,7 +1,5 @@
-"""
-Place Holder Tests
-"""
 import eventify
+import os
 import pytest
 
 class TestEventify:
