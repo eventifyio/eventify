@@ -6,7 +6,7 @@ import pytest
 
 class TestEventify:
 
-    def setUp(self):
+    def __init__(self):
         access_key = os.get('ACCESS_KEY')
         secret_key = os.get('SECRET_KEY')
         region_name = os.get('REGION_NAME')
