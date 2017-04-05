@@ -8,8 +8,8 @@ python:
 install: "pip install -r requirements.txt"
 # fix perms
 before_install:
-  - chmod +x test/eventify.py
+  - chmod +x test/test_eventify.py
 # command to run tests
-script: pytest test/eventify.py
+script: pytest test/test_eventify.py
 after_success:
   - coveralls
