@@ -3,6 +3,14 @@
 # Eventify
 A lightweight python module for building event driven distributed systems.
 
+## Installation
+```bash
+pip install eventify
+```
+
+## Pypi
+https://pypi.python.org/pypi/eventify
+
 ## Support
 Currently only supports AWS Kinesis
 
