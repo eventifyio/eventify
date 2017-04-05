@@ -16,6 +16,7 @@ class Eventify(object):
     logging.basicConfig(level=logging.ERROR)
     logger = logging.getLogger(__name__)
 
+
     def __init__(self, aws_access_key_id, aws_secret_access_key, stream_name, **kwargs):
         """
         :param aws_access_key_id: AWS Access Key
@@ -139,6 +140,7 @@ class Eventify(object):
             # log message but do not block most cases are:
             # topic already exists
             self.logger.error(err)
+
 
     def delete_topic(self):
         """
