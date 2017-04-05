@@ -4,12 +4,13 @@ python:
   - "3.3"
   - "3.4"
   - "3.5"
-# command to install dependencies
-install: "pip install -r requirements.txt"
-# fix perms
+install:
+  - pip install -U pip
 before_install:
   - chmod +x test/test_eventify.py
-# command to run tests
-script: pytest test/test_eventify.py --pep8 coveralls --cov coveralls
+before_script:
+  - pip install -r requirements.txt
+script:
+  - py.test test/test_eventify.py --doctest-modules --pep8 eventify -v --cov eventify --cov-report term-missing
 after_success:
   - coveralls
