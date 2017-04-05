@@ -8,7 +8,25 @@ A lightweight python module for building event driven distributed systems.
 Currently only supports AWS Kinesis
 
 ## Sample Producer
-TBD
+```python
+from eventify import Eventify
+
+if __name__ == '__main__':
+    client = Eventify(os.getenv('ACCESS_KEY'), os.getenv('SECRET_KEY'), 'TestStream', iterator_type='AT_SEQUENCE_NUMBER')
+    client.create_topic()
+    client.send_message("hello world")
+```
 
 ## Sample Consumer
-TBD
+```python
+from eventify import Eventify
+
+if __name__ == '__main__':
+    client = Eventify(os.getenv('ACCESS_KEY'), os.getenv('SECRET_KEY'), 'TestStream', iterator_type='AT_SEQUENCE_NUMBER')
+    client.create_topic()
+     
+    while(True):
+        commands = client.get_commands()
+        for command in commands:
+            handle_command(command)
+```
