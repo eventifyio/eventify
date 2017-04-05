@@ -9,7 +9,7 @@ setup(
   author = 'Matthew Harris',
   author_email = 'matt@x-qa.com',
   url = 'https://github.com/morissette/eventify',
-  download_url = 'https://github.com/morissette/eventify/tarball/0.0.1',
+  download_url = 'https://github.com/morissette/eventify/dist/0.0.1',
   keywords = ['event', 'event-driven', 'async', 'framework', 'producer', 'consumer', 'kinesis'],
   classifiers = [],
 )
