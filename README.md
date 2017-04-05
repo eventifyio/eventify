@@ -3,3 +3,6 @@
 
 # Eventify
 A simple lightweight python asynchronous framework for building event driven distributed systems.
+
+## Support
+Currently only supports AWS Kinesis
