@@ -3,6 +3,7 @@ args==0.1.0
 boto3==1.4.4
 botocore==1.5.35
 clint==0.5.1
+coverage==4.0.3
 docutils==0.13.1
 eventify==0.0.1
 futures==3.0.5
@@ -12,7 +13,9 @@ pkginfo==1.4.1
 py==1.4.33
 pyparsing==2.2.0
 pytest==3.0.7
+python-coveralls==2.9.0
 python-dateutil==2.6.0
+PyYAML==3.12
 requests==2.13.0
 requests-toolbelt==0.7.1
 s3transfer==0.1.10
