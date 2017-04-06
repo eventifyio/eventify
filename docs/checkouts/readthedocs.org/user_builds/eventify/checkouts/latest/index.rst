@@ -10,7 +10,23 @@ eventify's documentation
    :maxdepth: 2
    :caption: Contents:
 
+Features
+====================================
+* Performance of java for streaming messages
+* Velocity of python for handling commands and events
+* Built on top of KCL
 
+Drivers
+====================================
+* Kinesis
+* Start contributing now!
+
+Configuration
+====================================
+Requires the following environment variables to be set:
+* AWS_ACCESS_KEY
+* AWS_SECRET_KEY
+* REGION_NAME
 
 Indices and tables
 ==================
