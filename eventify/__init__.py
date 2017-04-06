@@ -31,7 +31,7 @@ class Eventify(object):
         :param kwargs: Driver settings
         """
         if driver == "kinesis":
-            self.init_kinesis(kwargs)
+            self.init_kinesis(**kwargs)
         else:
             raise ValueError("Driver not supported: %s" % self.driver)
 
@@ -59,7 +59,7 @@ class Eventify(object):
 
         # Setup Kinesis
         self.client = session.client('kinesis')
-        self.stream_name = stream_name
+        self.stream_name = kwargs.get('stream_name', None)
 
 
     def listen(self):
