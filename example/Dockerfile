@@ -51,7 +51,7 @@ ENV REGION_NAME us-west-2
 
 
 # Get Command to Run from Amazon Helper File
-#RUN /usr/bin/python /app/helper.py --print_command -j /usr/bin/java -p /app/main.properties
+#RUN /usr/bin/python -m eventify.helper --print_command -j /usr/bin/java -p /app/config/main.properties
 
 # Start KCL APP
 CMD ["/usr/bin/java", "-cp", \
