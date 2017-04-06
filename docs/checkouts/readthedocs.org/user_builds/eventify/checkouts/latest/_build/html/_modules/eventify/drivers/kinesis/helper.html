@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>eventify.drivers.kinesis.helper &#8212; eventify 0.0.9 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">eventify 0.0.9 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../eventify.html" accesskey="U">eventify</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for eventify.drivers.kinesis.helper</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># Copyright 2014-2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Amazon Software License (the &quot;License&quot;).</span>
+<span class="c1"># You may not use this file except in compliance with the License.</span>
+<span class="c1"># A copy of the License is located at</span>
+<span class="c1">#</span>
+<span class="c1"># http://aws.amazon.com/asl/</span>
+<span class="c1">#</span>
+<span class="c1"># or in the &quot;license&quot; file accompanying this file. This file is distributed</span>
+<span class="c1"># on an &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either</span>
+<span class="c1"># express or implied. See the License for the specific language governing</span>
+<span class="c1"># permissions and limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This script provides two utility functions:</span>
+
+<span class="sd">    ``--print_classpath``</span>
+<span class="sd">        which prints a java class path. It optionally takes --properties</span>
+<span class="sd">        and any number of --path options. It will generate a java class path which will include</span>
+<span class="sd">        the properties file and paths and the location of the KCL jars based on the location of</span>
+<span class="sd">        the amazon_kclpy.kcl module.</span>
+
+<span class="sd">    ``--print_command``</span>
+<span class="sd">        which prints a command to run an Amazon KCLpy application. It requires a --java</span>
+<span class="sd">        and --properties argument and optionally takes any number of --path arguments to prepend</span>
+<span class="sd">        to the classpath that it generates for the command.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">amazon_kclpy</span> <span class="k">import</span> <span class="n">kcl</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="k">import</span> <span class="n">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">samples</span>
+
+
+
+
+<div class="viewcode-block" id="get_dir_of_file"><a class="viewcode-back" href="../../../../eventify.drivers.kinesis.html#eventify.drivers.kinesis.helper.get_dir_of_file">[docs]</a><span class="k">def</span> <span class="nf">get_dir_of_file</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the absolute path to the directory containing the specified file.</span>
+
+<span class="sd">    :type f: str</span>
+<span class="sd">    :param f: A path to a file, either absolute or relative</span>
+
+<span class="sd">    :rtype:  str</span>
+<span class="sd">    :return: The absolute path of the directory represented by the relative path provided.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="get_kcl_dir"><a class="viewcode-back" href="../../../../eventify.drivers.kinesis.html#eventify.drivers.kinesis.helper.get_kcl_dir">[docs]</a><span class="k">def</span> <span class="nf">get_kcl_dir</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the absolute path to the dir containing the amazon_kclpy.kcl module.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :return: The absolute path of the KCL package.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">get_dir_of_file</span><span class="p">(</span><span class="n">kcl</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_kcl_jar_path"><a class="viewcode-back" href="../../../../eventify.drivers.kinesis.html#eventify.drivers.kinesis.helper.get_kcl_jar_path">[docs]</a><span class="k">def</span> <span class="nf">get_kcl_jar_path</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Returns the absolute path to the KCL jars needed to run an Amazon KCLpy app.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :return: The absolute path of the KCL jar files needed to run the MultiLangDaemon.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;:&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_kcl_dir</span><span class="p">(),</span> <span class="s1">&#39;jars&#39;</span><span class="p">,</span> <span class="s1">&#39;*jar&#39;</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="get_kcl_classpath"><a class="viewcode-back" href="../../../../eventify.drivers.kinesis.html#eventify.drivers.kinesis.helper.get_kcl_classpath">[docs]</a><span class="k">def</span> <span class="nf">get_kcl_classpath</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">paths</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generates a classpath that includes the location of the kcl jars, the</span>
+<span class="sd">    properties file and the optional paths.</span>
+
+<span class="sd">    :type properties: str</span>
+<span class="sd">    :param properties: Path to properties file.</span>
+
+<span class="sd">    :type paths: list</span>
+<span class="sd">    :param paths: List of strings. The paths that will be prepended to the classpath.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :return: A java class path that will allow your properties to be found and the MultiLangDaemon and its deps and</span>
+<span class="sd">        any custom paths you provided.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># First make all the user provided paths absolute</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">]</span>
+    <span class="c1"># We add our paths after the user provided paths because this permits users to</span>
+    <span class="c1"># potentially inject stuff before our paths (otherwise our stuff would always</span>
+    <span class="c1"># take precedence).</span>
+    <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_kcl_jar_path</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">properties</span><span class="p">:</span>
+        <span class="c1"># Add the dir that the props file is in</span>
+        <span class="n">dir_of_file</span> <span class="o">=</span> <span class="n">get_dir_of_file</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dir_of_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span> <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="get_kcl_app_command"><a class="viewcode-back" href="../../../../eventify.drivers.kinesis.html#eventify.drivers.kinesis.helper.get_kcl_app_command">[docs]</a><span class="k">def</span> <span class="nf">get_kcl_app_command</span><span class="p">(</span><span class="n">java</span><span class="p">,</span> <span class="n">multi_lang_daemon_class</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">paths</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generates a command to run the MultiLangDaemon.</span>
+
+<span class="sd">    :type java: str</span>
+<span class="sd">    :param java: Path to java</span>
+
+<span class="sd">    :type multi_lang_daemon_class: str</span>
+<span class="sd">    :param multi_lang_daemon_class: Name of multi language daemon class e.g. com.amazonaws.services.kinesis.multilang.MultiLangDaemon</span>
+
+<span class="sd">    :type properties: str</span>
+<span class="sd">    :param properties: Optional properties file to be included in the classpath.</span>
+
+<span class="sd">    :type paths: list</span>
+<span class="sd">    :param paths: List of strings. Additional paths to prepend to the classpath.</span>
+
+<span class="sd">    :rtype: str</span>
+<span class="sd">    :return: A command that will run the MultiLangDaemon with your properties and custom paths and java.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{java}</span><span class="s2"> -cp </span><span class="si">{cp}</span><span class="s2"> </span><span class="si">{daemon}</span><span class="s2"> </span><span class="si">{props}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">java</span><span class="o">=</span><span class="n">java</span><span class="p">,</span>
+                                    <span class="n">cp</span> <span class="o">=</span> <span class="n">get_kcl_classpath</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="n">paths</span><span class="p">),</span>
+                                    <span class="n">daemon</span> <span class="o">=</span> <span class="n">multi_lang_daemon_class</span><span class="p">,</span>
+                                    <span class="c1"># Just need the basename becasue the path is added to the classpath</span>
+                                    <span class="n">props</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">properties</span><span class="p">))</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="s2">&quot;A script for generating a command to run an Amazon KCLpy app&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--print_classpath&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;print_classpath&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print a java class path.</span><span class="se">\n</span><span class="s2">optional arguments: --path&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--print_command&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;print_command&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print a command for running an Amazon KCLpy app.</span><span class="se">\n</span><span class="s2">required &quot;</span>
+                        <span class="o">+</span> <span class="s2">&quot;args: --java --properties</span><span class="se">\n</span><span class="s2">optional args: --classpath&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-j&quot;</span><span class="p">,</span> <span class="s2">&quot;--java&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;java&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to the java executable e.g. &lt;some root&gt;/jdk/bin/java&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;PATH_TO_JAVA&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--properties&quot;</span><span class="p">,</span> <span class="s2">&quot;--props&quot;</span><span class="p">,</span> <span class="s2">&quot;--prop&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to a properties file (relative to where you are running this script)&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;PATH_TO_PROPERTIES&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--sample&quot;</span><span class="p">,</span> <span class="s2">&quot;--sample-props&quot;</span><span class="p">,</span> <span class="s2">&quot;--use-sample-properties&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;use_sample_props&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;This will use the sample.properties file included in this package as the properties file.&quot;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--classpath&quot;</span><span class="p">,</span> <span class="s2">&quot;--path&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;paths&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;append&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Additional path to add to java class path. May be specified any number of times&quot;</span><span class="p">,</span>
+                        <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;PATH&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="c1"># Possibly replace the properties with the sample. Useful if they just want to run the sample app.</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">use_sample_props</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">properties</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Replacing provided properties with sample properties due to arg --sample</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_dir_of_file</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;sample.properties&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Print what the asked for</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">print_classpath</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">get_kcl_classpath</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">properties</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">paths</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">print_command</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">java</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">properties</span><span class="p">:</span>
+            <span class="n">multi_lang_daemon_class</span> <span class="o">=</span> <span class="s1">&#39;com.amazonaws.services.kinesis.multilang.MultiLangDaemon&#39;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">get_kcl_app_command</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">java</span><span class="p">,</span> <span class="n">multi_lang_daemon_class</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">properties</span><span class="p">,</span> <span class="n">paths</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">paths</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Must provide arguments: --java and --properties</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">print_usage</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_usage</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">eventify 0.0.9 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../../../eventify.html" >eventify</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Matthew Harris.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

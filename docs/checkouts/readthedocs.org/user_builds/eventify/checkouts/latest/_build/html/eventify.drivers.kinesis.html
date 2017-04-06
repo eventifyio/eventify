@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>eventify.drivers.kinesis package &#8212; eventify 0.0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="eventify.drivers.kinesis.stream package" href="eventify.drivers.kinesis.stream.html" />
+    <link rel="prev" title="eventify.drivers package" href="eventify.drivers.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eventify.drivers.kinesis.stream.html" title="eventify.drivers.kinesis.stream package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="eventify.drivers.html" title="eventify.drivers package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eventify 0.0.9 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="eventify.html" >eventify package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="eventify.drivers.html" accesskey="U">eventify.drivers package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="eventify-drivers-kinesis-package">
+<h1>eventify.drivers.kinesis package<a class="headerlink" href="#eventify-drivers-kinesis-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="eventify.drivers.kinesis.stream.html">eventify.drivers.kinesis.stream package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.kinesis.stream.html#module-eventify.drivers.kinesis.stream">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-eventify.drivers.kinesis.helper">
+<span id="eventify-drivers-kinesis-helper-module"></span><h2>eventify.drivers.kinesis.helper module<a class="headerlink" href="#module-eventify.drivers.kinesis.helper" title="Permalink to this headline">¶</a></h2>
+<p>This script provides two utility functions:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><code class="docutils literal"><span class="pre">--print_classpath</span></code></dt>
+<dd>which prints a java class path. It optionally takes &#8211;properties
+and any number of &#8211;path options. It will generate a java class path which will include
+the properties file and paths and the location of the KCL jars based on the location of
+the amazon_kclpy.kcl module.</dd>
+<dt><code class="docutils literal"><span class="pre">--print_command</span></code></dt>
+<dd>which prints a command to run an Amazon KCLpy application. It requires a &#8211;java
+and &#8211;properties argument and optionally takes any number of &#8211;path arguments to prepend
+to the classpath that it generates for the command.</dd>
+</dl>
+</div></blockquote>
+<dl class="function">
+<dt id="eventify.drivers.kinesis.helper.get_dir_of_file">
+<code class="descclassname">eventify.drivers.kinesis.helper.</code><code class="descname">get_dir_of_file</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/drivers/kinesis/helper.html#get_dir_of_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.drivers.kinesis.helper.get_dir_of_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the absolute path to the directory containing the specified file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> (<em>str</em>) &#8211; A path to a file, either absolute or relative</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The absolute path of the directory represented by the relative path provided.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.drivers.kinesis.helper.get_kcl_app_command">
+<code class="descclassname">eventify.drivers.kinesis.helper.</code><code class="descname">get_kcl_app_command</code><span class="sig-paren">(</span><em>java</em>, <em>multi_lang_daemon_class</em>, <em>properties</em>, <em>paths=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/drivers/kinesis/helper.html#get_kcl_app_command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.drivers.kinesis.helper.get_kcl_app_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a command to run the MultiLangDaemon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>java</strong> (<em>str</em>) &#8211; Path to java</li>
+<li><strong>multi_lang_daemon_class</strong> (<em>str</em>) &#8211; Name of multi language daemon class e.g. com.amazonaws.services.kinesis.multilang.MultiLangDaemon</li>
+<li><strong>properties</strong> (<em>str</em>) &#8211; Optional properties file to be included in the classpath.</li>
+<li><strong>paths</strong> (<em>list</em>) &#8211; List of strings. Additional paths to prepend to the classpath.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A command that will run the MultiLangDaemon with your properties and custom paths and java.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.drivers.kinesis.helper.get_kcl_classpath">
+<code class="descclassname">eventify.drivers.kinesis.helper.</code><code class="descname">get_kcl_classpath</code><span class="sig-paren">(</span><em>properties=None</em>, <em>paths=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/drivers/kinesis/helper.html#get_kcl_classpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.drivers.kinesis.helper.get_kcl_classpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a classpath that includes the location of the kcl jars, the
+properties file and the optional paths.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>properties</strong> (<em>str</em>) &#8211; Path to properties file.</li>
+<li><strong>paths</strong> (<em>list</em>) &#8211; List of strings. The paths that will be prepended to the classpath.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A java class path that will allow your properties to be found and the MultiLangDaemon and its deps and
+any custom paths you provided.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.drivers.kinesis.helper.get_kcl_dir">
+<code class="descclassname">eventify.drivers.kinesis.helper.</code><code class="descname">get_kcl_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/drivers/kinesis/helper.html#get_kcl_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.drivers.kinesis.helper.get_kcl_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the absolute path to the dir containing the amazon_kclpy.kcl module.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The absolute path of the KCL package.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.drivers.kinesis.helper.get_kcl_jar_path">
+<code class="descclassname">eventify.drivers.kinesis.helper.</code><code class="descname">get_kcl_jar_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/drivers/kinesis/helper.html#get_kcl_jar_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.drivers.kinesis.helper.get_kcl_jar_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the absolute path to the KCL jars needed to run an Amazon KCLpy app.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The absolute path of the KCL jar files needed to run the MultiLangDaemon.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-eventify.drivers.kinesis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eventify.drivers.kinesis" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">eventify.drivers.kinesis package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-eventify.drivers.kinesis.helper">eventify.drivers.kinesis.helper module</a></li>
+<li><a class="reference internal" href="#module-eventify.drivers.kinesis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="eventify.drivers.html"
+                        title="previous chapter">eventify.drivers package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="eventify.drivers.kinesis.stream.html"
+                        title="next chapter">eventify.drivers.kinesis.stream package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/eventify.drivers.kinesis.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eventify.drivers.kinesis.stream.html" title="eventify.drivers.kinesis.stream package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="eventify.drivers.html" title="eventify.drivers package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">eventify 0.0.9 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="eventify.html" >eventify package</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="eventify.drivers.html" >eventify.drivers package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Matthew Harris.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+    </div>
+  </body>
+</html>

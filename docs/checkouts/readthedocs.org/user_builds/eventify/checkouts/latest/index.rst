@@ -10,6 +10,8 @@ eventify's documentation
    :maxdepth: 2
    :caption: Contents:
 
+   eventify
+
 Summary
 ====================================
 A simple python module for building event driven systems.
