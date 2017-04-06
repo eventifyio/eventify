@@ -205,10 +205,13 @@ class Eventify(object):
         self.client = session.client('kinesis')
         self.stream_name = stream_name
 
-        # Start Listening for Commands and Events on Stream
+
+    def listen(self):
+        """
+        Start listening for commands an events on stream from KCL
+        """
         listener = kcl.KCLProcess(EventProcessor())
         listener.run()
-
 
     def send_message(self, message):
         """
