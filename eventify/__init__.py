@@ -14,7 +14,7 @@ from amazon_kclpy.v2 import processor
 from botocore.exceptions import ClientError
 from boto3 import Session
 
-from eventify.stream import EventProcessor
+from eventify.drivers.kinesis.stream import EventProcessor
 
 
 class Eventify(object):
