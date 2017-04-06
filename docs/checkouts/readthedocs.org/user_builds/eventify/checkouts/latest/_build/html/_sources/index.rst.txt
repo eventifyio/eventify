@@ -10,6 +10,10 @@ eventify's documentation
    :maxdepth: 2
    :caption: Contents:
 
+Summary
+====================================
+A simple python module for building event driven systems.
+
 Features
 ====================================
 * Performance of java for streaming messages
@@ -24,8 +28,11 @@ Drivers
 Configuration
 ====================================
 Requires the following environment variables to be set:
+
 * AWS_ACCESS_KEY
+
 * AWS_SECRET_KEY
+
 * REGION_NAME
 
 Indices and tables
