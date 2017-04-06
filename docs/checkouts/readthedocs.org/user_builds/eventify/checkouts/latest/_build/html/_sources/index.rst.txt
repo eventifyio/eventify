@@ -38,6 +38,7 @@ Requires the following environment variables to be set:
 Related Documentation
 ====================================
 `Developing Amazon Kinesis Streams Consumers Using the Amazon Kinesis Client Library <http://docs.aws.amazon.com/streams/latest/dev/developing-consumers-with-kcl.html>`_
+
 `Tracking Amazon Kinesis Streams Application State <http://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-ddb.html>`_
 
 
