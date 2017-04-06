@@ -1,0 +1,36 @@
+.. eventify documentation master file, created by
+   sphinx-quickstart on Thu Apr  6 10:20:54 2017.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+eventify's documentation
+====================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+Features
+====================================
+* Performance of java for streaming messages
+* Velocity of python for handling commands and events
+* Built on top of KCL
+
+Drivers
+====================================
+* Kinesis
+* Start contributing now!
+
+Configuration
+====================================
+Requires the following environment variables to be set:
+* AWS_ACCESS_KEY
+* AWS_SECRET_KEY
+* REGION_NAME
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
