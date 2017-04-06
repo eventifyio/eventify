@@ -14,4 +14,5 @@ pip install eventify
 ## Pypi
 https://pypi.python.org/pypi/eventify
 
-## Coming Soon!
+## Read The Docs
+http://eventify.readthedocs.io/en/latest/
