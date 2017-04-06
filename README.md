@@ -11,29 +11,4 @@ pip install eventify
 ## Pypi
 https://pypi.python.org/pypi/eventify
 
-## Support
-Currently only supports AWS Kinesis
-
-## Sample Producer
-```python
-from eventify import Eventify
-
-if __name__ == '__main__':
-    client = Eventify(os.getenv('ACCESS_KEY'), os.getenv('SECRET_KEY'), 'TestStream', iterator_type='AT_SEQUENCE_NUMBER')
-    client.create_topic()
-    client.send_message("hello world")
-```
-
-## Sample Consumer
-```python
-from eventify import Eventify
-
-if __name__ == '__main__':
-    client = Eventify(os.getenv('ACCESS_KEY'), os.getenv('SECRET_KEY'), 'TestStream', iterator_type='AT_SEQUENCE_NUMBER')
-    client.create_topic()
-     
-    while(True):
-        commands = client.get_commands()
-        for command in commands:
-            handle_command(command)
-```
+## Coming Soon!
