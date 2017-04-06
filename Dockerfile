@@ -39,11 +39,23 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY consumer.py /app/
 
-ONBUILD COPY . /app/
-ONBUILD RUN chmod -R 755 /service/
+# Install application
+COPY . /app/
+RUN chmod -R 755 /app/
 
-CMD ["/usr/bin/python", "/app/consumer.py"]
-#CMD ["/usr/bin/java", "-cp", \
-#     "/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/jackson-core-2.1.1.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/commons-logging-1.1.1.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/jackson-databind-2.1.1.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/amazon-kinesis-client-1.2.1.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/jackson-annotations-2.1.1.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/aws-java-sdk-1.7.13.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/httpclient-4.2.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/commons-codec-1.3.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/httpcore-4.2.jar:/usr/local/lib/python2.7/dist-packages/amazon_kclpy-1.1.0-py2.7.egg/amazon_kclpy/jars/joda-time-2.4.jar:/code", \
-#     "com.amazonaws.services.kinesis.multilang.MultiLangDaemon", \
-#     "main.properties"]
+# Setup AWS
+# Requires DynamoDB, Kinesis, Cloudwatch Policies
+ENV AWS_ACCESS_KEY 
+ENV AWS_SECRET_KEY 
+ENV REGION_NAME us-west-2
+
+
+# Get Command to Run from Amazon Helper File
+#RUN /usr/bin/python /app/helper.py --print_command -j /usr/bin/java -p /app/main.properties
+
+# Start KCL APP
+CMD ["/usr/bin/java", "-cp", \
+     "/usr/lib/python3.6/site-packages/amazon_kclpy/jars/amazon-kinesis-client-1.7.2.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/guava-18.0.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/joda-time-2.8.1.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/httpcore-4.4.4.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/jackson-core-2.6.6.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/commons-lang-2.6.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/jackson-dataformat-cbor-2.6.6.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-cloudwatch-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-core-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-kinesis-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/protobuf-java-2.6.1.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-s3-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/jackson-databind-2.6.6.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-dynamodb-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/aws-java-sdk-kms-1.11.14.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/commons-codec-1.9.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/httpclient-4.5.2.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/commons-logging-1.1.3.jar:/usr/lib/python3.6/site-packages/amazon_kclpy/jars/jackson-annotations-2.6.0.jar:/app",\
+     "com.amazonaws.services.kinesis.multilang.MultiLangDaemon", \
+     "main.properties"]
+
