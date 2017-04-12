@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>eventify.drivers package &mdash; eventify 0.0.9 documentation</title>
+  <title>eventify.persist package &mdash; eventify 0.0.9 documentation</title>
   
 
   
@@ -35,10 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="eventify 0.0.9 documentation" href="index.html"/>
-        <link rel="up" title="eventify package" href="eventify.html"/>
-        <link rel="next" title="eventify.drivers.kinesis package" href="eventify.drivers.kinesis.html"/>
-        <link rel="prev" title="eventify package" href="eventify.html"/> 
+    <link rel="top" title="eventify 0.0.9 documentation" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -92,19 +89,8 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="eventify.html">eventify package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="eventify.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">eventify.drivers package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-eventify.drivers">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="eventify.html#module-eventify">Module contents</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="eventify.html">eventify package</a></li>
 </ul>
 
             
@@ -149,15 +135,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="eventify.html">eventify package</a> &raquo;</li>
-        
-      <li>eventify.drivers package</li>
+      <li>eventify.persist package</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/eventify.drivers.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/eventify.persist.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -170,32 +154,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="eventify-drivers-package">
-<h1>eventify.drivers package<a class="headerlink" href="#eventify-drivers-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
-<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="eventify.drivers.kinesis.html">eventify.drivers.kinesis package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.kinesis.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="eventify.drivers.kinesis.stream.html">eventify.drivers.kinesis.stream package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="eventify.drivers.kinesis.stream.html#module-eventify.drivers.kinesis.stream">Module contents</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.kinesis.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.kinesis.html#module-eventify.drivers.kinesis.helper">eventify.drivers.kinesis.helper module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.kinesis.html#module-eventify.drivers.kinesis">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="module-eventify.drivers">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eventify.drivers" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="eventify-persist-package">
+<h1>eventify.persist package<a class="headerlink" href="#eventify-persist-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-eventify.persist">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eventify.persist" title="Permalink to this headline">¶</a></h2>
+<p>Persist Helper Module</p>
+<dl class="function">
+<dt id="eventify.persist.persist_event">
+<code class="descclassname">eventify.persist.</code><code class="descname">persist_event</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/persist.html#persist_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.persist.persist_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes event to table to ensure
+persistence</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -206,15 +176,6 @@
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="eventify.drivers.kinesis.html" class="btn btn-neutral float-right" title="eventify.drivers.kinesis package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="eventify.html" class="btn btn-neutral" title="eventify package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
