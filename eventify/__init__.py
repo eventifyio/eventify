@@ -5,12 +5,16 @@ A simple module for implementing event driven systems
 import logging
 
 
+# Setup logging
+log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+logging.basicConfig(level=logging.DEBUG, format=log_format)
+logger = logging.getLogger(__name__)
+
+
 class Eventify(object):
     """
     Base Class for eventify
     """
-    logging.basicConfig(level=logging.ERROR)
-    logger = logging.getLogger(__name__)
 
 
     def __init__(self, **kwargs):
@@ -18,7 +22,7 @@ class Eventify(object):
         :param driver: Driver you wish to use
         :param kwargs: Driver settings
         """
-        self.version = '0.1.1'
+        self.version = '0.1.5'
 
         if 'db_host' in kwargs:
             self.db_host = kwargs['db_host']
