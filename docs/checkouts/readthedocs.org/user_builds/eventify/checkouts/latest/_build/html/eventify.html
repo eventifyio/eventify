@@ -36,7 +36,6 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="eventify 0.0.9 documentation" href="index.html"/>
-        <link rel="next" title="eventify.drivers package" href="eventify.drivers.html"/>
         <link rel="prev" title="eventify’s documentation" href="index.html"/> 
 
   
@@ -93,8 +92,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">eventify package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="eventify.drivers.html">eventify.drivers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-eventify">Module contents</a><ul class="simple">
@@ -170,30 +168,6 @@
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="eventify.drivers.html">eventify.drivers package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="eventify.drivers.kinesis.html">eventify.drivers.kinesis package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="eventify.drivers.kinesis.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="eventify.drivers.kinesis.stream.html">eventify.drivers.kinesis.stream package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="eventify.drivers.kinesis.stream.html#module-eventify.drivers.kinesis.stream">Module contents</a><ul class="simple">
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l4"><a class="reference internal" href="eventify.drivers.kinesis.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="eventify.drivers.kinesis.html#module-eventify.drivers.kinesis.helper">eventify.drivers.kinesis.helper module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="eventify.drivers.kinesis.html#module-eventify.drivers.kinesis">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="eventify.drivers.html#module-eventify.drivers">Module contents</a></li>
-</ul>
-</li>
-</ul>
 </div>
 </div>
 <div class="section" id="module-eventify">
@@ -202,7 +176,7 @@
 A simple module for implementing event driven systems</p>
 <dl class="class">
 <dt id="eventify.Eventify">
-<em class="property">class </em><code class="descclassname">eventify.</code><code class="descname">Eventify</code><span class="sig-paren">(</span><em>driver</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">eventify.</code><code class="descname">Eventify</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Base Class for eventify</p>
 <p class="rubric">Methods</p>
@@ -212,81 +186,21 @@ A simple module for implementing event driven systems</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#eventify.Eventify.delete_topic" title="eventify.Eventify.delete_topic"><code class="xref py py-obj docutils literal"><span class="pre">delete_topic</span></code></a>()</td>
-<td>Delete stream on kinesis</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#eventify.Eventify.emit_event" title="eventify.Eventify.emit_event"><code class="xref py py-obj docutils literal"><span class="pre">emit_event</span></code></a>(message)</td>
-<td>Send a record to Kinesis Stream</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#eventify.Eventify.init_kinesis" title="eventify.Eventify.init_kinesis"><code class="xref py py-obj docutils literal"><span class="pre">init_kinesis</span></code></a>(**kwargs)</td>
-<td><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">param aws_access_key_id:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body">AWS Access Key</td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#eventify.Eventify.listen" title="eventify.Eventify.listen"><code class="xref py py-obj docutils literal"><span class="pre">listen</span></code></a>()</td>
-<td>Start listening for commands an events on stream from KCL</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#eventify.Eventify.register_topic" title="eventify.Eventify.register_topic"><code class="xref py py-obj docutils literal"><span class="pre">register_topic</span></code></a>()</td>
-<td>Register stream on kinesis</td>
+<tr class="row-odd"><td><a class="reference internal" href="#eventify.Eventify.get_version" title="eventify.Eventify.get_version"><code class="xref py py-obj docutils literal"><span class="pre">get_version</span></code></a>()</td>
+<td>Returns current version of Eventify</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="eventify.Eventify.delete_topic">
-<code class="descname">delete_topic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.delete_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.delete_topic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete stream on kinesis</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="eventify.Eventify.emit_event">
-<code class="descname">emit_event</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.emit_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.emit_event" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send a record to Kinesis Stream
-:param message: JSON Message to send to stream</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="eventify.Eventify.init_kinesis">
-<code class="descname">init_kinesis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.init_kinesis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.init_kinesis" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>aws_access_key_id</strong> &#8211; AWS Access Key</li>
-<li><strong>aws_secret_access_key</strong> &#8211; AWS Secret Key</li>
-<li><strong>stream_name</strong> &#8211; Kinesis Stream Name</li>
-<li><strong>region_name</strong> &#8211; AWS Region Name</li>
-<li><strong>shard_count</strong> &#8211; Configure shard count</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="eventify.Eventify.listen">
-<code class="descname">listen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.listen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.listen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start listening for commands an events on stream from KCL</p>
+<dt id="eventify.Eventify.get_version">
+<code class="descname">get_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.get_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.get_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns current version of Eventify</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="eventify.Eventify.logger">
 <code class="descname">logger</code><em class="property"> = &lt;logging.Logger object&gt;</em><a class="headerlink" href="#eventify.Eventify.logger" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="method">
-<dt id="eventify.Eventify.register_topic">
-<code class="descname">register_topic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify.html#Eventify.register_topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.Eventify.register_topic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register stream on kinesis</p>
-</dd></dl>
 
 </dd></dl>
 
@@ -302,8 +216,6 @@ A simple module for implementing event driven systems</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="eventify.drivers.html" class="btn btn-neutral float-right" title="eventify.drivers package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="eventify’s documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>eventify.producer package &mdash; eventify 0.0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="eventify 0.0.9 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> eventify
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="eventify.html">eventify package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eventify</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>eventify.producer package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/eventify.producer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="eventify-producer-package">
+<h1>eventify.producer package<a class="headerlink" href="#eventify-producer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-eventify.producer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eventify.producer" title="Permalink to this headline">¶</a></h2>
+<p>Produce Events From UI</p>
+<dl class="class">
+<dt id="eventify.producer.ProducerHandler">
+<em class="property">class </em><code class="descclassname">eventify.producer.</code><code class="descname">ProducerHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tornado.web.RequestHandler</span></code></p>
+<p>Handles requests to a producer service
+:inherits RequestHandler:</p>
+<p class="rubric">Attributes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cookies</span></code></td>
+<td>An alias for <cite>self.request.cookies &lt;.httputil.HTTPServerRequest.cookies&gt;</cite>.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">current_user</span></code></td>
+<td>The authenticated user for this request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">locale</span></code></td>
+<td>The locale for the current session.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">settings</span></code></td>
+<td>An alias for <cite>self.application.settings &lt;Application.settings&gt;</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">xsrf_token</span></code></td>
+<td>The XSRF-prevention token for the current user/session.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">add_header</span></code>(name,&nbsp;value)</td>
+<td>Adds the given response header and value.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">check_etag_header</span></code>()</td>
+<td>Checks the <code class="docutils literal"><span class="pre">Etag</span></code> header against requests&#8217;s <code class="docutils literal"><span class="pre">If-None-Match</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">check_xsrf_cookie</span></code>()</td>
+<td>Verifies that the <code class="docutils literal"><span class="pre">_xsrf</span></code> cookie matches the <code class="docutils literal"><span class="pre">_xsrf</span></code> argument.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>()</td>
+<td>Resets all headers and content for this response.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_all_cookies</span></code>([path,&nbsp;domain])</td>
+<td>Deletes all the cookies the user sent with this request.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_cookie</span></code>(name[,&nbsp;path,&nbsp;domain])</td>
+<td>Deletes the cookie with the given name.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">clear_header</span></code>(name)</td>
+<td>Clears an outgoing header, undoing a previous <cite>set_header</cite> call.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">compute_etag</span></code>()</td>
+<td>Computes the etag header to be used for this request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">create_signed_value</span></code>(name,&nbsp;value[,&nbsp;version])</td>
+<td>Signs and timestamps a string so it cannot be forged.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">create_template_loader</span></code>(template_path)</td>
+<td>Returns a new template loader for the given path.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">data_received</span></code>(chunk)</td>
+<td>Implement this method to handle streamed request data.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">decode_argument</span></code>(value[,&nbsp;name])</td>
+<td>Decodes an argument from the request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">delete</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">finish</span></code>([chunk])</td>
+<td>Finishes this response, ending the HTTP request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">flush</span></code>([include_footers,&nbsp;callback])</td>
+<td>Flushes the current output buffer to the network.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_argument</span></code>(name[,&nbsp;default,&nbsp;strip])</td>
+<td>Returns the value of the argument with the given name.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_arguments</span></code>(name[,&nbsp;strip])</td>
+<td>Returns a list of the arguments with the given name.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_body_argument</span></code>(name[,&nbsp;default,&nbsp;strip])</td>
+<td>Returns the value of the argument with the given name from the request body.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_body_arguments</span></code>(name[,&nbsp;strip])</td>
+<td>Returns a list of the body arguments with the given name.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_browser_locale</span></code>([default])</td>
+<td>Determines the user&#8217;s locale from <code class="docutils literal"><span class="pre">Accept-Language</span></code> header.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_cookie</span></code>(name[,&nbsp;default])</td>
+<td>Gets the value of the cookie with the given name, else default.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_current_user</span></code>()</td>
+<td>Override to determine the current user from, e.g., a cookie.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_login_url</span></code>()</td>
+<td>Override to customize the login URL based on the request.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_query_argument</span></code>(name[,&nbsp;default,&nbsp;strip])</td>
+<td>Returns the value of the argument with the given name from the request query string.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_query_arguments</span></code>(name[,&nbsp;strip])</td>
+<td>Returns a list of the query arguments with the given name.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_secure_cookie</span></code>(name[,&nbsp;value,&nbsp;...])</td>
+<td>Returns the given signed cookie if it validates, or None.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_secure_cookie_key_version</span></code>(name[,&nbsp;value])</td>
+<td>Returns the signing key version of the secure cookie.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_status</span></code>()</td>
+<td>Returns the status code for our response.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_template_namespace</span></code>()</td>
+<td>Returns a dictionary to be used as the default template namespace.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_template_path</span></code>()</td>
+<td>Override to customize template path for each handler.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_user_locale</span></code>()</td>
+<td>Override to determine the locale from the authenticated user.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">head</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">initialize</span></code>()</td>
+<td>Hook for subclass initialization.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">log_exception</span></code>(typ,&nbsp;value,&nbsp;tb)</td>
+<td>Override to customize logging of uncaught exceptions.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">on_connection_close</span></code>()</td>
+<td>Called in async handlers if the client closed the connection.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">on_finish</span></code>()</td>
+<td>Called after the end of a request.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">options</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">patch</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#eventify.producer.ProducerHandler.post" title="eventify.producer.ProducerHandler.post"><code class="xref py py-obj docutils literal"><span class="pre">post</span></code></a>()</td>
+<td>Sends message to stream</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">prepare</span></code>()</td>
+<td>Called at the beginning of a request before  <cite>get</cite>/<cite>post</cite>/etc.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#eventify.producer.ProducerHandler.producer" title="eventify.producer.ProducerHandler.producer"><code class="xref py py-obj docutils literal"><span class="pre">producer</span></code></a>()</td>
+<td>Connects to stream and sends message</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">put</span></code>(*args,&nbsp;**kwargs)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">redirect</span></code>(url[,&nbsp;permanent,&nbsp;status])</td>
+<td>Sends a redirect to the given (optionally relative) URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">render</span></code>(template_name,&nbsp;**kwargs)</td>
+<td>Renders the template with the given arguments as the response.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">render_string</span></code>(template_name,&nbsp;**kwargs)</td>
+<td>Generate the given template with the given arguments.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">require_setting</span></code>(name[,&nbsp;feature])</td>
+<td>Raises an exception if the given app setting is not defined.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">reverse_url</span></code>(name,&nbsp;*args)</td>
+<td>Alias for <cite>Application.reverse_url</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">send_error</span></code>([status_code])</td>
+<td>Sends the given HTTP error code to the browser.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_cookie</span></code>(name,&nbsp;value[,&nbsp;domain,&nbsp;expires,&nbsp;...])</td>
+<td>Sets the given cookie name/value with the given options.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_default_headers</span></code>()</td>
+<td>Override this to set HTTP headers at the beginning of the request.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_etag_header</span></code>()</td>
+<td>Sets the response&#8217;s Etag header using <code class="docutils literal"><span class="pre">self.compute_etag()</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_header</span></code>(name,&nbsp;value)</td>
+<td>Sets the given response header name and value.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">set_secure_cookie</span></code>(name,&nbsp;value[,&nbsp;...])</td>
+<td>Signs and timestamps a cookie so it cannot be forged.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_status</span></code>(status_code[,&nbsp;reason])</td>
+<td>Sets the status code for our response.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">static_url</span></code>(path[,&nbsp;include_host])</td>
+<td>Returns a static URL for the given relative static file path.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#eventify.producer.ProducerHandler.validate_user_input" title="eventify.producer.ProducerHandler.validate_user_input"><code class="xref py py-obj docutils literal"><span class="pre">validate_user_input</span></code></a>()</td>
+<td>Validates that all the input received is the</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">write</span></code>(chunk)</td>
+<td>Writes the given chunk to the output buffer.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#eventify.producer.ProducerHandler.write_error" title="eventify.producer.ProducerHandler.write_error"><code class="xref py py-obj docutils literal"><span class="pre">write_error</span></code></a>(status_code,&nbsp;**kwargs)</td>
+<td>Use JSON instead of HTML</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">xsrf_form_html</span></code>()</td>
+<td>An HTML <code class="docutils literal"><span class="pre">&lt;input/&gt;</span></code> element to be included with all POST forms.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.post">
+<code class="descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends message to stream</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.producer">
+<code class="descname">producer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.producer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.producer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to stream and sends message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.validate_user_input">
+<code class="descname">validate_user_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.validate_user_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.validate_user_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates that all the input received is the
+expected input</p>
+<p>Subclass this function for your own validation needs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.write_error">
+<code class="descname">write_error</code><span class="sig-paren">(</span><em>status_code</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.write_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.write_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use JSON instead of HTML
+for error resposne
+:param status_code: HTTP status code</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.producer.done_callback">
+<code class="descclassname">eventify.producer.</code><code class="descname">done_callback</code><span class="sig-paren">(</span><em>future</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#done_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.done_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Let tornado know were done</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.producer.start">
+<code class="descclassname">eventify.producer.</code><code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start listening for UI Events</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Matthew Harris.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
