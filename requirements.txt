@@ -4,7 +4,7 @@ beanstalkt==0.7.0
 coverage==4.3.4
 coveralls==1.1
 docopt==0.6.2
--e git+git@github.com:morissette/eventify.git@29e1178aa1380b22dab5f7e768ada828e44c3769#egg=eventify
+eventify=0.1.1
 isort==4.2.5
 lazy-object-proxy==1.2.2
 mccabe==0.6.1
