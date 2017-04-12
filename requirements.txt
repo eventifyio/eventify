@@ -1,10 +1,10 @@
 appdirs==1.4.3
 astroid==1.4.9
 beanstalkt==0.7.0
-coverage==4.3.4
+coverage==4.0.3
 coveralls==1.1
 docopt==0.6.2
--e git+git@github.com:morissette/eventify.git@47021725c343537c422c2ab170b255cc2330067c#egg=eventify
+-e git+git@github.com:morissette/eventify.git@3b4d346208ed64dc7d24e5c2d1a1bf4cbb2e310a#egg=eventify
 isort==4.2.5
 lazy-object-proxy==1.2.2
 mccabe==0.6.1
@@ -15,6 +15,8 @@ pylint==1.6.5
 pyparsing==2.2.0
 pytest==3.0.7
 pytest-cov==2.4.0
+python-coveralls==2.9.0
+PyYAML==3.12
 requests==2.13.0
 six==1.10.0
 tornado==4.4.3
