@@ -7,7 +7,7 @@ import time
 import beanstalkt
 import tornado.gen
 
-from eventify import Eventify
+from eventify import Eventify, logger
 from eventify.persist import persist_event
 
 class Stream(Eventify):
@@ -27,14 +27,18 @@ class Stream(Eventify):
         self.host = host
         self.topic = topic
         self.driver = driver
+        logger.debug('configured steam: %s %s' % (host, topic))
 
-        if driver == 'beanstalkt':
+        if driver == 'beanstalkd':
             self.client = beanstalkt.Client(host=self.host)
             self.connect()
+            logger.debug(self.client.stats())
+            logger.debug('connected to stream!')
 
         super(Stream, self).__init__(**kwargs)
 
 
+    @tornado.gen.coroutine
     def connect(self):
         """
         Connect to stream
@@ -51,14 +55,20 @@ class Stream(Eventify):
         Args:
             timeout (int): Seconds to prevent other workers from reading event
         """
-        if self.driver == 'beanstalkt':
+        if self.driver == 'beanstalkd':
             yield self.client.watch(self.topic)
 
             while True:
                 event = yield self.client.reserve(timeout=timeout)
-                if react_in != 0:
-                    time.sleep(react_in)
-                callback(event)
+                try:
+                    if 'id' in event:
+                        if react_in != 0:
+                            time.sleep(react_in)
+                        event_id = event['id']
+                        message = json.loads(event['body'].decode())
+                        callback(event_id, message)
+                except TypeError:
+                    pass
         else:
             raise ValueError("Stream driver not supported: %s" % self.driver)
 
@@ -72,14 +82,17 @@ class Stream(Eventify):
             event (dict): Dictionary
             persist (bool): Persist to persistant store
         """
-        if self.driver == 'beanstalkt':
+        if self.driver == 'beanstalkd':
             if persist:
                 # Write to persistant store
                 persist_event(event)
+                logger.debug('event persisted to db!')
 
             # Convert string to bytes
             payload = str.encode(json.dumps(event))
+            logger.debug(payload)
             yield self.client.put(payload)
+            logger.debug('event published!')
 
 
     @tornado.gen.coroutine
@@ -90,5 +103,5 @@ class Stream(Eventify):
         Args:
             event_id (int): ID of event
         """
-        if self.driver == 'beanstalkt':
+        if self.driver == 'beanstalkd':
             yield self.client.delete(event_id)
