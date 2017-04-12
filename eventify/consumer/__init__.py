@@ -10,10 +10,12 @@ from eventify.stream import Stream
 def consumer(callback, topic='default', timeout=0, react_in=0):
     """
     Start listening to a stream
-    :param callback: Callback function
-    :param topic: Topic Name
-    :param timeout: Timeout Seconds
-    :param react_in: React Seconds
+
+    Args:
+        callback (func): Callback function
+        topic (str): Topic Name
+        timeout (int): Timeout Seconds
+        react_in (int): React Seconds
     """
     stream = Stream(topic=topic)
     stream.listen(callback, timeout, react_in)

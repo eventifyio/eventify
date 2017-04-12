@@ -5,6 +5,10 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify'))
+sys.path.insert(1, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/producer'))
+sys.path.insert(2, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/consumer'))
+sys.path.insert(3, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/stream'))
+sys.path.insert(4, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/persist'))
 
 
 # -- General configuration ------------------------------------------------
@@ -14,12 +18,9 @@ sys.path.insert(0, os.path.abspath('/home/mharris/Projects/Personal/eventify/eve
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-    'numpydoc',
     'sphinx.ext.autosummary',
-    'sphinx.ext.doctest',
-    'sphinx.ext.inheritance_diagram'
+    'sphinxcontrib.napoleon'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

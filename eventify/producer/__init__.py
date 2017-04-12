@@ -18,7 +18,9 @@ from eventify.stream import Stream
 class ProducerHandler(tornado.web.RequestHandler):
     """
     Handles requests to a producer service
-    :inherits RequestHandler:
+
+    Note:
+        Inherits from tornado.web.RequestHandler
     """
 
     def post(self):
@@ -38,7 +40,9 @@ class ProducerHandler(tornado.web.RequestHandler):
         """
         Use JSON instead of HTML
         for error resposne
-        :param status_code: HTTP status code
+
+        Args:
+            status_code (int): HTTP status code
         """
         self.set_status(status_code)
         self.set_header('Content-Type', 'application/json')

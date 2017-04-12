@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>eventify.producer package &mdash; eventify 0.0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="eventify 0.0.9 documentation" href="index.html"/>
+        <link rel="up" title="eventify package" href="eventify.html"/>
+        <link rel="next" title="eventify.stream package" href="eventify.stream.html"/>
+        <link rel="prev" title="eventify.persist package" href="eventify.persist.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> eventify
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.9
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="eventify.html">eventify package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="eventify.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="eventify.consumer.html">eventify.consumer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventify.persist.html">eventify.persist package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">eventify.producer package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-eventify.producer">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="eventify.stream.html">eventify.stream package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventify.html#module-eventify">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eventify</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="eventify.html">eventify package</a> &raquo;</li>
+        
+      <li>eventify.producer package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/eventify.producer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="eventify-producer-package">
+<h1>eventify.producer package<a class="headerlink" href="#eventify-producer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-eventify.producer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-eventify.producer" title="Permalink to this headline">¶</a></h2>
+<p>Produce Events From UI</p>
+<dl class="class">
+<dt id="eventify.producer.ProducerHandler">
+<em class="property">class </em><code class="descclassname">eventify.producer.</code><code class="descname">ProducerHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tornado.web.RequestHandler</span></code></p>
+<p>Handles requests to a producer service</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Inherits from tornado.web.RequestHandler</p>
+</div>
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.post">
+<code class="descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends message to stream</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.producer">
+<code class="descname">producer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.producer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.producer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects to stream and sends message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.validate_user_input">
+<code class="descname">validate_user_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.validate_user_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.validate_user_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates that all the input received is the
+expected input</p>
+<p>Subclass this function for your own validation needs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="eventify.producer.ProducerHandler.write_error">
+<code class="descname">write_error</code><span class="sig-paren">(</span><em>status_code</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#ProducerHandler.write_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.ProducerHandler.write_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use JSON instead of HTML
+for error resposne</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status_code</strong> (<em>int</em>) &#8211; HTTP status code</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.producer.done_callback">
+<code class="descclassname">eventify.producer.</code><code class="descname">done_callback</code><span class="sig-paren">(</span><em>future</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#done_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.done_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Let tornado know were done</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="eventify.producer.start">
+<code class="descclassname">eventify.producer.</code><code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventify/producer.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#eventify.producer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start listening for UI Events</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="eventify.stream.html" class="btn btn-neutral float-right" title="eventify.stream package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="eventify.persist.html" class="btn btn-neutral" title="eventify.persist package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Matthew Harris.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.9',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
