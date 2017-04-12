@@ -9,7 +9,7 @@ setup(
   author = 'Matthew Harris',
   author_email = 'matt@x-qa.com',
   url = 'https://github.com/morissette/eventify',
-  download_url = 'https://github.com/morissette/eventify/dist/eventify-0.1.0.tar.gz',
+  download_url = 'https://github.com/morissette/eventify/dist/eventify-0.1.1.tar.gz',
   keywords = ['event', 'event-driven', 'async', 'framework', 'producer', 'consumer', 'tornado'],
   classifiers = [],
 )
