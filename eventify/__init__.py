@@ -2,12 +2,7 @@
 Eventify!
 A simple module for implementing event driven systems
 """
-from __future__ import print_function
-
 import logging
-import os
-import sys
-import time
 
 
 class Eventify(object):
@@ -18,14 +13,22 @@ class Eventify(object):
     logger = logging.getLogger(__name__)
 
 
-    def __init__(self, driver, **kwargs):
+    def __init__(self, **kwargs):
         """
         :param driver: Driver you wish to use
         :param kwargs: Driver settings
         """
-        if driver == 'producer':
-            self.init_producer()
-        elif driver == 'consumer':
-            self.init_consumer()
-        else:
-            raise ValueError("Driver not supported: %s" % self.driver)
+        self.version = '0.1.1'
+
+        if 'db_host' in kwargs:
+            self.db_host = kwargs['db_host']
+        if 'db_user' in kwargs:
+            self.db_user = kwargs['db_user']
+        if 'db_pass' in kwargs:
+            self.db_pass = kwargs['db_pass']
+
+    def get_version(self):
+        """
+        Returns current version of Eventify
+        """
+        return self.version

@@ -6,35 +6,32 @@ import json
 import os
 import socket
 
-import beanstalkt
 import tornado.escape
 import tornado.gen
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 
+from eventify.stream import Stream
+
+
 class ProducerHandler(tornado.web.RequestHandler):
     """
-    Handles requests from API Gateway
+    Handles requests to a producer service
     :inherits RequestHandler:
     """
 
-    def initialize(self):
-        queue_host = os.getenv('QUEUE_HOST', 'localhost')
-        self.client = beanstalkt.Client(host=queue_host)
-        self.queue = os.getenv('QUEUE_NAME', "ui_events")
-
-
     def post(self):
         """
-        Sends message to database and then streams to
-        Beanstalk Queue
+        Sends message to stream
         """
         self.data = tornado.escape.json_decode(self.request.body)
         self.headers = self.request.headers
+        self.reason = 'Unknown reason'
+
         self.validate_user_input()
         future = self.producer()
-        future.add_done_callback(self.done_callback)
+        future.add_done_callback(done_callback)
 
 
     def write_error(self, status_code, **kwargs):
@@ -43,7 +40,7 @@ class ProducerHandler(tornado.web.RequestHandler):
         for error resposne
         :param status_code: HTTP status code
         """
-        self.set_status(400)
+        self.set_status(status_code)
         self.set_header('Content-Type', 'application/json')
         self.write({
             'status_code': status_code,
@@ -56,6 +53,8 @@ class ProducerHandler(tornado.web.RequestHandler):
         """
         Validates that all the input received is the
         expected input
+
+        Subclass this function for your own validation needs
         """
         minimum_required_input = ['company_id', 'event', 'body', 'global_tenant_id', 'app_id']
         input_received = self.data.keys()
@@ -68,39 +67,24 @@ class ProducerHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def producer(self):
         """
-        Send event to queue
+        Connects to stream and sends message
         """
-        # Convert data to bytes
-        payload = str.encode(json.dumps(self.data))
-
-        # Connect to beanstalkt
-        yield self.client.connect()
-
-        # Configure which queue to use
-        yield self.client.use(self.queue)
-
-        # Send the message
-        yield self.client.put(payload)
-
-        print(str(datetime.now()) + " " + "sent message")
-
-    def done_callback(self, future):
-        future.result()
+        stream = Stream(topic="default")
+        stream.emit_event(self.data)
 
 
-def start_app():
+def done_callback(future):
+    """
+    Let tornado know were done
+    """
+    future.result()
+
+
+def start():
     """
     Start listening for UI Events
     """
-    app = tornado.web.Application([
+    tornado.web.Application([
         (r"/", ProducerHandler),
-    ]).listen(8080)
+    ]).listen(80)
     tornado.ioloop.IOLoop.current().start()
-
-
-if __name__ == '__main__':
-    try:
-        start_app()
-    except KeyboardInterrupt:
-        import sys
-        sys.exit()
