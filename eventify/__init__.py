@@ -3,7 +3,10 @@ Eventify!
 A simple module for implementing event driven systems
 """
 import logging
+import json
+import os
 
+import tornado.gen
 
 # Setup logging
 log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -24,15 +27,23 @@ class Eventify(object):
         """
         self.version = '0.1.5'
 
-        if 'db_host' in kwargs:
-            self.db_host = kwargs['db_host']
-        if 'db_user' in kwargs:
-            self.db_user = kwargs['db_user']
-        if 'db_pass' in kwargs:
-            self.db_pass = kwargs['db_pass']
 
+    @tornado.gen.coroutine
+    def load_config(self):
+        """
+        Load config onto stream instance
+        """
+        logger.debug("configuration file specified: %s" % self.config)
+        if os.path.exists(self.config):
+            logger.debug("configuration file exists!")
+            with open(self.config) as data_file:
+                self.service_configuration = json.load(data_file)
+                logger.debug(self.service_configuration)
+
+
+    @tornado.gen.coroutine
     def get_version(self):
         """
         Returns current version of Eventify
         """
-        return self.version
+        yield self.version

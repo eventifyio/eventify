@@ -23,6 +23,9 @@ class Stream(Eventify):
             host (str): Hostname
             topic (str): Topic Name
             driver (str): Name of driver the service wants to use
+
+        Keyword Args:
+            config (str): Specify configuration file
         """
         self.host = host
         self.topic = topic
@@ -34,6 +37,16 @@ class Stream(Eventify):
             self.connect()
             logger.debug(self.client.stats())
             logger.debug('connected to stream!')
+
+        if 'db_host' in kwargs:
+            self.db_host = kwargs['db_host']
+        if 'db_user' in kwargs:
+            self.db_user = kwargs['db_user']
+        if 'db_pass' in kwargs:
+            self.db_pass = kwargs['db_pass']
+        if 'config' in kwargs:
+            self.config = kwargs['config']
+            self.load_config()
 
         super(Stream, self).__init__(**kwargs)
 
