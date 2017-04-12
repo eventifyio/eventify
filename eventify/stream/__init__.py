@@ -18,8 +18,11 @@ class Stream(Eventify):
     def __init__(self, host='localhost', topic='default', driver='beanstalkd', **kwargs):
         """
         Constructor method
-        :param host: Hostname
-        :param topic: Topic Name
+
+        Args:
+            host (str): Hostname
+            topic (str): Topic Name
+            driver (str): Name of driver the service wants to use
         """
         self.host = host
         self.topic = topic
@@ -44,7 +47,9 @@ class Stream(Eventify):
     def listen(self, callback, timeout=0, react_in=0):
         """
         Start listening to a stream
-        :param timeout: Seconds to prevent other workers from reading event
+
+        Args:
+            timeout (int): Seconds to prevent other workers from reading event
         """
         if self.driver == 'beanstalkt':
             yield self.client.watch(self.topic)
@@ -62,8 +67,10 @@ class Stream(Eventify):
     def emit_event(self, event, persist=True):
         """
         Emit event to stream
-        :param event: Dictionary
-        :param persist: Persist to persistant store
+
+        Args:
+            event (dict): Dictionary
+            persist (bool): Persist to persistant store
         """
         if self.driver == 'beanstalkt':
             if persist:
@@ -79,7 +86,9 @@ class Stream(Eventify):
     def delete_event(self, event_id):
         """
         Delete event from stream
-        :param event_id: ID of event
+
+        Args:
+            event_id (int): ID of event
         """
         if self.driver == 'beanstalkt':
             yield self.client.delete(event_id)
