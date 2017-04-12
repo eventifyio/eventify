@@ -1,4 +1,5 @@
 # Custom Ignores
+update.sh
 venv/
 node-nfcu/
 creds

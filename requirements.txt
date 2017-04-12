@@ -7,7 +7,7 @@ coverage==4.0.3
 coveralls==1.1
 docopt==0.6.2
 docutils==0.13.1
--e git+git@github.com:morissette/eventify.git@7bcb1fb4116a26f385d2907ed47ea1e7842739c5#egg=eventify
+eventify==0.1.3
 imagesize==0.7.1
 isort==4.2.5
 Jinja2==2.9.6
