@@ -9,6 +9,7 @@ sys.path.insert(1, os.path.abspath('/home/mharris/Projects/Personal/eventify/eve
 sys.path.insert(2, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/consumer'))
 sys.path.insert(3, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/stream'))
 sys.path.insert(4, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/persist'))
+sys.path.insert(5, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/example'))
 
 
 # -- General configuration ------------------------------------------------
