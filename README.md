@@ -14,10 +14,12 @@ pip install eventify
 ## Support
 Only current has support for one driver beanstalkd
 * http://kr.github.io/beanstalkd/
+
 Certainly encourage the open source community to submit bugs and new drivers!
 
 ## Dependencies
 * beanstalkd
+
 See: http://kr.github.io/beanstalkd/download.html
 
 ## Tour
