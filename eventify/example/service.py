@@ -1,6 +1,8 @@
 """
 All Business Logic of a Service Lives Here
 """
+import datetime
+
 import tornado.gen
 
 from eventify.stream import Stream
@@ -19,14 +21,15 @@ class EventHandler(Stream):
             event (json): Json representation of an event
         """
         event_name = message['event']
-        events_to_process = self.service_configuration['events_to_process']
+        events_to_process = self.events_to_process
         if event_name in events_to_process:
             method_to_call = getattr(EventHandler, events_to_process[event_name])
-            yield method_to_call(message)
+            if method_to_call(message):
+                self.delete_event(event_id)
 
 
     @tornado.gen.coroutine
-    def provision_node(message):
+    def provision_node(self, message):
         """
         Pseudo func
 
@@ -36,7 +39,7 @@ class EventHandler(Stream):
         print('NodeProvisioned')
 
 
-    @tornado.gen.coroutine
+    #@tornado.gen.coroutine
     def start_node(message):
         """
         Pseudo func
@@ -44,4 +47,5 @@ class EventHandler(Stream):
         Args:
             message(json): Message
         """
-        print('NodeStarted')
+        print('%s NodeStarted' % str(datetime.datetime.now()))
+        return True

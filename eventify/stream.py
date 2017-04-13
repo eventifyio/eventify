@@ -10,33 +10,20 @@ import tornado.gen
 from eventify import Eventify, logger
 from eventify.persist import persist_event
 
+
 class Stream(Eventify):
     """
     The stream object
     """
 
-    def __init__(self, host='localhost', topic='default', driver='beanstalkd', **kwargs):
+    def __init__(self, **kwargs):
         """
         Constructor method
-
-        Args:
-            host (str): Hostname
-            topic (str): Topic Name
-            driver (str): Name of driver the service wants to use
 
         Keyword Args:
             config (str): Specify configuration file
         """
-        self.host = host
-        self.topic = topic
-        self.driver = driver
-        logger.debug('configured steam: %s %s' % (host, topic))
-
-        if driver == 'beanstalkd':
-            self.client = beanstalkt.Client(host=self.host)
-            self.connect()
-            logger.debug(self.client.stats())
-            logger.debug('connected to stream!')
+        ready = None
 
         if 'db_host' in kwargs:
             self.db_host = kwargs['db_host']
@@ -47,6 +34,13 @@ class Stream(Eventify):
         if 'config' in kwargs:
             self.config = kwargs['config']
             self.load_config()
+        if 'topic' in kwargs:
+            self.topic = kwargs['topic']
+            ready = True
+
+        if self.driver == 'beanstalkd' and ready:
+            self.client = beanstalkt.Client(host=self.host)
+            self.connect()
 
         super(Stream, self).__init__(**kwargs)
 

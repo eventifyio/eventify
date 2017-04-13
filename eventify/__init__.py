@@ -22,8 +22,8 @@ class Eventify(object):
 
     def __init__(self, **kwargs):
         """
-        :param driver: Driver you wish to use
-        :param kwargs: Driver settings
+        Args:
+            driver (basestring): Driver name
         """
         self.version = '0.1.5'
 
@@ -33,12 +33,44 @@ class Eventify(object):
         """
         Load config onto stream instance
         """
-        logger.debug("configuration file specified: %s" % self.config)
         if os.path.exists(self.config):
-            logger.debug("configuration file exists!")
             with open(self.config) as data_file:
-                self.service_configuration = json.load(data_file)
-                logger.debug(self.service_configuration)
+                service_configuration = json.load(data_file)
+                driver = service_configuration.get('driver', None)
+                topics_subscribed_to = service_configuration.get('topics_subscribed_to', None)
+                events_to_process = service_configuration.get('events_to_process', None)
+                topics_publishing_to = service_configuration.get('topics_publishing_to', None)
+                queue_host = service_configuration.get('queue_host', None)
+                if driver is not None:
+                    self.driver = driver
+                if topics_subscribed_to is not None:
+                    self.topics_subscribed_to = topics_subscribed_to
+                if events_to_process is not None:
+                    self.events_to_process = events_to_process
+                if topics_publishing_to is not None:
+                    self.topics_publishing_to = topics_publishing_to
+                if queue_host is not None:
+                    self.host = queue_host
+
+
+    def set_topic(self, topic):
+        """
+        Set topic for instance of Stream
+
+        Args:
+            topic (basestring): Name of topic
+        """
+        self.topic = topic
+
+
+    def set_host(self, host):
+        """
+        Set host for topic for instance of Stream
+
+        Args:
+            host (basestring): FQDN of queue server
+        """
+        self.host = host
 
 
     @tornado.gen.coroutine

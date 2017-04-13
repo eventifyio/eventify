@@ -24,19 +24,14 @@ class ProducerHandler(tornado.web.RequestHandler):
         Inherits from tornado.web.RequestHandler
     """
 
-    def initialize(self, host='localhost', topic='default', driver='beanstalkd'):
+    def initialize(self, config='config.json'):
         """
         Setup producer
 
         Args:
-            host (basestring): FQDN of queue system
-            topic (basestring): Topic you want to publish to
-            driver (basestring): Name of driver you want to use
+            config (basestring): Json configuration of service
         """
-        self.host = host
-        self.topic = topic
-        self.driver = driver
-        logger.debug('setup request handler with: %s %s %s' % (host, topic, driver))
+        self.config = config
 
 
     def post(self):
@@ -44,13 +39,8 @@ class ProducerHandler(tornado.web.RequestHandler):
         Sends message to stream
         """
         self.data = tornado.escape.json_decode(self.request.body)
-        logger.debug('received request data: %s' % self.data)
-
         self.headers = self.request.headers
-        logger.debug('received request headers: %s' % self.headers)
-
         self.validate_user_input()
-        logger.debug('validated user input')
 
         future = self.producer()
         future.add_done_callback(done_callback)
@@ -119,15 +109,17 @@ class ProducerHandler(tornado.web.RequestHandler):
         """
         logger.debug(chunk)
 
+
     @tornado.gen.coroutine
     def producer(self):
         """
         Connects to stream and sends message
         """
-        logger.debug('emitting event')
-        stream = Stream(host=self.host, topic=self.topic, driver=self.driver)
-        stream.emit_event(self.data)
-        logger.debug('event emitted!')
+        stream = Stream(config=self.config)
+        for topic in stream.topics_publishing_to:
+            topic = topic['topic']
+            new_stream = Stream(config=self.config, topic=topic)
+            new_stream.emit_event(self.data)
 
 
 def done_callback(future):

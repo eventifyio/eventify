@@ -1,0 +1,12 @@
+{
+    "_comment": "service configuration",
+    "driver": "beanstalkd",
+    "queue_host": "localhost",
+    "topics_publishing_to": [
+        {
+            "topic": "dev",
+            "timeout": 20,
+            "reply_in": 0
+        }
+    ]
+}
