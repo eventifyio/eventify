@@ -25,6 +25,9 @@ See: http://kr.github.io/beanstalkd/download.html
 ## Tour
 [![asciicast](https://asciinema.org/a/113052.png)](https://asciinema.org/a/113052)
 
+## Eventual Consistency Tour
+[![asciicast](https://asciinema.org/a/113057.png)](https://asciinema.org/a/113057)
+
 ## Pypi
 https://pypi.python.org/pypi/eventify
 
