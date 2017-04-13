@@ -11,6 +11,9 @@ A lightweight python module for building event driven distributed systems.
 pip install eventify
 ```
 
+## Tour
+[![asciicast](https://asciinema.org/a/113052.png)](https://asciinema.org/a/113052)
+
 ## Pypi
 https://pypi.python.org/pypi/eventify
 
