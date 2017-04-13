@@ -1,0 +1,16 @@
+{
+    "_comment": "service configuration",
+    "driver": "beanstalkd",
+    "events_to_process": {
+        "NodeProvisionRequested": "provision_node",
+        "NodeStartRequested": "start_node"
+    },
+    "queue_host": "localhost",
+    "topics_subscribed_to": [
+        {
+            "topic": "dev",
+            "timeout": 20,
+            "reply_in": 0
+        }
+    ]
+}

@@ -6,7 +6,7 @@ from service import EventHandler
 
 
 @tornado.gen.coroutine
-def consume(topic='default', timeout=20, react_in=0):
+def consume():
     """
     Connect to stream and watch events
 
@@ -15,8 +15,15 @@ def consume(topic='default', timeout=20, react_in=0):
         timeout (int): Visibility of message
         react_in (int): Delay reaction to event
     """
-    stream = EventHandler(topic=topic, config='config.json')
-    stream.listen(stream.process_event, timeout, react_in)
+    stream = EventHandler(config='consumer-config.json')
+    topics = stream.topics_subscribed_to
+
+    for topic in topics:
+        name = topic['topic']
+        timeout = topic['timeout']
+        react_in = topic['reply_in']
+        new_stream = EventHandler(config='consumer-config.json', topic=name)
+        yield new_stream.listen(new_stream.process_event, timeout, react_in)
 
 
 def done_callback(future):
@@ -28,10 +35,7 @@ def done_callback(future):
 
 if __name__ == '__main__':
     try:
-        # Setup consumer
-        topic = 'dev'
-
-        future = consume(topic=topic)
+        future = consume()
         future.add_done_callback(done_callback)
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:

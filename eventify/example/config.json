@@ -1,8 +1,0 @@
-{
-    "_comment": "service configuration",
-    "events_to_process": {
-        "NodeProvisionRequested": "provision_node",
-        "NodeStartRequested": "start_node"
-    }
-}
-
