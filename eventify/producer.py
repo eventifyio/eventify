@@ -28,7 +28,6 @@ class ProducerHandler(tornado.web.RequestHandler):
         """
         self.config = config
 
-
     def post(self):
         """
         Sends message to stream
@@ -39,7 +38,6 @@ class ProducerHandler(tornado.web.RequestHandler):
 
         future = self.producer()
         future.add_done_callback(done_callback)
-
 
     def write_error(self, status_code, **kwargs):
         """
@@ -67,7 +65,6 @@ class ProducerHandler(tornado.web.RequestHandler):
         })
         self.finish()
 
-
     def validate_user_input(self):
         """
         Validates that all the input received is the
@@ -75,12 +72,12 @@ class ProducerHandler(tornado.web.RequestHandler):
 
         Subclass this function for your own validation needs
         """
-        minimum_required_input = ['company_id', 'event', 'body', 'global_tenant_id', 'app_id']
+        minimum_required_input = ['company_id',
+                                  'event', 'body', 'global_tenant_id', 'app_id']
         input_received = self.data.keys()
         for param in minimum_required_input:
             if param not in input_received:
                 raise tornado.web.HTTPError(400)
-
 
     def log_exception(self, type, value, tb):
         """
@@ -94,7 +91,6 @@ class ProducerHandler(tornado.web.RequestHandler):
         logger.debug(type, value)
         logger.debug(tb)
 
-
     def data_received(self, chunk):
         """
         Stream data
@@ -103,7 +99,6 @@ class ProducerHandler(tornado.web.RequestHandler):
             chunk:
         """
         logger.debug(chunk)
-
 
     @tornado.gen.coroutine
     def producer(self):
