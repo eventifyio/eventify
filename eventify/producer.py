@@ -1,11 +1,6 @@
 """
 Produce Events From UI
 """
-from datetime import datetime
-import json
-import os
-import socket
-
 import tornado.escape
 import tornado.gen
 import tornado.httpserver
