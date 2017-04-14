@@ -19,14 +19,18 @@ class Eventify(object):
     Base Class for eventify
     """
 
-
-    def __init__(self, **kwargs):
+    def __init__(self):
         """
         Args:
             driver (basestring): Driver name
         """
+        self.host = None
+        self.topic = None
         self.version = '0.1.5'
-
+        self.driver = None
+        self.events_to_process = None
+        self.topics_subscribed_to = None
+        self.topics_publishing_to = None
 
     @tornado.gen.coroutine
     def load_config(self):
@@ -37,9 +41,12 @@ class Eventify(object):
             with open(self.config) as data_file:
                 service_configuration = json.load(data_file)
                 driver = service_configuration.get('driver', None)
-                topics_subscribed_to = service_configuration.get('topics_subscribed_to', None)
-                events_to_process = service_configuration.get('events_to_process', None)
-                topics_publishing_to = service_configuration.get('topics_publishing_to', None)
+                topics_subscribed_to = service_configuration.get(
+                    'topics_subscribed_to', None)
+                events_to_process = service_configuration.get(
+                    'events_to_process', None)
+                topics_publishing_to = service_configuration.get(
+                    'topics_publishing_to', None)
                 queue_host = service_configuration.get('queue_host', None)
                 if driver is not None:
                     self.driver = driver
@@ -52,7 +59,6 @@ class Eventify(object):
                 if queue_host is not None:
                     self.host = queue_host
 
-
     def set_topic(self, topic):
         """
         Set topic for instance of Stream
@@ -62,7 +68,6 @@ class Eventify(object):
         """
         self.topic = topic
 
-
     def set_host(self, host):
         """
         Set host for topic for instance of Stream
@@ -71,7 +76,6 @@ class Eventify(object):
             host (basestring): FQDN of queue server
         """
         self.host = host
-
 
     @tornado.gen.coroutine
     def get_version(self):

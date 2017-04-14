@@ -44,7 +44,6 @@ class Stream(Eventify):
 
         super(Stream, self).__init__(**kwargs)
 
-
     @tornado.gen.coroutine
     def connect(self):
         """
@@ -52,7 +51,6 @@ class Stream(Eventify):
         """
         yield self.client.connect()
         yield self.client.use(self.topic)
-
 
     @tornado.gen.coroutine
     def listen(self, callback, timeout=0, react_in=0):
@@ -79,7 +77,6 @@ class Stream(Eventify):
         else:
             raise ValueError("Stream driver not supported: %s" % self.driver)
 
-
     @tornado.gen.coroutine
     def emit_event(self, event, persist=True):
         """
@@ -100,7 +97,6 @@ class Stream(Eventify):
             logger.debug(payload)
             yield self.client.put(payload)
             logger.debug('event published!')
-
 
     @tornado.gen.coroutine
     def delete_event(self, event_id):
