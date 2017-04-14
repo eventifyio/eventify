@@ -23,10 +23,10 @@ class EventHandler(Stream):
         event_name = message['event']
         events_to_process = self.events_to_process
         if event_name in events_to_process:
-            method_to_call = getattr(EventHandler, events_to_process[event_name])
+            method_to_call = getattr(
+                EventHandler, events_to_process[event_name])
             if method_to_call(message):
                 self.delete_event(event_id)
-
 
     @tornado.gen.coroutine
     def provision_node(self, message):
@@ -36,10 +36,10 @@ class EventHandler(Stream):
         Args:
             message (json): Message
         """
+        print(message)
         print('NodeProvisioned')
 
-
-    #@tornado.gen.coroutine
+    # @tornado.gen.coroutine
     def start_node(message):
         """
         Pseudo func

@@ -72,24 +72,17 @@ class ProducerHandler(tornado.web.RequestHandler):
 
         Subclass this function for your own validation needs
         """
-        minimum_required_input = ['company_id',
-                                  'event', 'body', 'global_tenant_id', 'app_id']
+        minimum_required_input = [
+            'company_id',
+            'event',
+            'body',
+            'global_tenant_id',
+            'app_id'
+        ]
         input_received = self.data.keys()
         for param in minimum_required_input:
             if param not in input_received:
                 raise tornado.web.HTTPError(400)
-
-    def log_exception(self, type, value, tb):
-        """
-        Log exceptions from async calls
-
-        Args:
-            type:
-            value:
-            tb: traceback
-        """
-        logger.debug(type, value)
-        logger.debug(tb)
 
     def data_received(self, chunk):
         """
