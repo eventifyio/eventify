@@ -1,3 +1,0 @@
-"""
-Generate RTD for Example
-"""
