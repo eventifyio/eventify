@@ -15,6 +15,7 @@ setup(
     classifiers=[],
     install_requires=[
         'tornado',
-        'beanstalkt'
+        'beanstalkt',
+        'rx'
     ]
 )

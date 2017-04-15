@@ -1,11 +1,11 @@
 {
     "_comment": "service configuration",
-    "driver": "beanstalkd",
+    "driver": "crossbar",
     "events_to_process": {
         "NodeProvisionRequested": "provision_node",
         "NodeStartRequested": "start_node"
     },
-    "queue_host": "localhost",
+    "transport_host": "ws://localhost:8080/ws",
     "topics_subscribed_to": [
         {
             "topic": "dev",
