@@ -1,0 +1,11 @@
+{
+    "_comment": "service configuration",
+    "driver": "crossbar",
+    "transport_host": "ws://localhost:8080/ws",
+    "publish_topic": {
+        "topic": "ui-events",
+        "timeout": 20,
+        "reply_in": 0
+    }
+    
+}
