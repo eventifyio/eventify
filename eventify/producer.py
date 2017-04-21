@@ -2,11 +2,9 @@
 Producer Module
 """
 import json
-import time
 
 from twisted.internet.defer import inlineCallbacks
 
-from autobahn.twisted.util import sleep
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import PublishOptions
 
