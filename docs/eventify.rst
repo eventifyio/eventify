@@ -6,10 +6,18 @@ Subpackages
 
 .. toctree::
 
-    eventify.example
+    eventify.exceptions
 
 Submodules
 ----------
+
+eventify\.consumer module
+-------------------------
+
+.. automodule:: eventify.consumer
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 eventify\.persist module
 ------------------------
@@ -23,14 +31,6 @@ eventify\.producer module
 -------------------------
 
 .. automodule:: eventify.producer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-eventify\.stream module
------------------------
-
-.. automodule:: eventify.stream
     :members:
     :undoc-members:
     :show-inheritance:
