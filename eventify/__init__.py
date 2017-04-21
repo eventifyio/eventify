@@ -2,42 +2,39 @@
 Eventify!
 A simple module for implementing event driven systems
 """
-import logging
 import json
 import os
 
-from eventify.pubsub.publish import Publisher
-from eventify.pubsub.subscribe import Subscriber
+from twisted.internet.defer import inlineCallbacks
+from autobahn.twisted.util import sleep
+from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
-log_format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-logging.basicConfig(level=logging.DEBUG, format=log_format)
-logger = logging.getLogger(__name__)
-
+from eventify.exceptions import ConfigError
 
 class Eventify(object):
     """
     Base Class for eventify
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, driver='crossbar', config_file='config.json'):
         """
-        Keyword Args:
-            driver (basestring): Driver name
+        Args:
+            Driver
         """
-        if 'config' in kwargs:
-            config = kwargs['config']
+        self.driver = driver
+        self.config_file = config_file
+        self.config = self.load_config()
 
-            if os.path.exists(config):
-                with open(config) as data_file:
-                    service_configuration = json.load(data_file)
-                    self.driver = service_configuration.get('driver', None)
-                    self.topics_subscribed_to = service_configuration.get(
-                        'topics_subscribed_to', None)
-                    self.events_to_process = service_configuration.get(
-                        'events_to_process', None)
-                    self.transport_host = service_configuration.get(
-                        'transport_host', None)
+    def load_config(self):
+        """
+        Load configuration for the service
 
-        if self.driver == 'crossbar':
-            self.publisher = Publisher
-            self.subscriber = Subscriber
+        Args:
+            config_file: Configuration file path
+        """
+        if os.path.exists(self.config_file):
+            with open(self.config_file) as file_handle:
+                config = file_handle.read()
+                file_handle.close()
+                return json.loads(config)
+        raise ConfigError('Configuration is required! Missing: %s' % self.config_file)
