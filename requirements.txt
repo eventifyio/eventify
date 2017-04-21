@@ -15,5 +15,6 @@ pyOpenSSL==16.2.0
 pyparsing==2.2.0
 pytest-cov==2.4.0
 six==1.10.0
+sphinxcontrib.napoleon==0.6.1
 Twisted==17.1.0
 zope.interface==4.3.3
