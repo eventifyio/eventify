@@ -14,7 +14,9 @@ class ConsumerApp(ApplicationSession):
             print("event received: {0}", count)
 
         try:
-            yield self.subscribe(handler, u'mytopic')
+            topic = self.config.extra['publish_topic']['topic']
+
+            yield self.subscribe(handler, topic)
             print("subscribed to topic")
         except Exception as e:
             print("could not subscribe to topic: {0}".format(e))
