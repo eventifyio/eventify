@@ -11,22 +11,8 @@ A lightweight python module for building event driven distributed systems.
 pip install eventify
 ```
 
-## Support
-Only current has support for one driver beanstalkd
-* http://kr.github.io/beanstalkd/
-
-Certainly encourage the open source community to submit bugs and new drivers!
-
-## Dependencies
-* beanstalkd
-
-See: http://kr.github.io/beanstalkd/download.html
-
-## Tour
-[![asciicast](https://asciinema.org/a/113052.png)](https://asciinema.org/a/113052)
-
-## Eventual Consistency Tour
-[![asciicast](https://asciinema.org/a/113057.png)](https://asciinema.org/a/113057)
+## Tutorial
+TBD
 
 ## Pypi
 https://pypi.python.org/pypi/eventify
