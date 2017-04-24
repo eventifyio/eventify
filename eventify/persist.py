@@ -1,7 +1,7 @@
 """
 Persist Helper Module
 """
-
+from __future__ import print_function
 
 def persist_event(event):
     """
