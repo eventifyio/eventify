@@ -1,0 +1,19 @@
+{
+    "options": {
+        "config": "config.json", 
+        "logdir": null, 
+        "personality": "community", 
+        "command": "start", 
+        "reactor": null, 
+        "loglevel": "info", 
+        "cbdir": "/home/mharris/Projects/Personal/eventify/example/transport/.crossbar", 
+        "colour": "auto", 
+        "logformat": "standard", 
+        "logtofile": false
+    }, 
+    "pid": 15797, 
+    "argv": [
+        "/home/mharris/Projects/Personal/eventify/venv/bin/crossbar", 
+        "start"
+    ]
+}

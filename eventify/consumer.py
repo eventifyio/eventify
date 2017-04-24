@@ -8,13 +8,12 @@ class ConsumerApp(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
         print("session ready")
-
-        def handler(count):
-            print("event received: {0}", count)
+        topics = self.config.extra['config']['subscribed_topics']
 
         try:
-            yield self.subscribe(handler, u'mytopic')
-            print("subscribed to topic")
+            for topic in topics:
+                yield self.subscribe(self.config.extra['callback'], topic)
+                print("subscribed to topic: %s" % topic)
         except Exception as e:
             print("could not subscribe to topic: {0}".format(e))
 
@@ -28,6 +27,6 @@ class Consumer(Eventify):
         runner = ApplicationRunner(
             url=self.config['transport_host'],
             realm=u"realm1",
-            extra=self.config
+            extra={'config': self.config, 'callback': self.callback}
         )
         runner.run(ConsumerApp)
