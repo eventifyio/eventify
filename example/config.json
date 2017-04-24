@@ -1,5 +1,7 @@
 {
     "_comment": "service configuration",
+    "name": "ui-event-producer",
+    "image": "ui/event/producer",
     "driver": "crossbar",
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
@@ -10,5 +12,8 @@
         "topic": "ui-events",
         "timeout": 20,
         "reply_in": 0
-    }
+    },
+    "subscribed_topics": [
+        "ui-events"
+    ]
 }

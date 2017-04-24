@@ -16,7 +16,7 @@ class Eventify(object):
     Base Class for eventify
     """
 
-    def __init__(self, driver='crossbar', config_file='config.json'):
+    def __init__(self, driver='crossbar', config_file='config.json', callback=None):
         """
         Args:
             Driver
@@ -24,6 +24,7 @@ class Eventify(object):
         self.driver = driver
         self.config_file = config_file
         self.config = self.load_config()
+        self.callback = callback
 
     def load_config(self):
         """
