@@ -10,8 +10,8 @@ from autobahn.wamp.types import PublishOptions
 
 from eventify import Eventify
 
-class ProducerApp(ApplicationSession):
 
+class ProducerApp(ApplicationSession):
     @inlineCallbacks
     def onJoin(self, details):
         print('session joined')
@@ -26,15 +26,15 @@ class ProducerApp(ApplicationSession):
             options=pub_options
         )
 
-class Producer(Eventify):
 
+class Producer(Eventify):
     def start(self):
         """
-	Start the event loop
-	"""
+        Start the event loop
+        """
         runner = ApplicationRunner(
-	    url=self.config['transport_host'],
-	    realm=u"realm1",
-	    extra=self.config
+            url=self.config['transport_host'],
+            realm="realm1",
+            extra=self.config
         )
         runner.run(ProducerApp)

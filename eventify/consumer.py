@@ -3,6 +3,7 @@ from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
 from eventify import Eventify
 
+
 class ConsumerApp(ApplicationSession):
 
     @inlineCallbacks
