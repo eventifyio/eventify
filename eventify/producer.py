@@ -1,6 +1,8 @@
 """
 Producer Module
 """
+from __future__ import print_function
+
 import json
 import requests
 
@@ -20,6 +22,9 @@ class ProducerApp(ApplicationSession):
 
     @inlineCallbacks
     def onJoin(self, details):
+        """
+        Called after connection to crossbar
+        """
         print("session joined")
         self.topic = self.config.extra['publish_topic']['topic']
         self.pub_options = PublishOptions(**self.config.extra['pub_options'])
@@ -36,6 +41,9 @@ class ProducerApp(ApplicationSession):
 
 
 class Producer(Eventify):
+    """
+    Producer class
+    """
 
     def start(self):
         """
@@ -44,9 +52,9 @@ class Producer(Eventify):
 
         # Configure application
         runner = ApplicationRunner(
-	    url=self.config['transport_host'],
-	    realm=u"realm1",
-	    extra=self.config
+	           url=self.config['transport_host'],
+	           realm=u"realm1",
+	           extra=self.config
         )
 
         # Start event loop

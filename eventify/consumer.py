@@ -1,12 +1,24 @@
+"""
+Consumer helper
+"""
+from __future__ import print_function
+
 from twisted.internet.defer import inlineCallbacks
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
 from eventify import Eventify
 
 class ConsumerApp(ApplicationSession):
+    """
+    Handle subscribing to topics
+    """
 
     @inlineCallbacks
     def onJoin(self, details):
+        """
+        Upon joining crossbar session
+        do things
+        """
         print("session ready")
         topics = self.config.extra['config']['subscribed_topics']
 
@@ -14,11 +26,14 @@ class ConsumerApp(ApplicationSession):
             for topic in topics:
                 yield self.subscribe(self.config.extra['callback'], topic)
                 print("subscribed to topic: %s" % topic)
-        except Exception as e:
-            print("could not subscribe to topic: {0}".format(e))
+        except Exception as error:
+            print("could not subscribe to topic: {0}".format(error))
 
 
 class Consumer(Eventify):
+    """
+    Start consumer
+    """
 
     def start(self):
         """
