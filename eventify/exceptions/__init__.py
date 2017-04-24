@@ -2,6 +2,7 @@
 Eventify exceptions
 """
 
+
 class ConfigError(Exception):
     """
     Configuration related errors

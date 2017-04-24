@@ -5,11 +5,8 @@ A simple module for implementing event driven systems
 import json
 import os
 
-from twisted.internet.defer import inlineCallbacks
-from autobahn.twisted.util import sleep
-from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
-
 from eventify.exceptions import ConfigError
+
 
 class Eventify(object):
     """
@@ -19,7 +16,7 @@ class Eventify(object):
     def __init__(self, driver='crossbar', config_file='config.json'):
         """
         Args:
-            Driver
+            driver
         """
         self.driver = driver
         self.config_file = config_file
@@ -28,13 +25,11 @@ class Eventify(object):
     def load_config(self):
         """
         Load configuration for the service
-
-        Args:
-            config_file: Configuration file path
         """
         if os.path.exists(self.config_file):
             with open(self.config_file) as file_handle:
                 config = file_handle.read()
                 file_handle.close()
                 return json.loads(config)
+
         raise ConfigError('Configuration is required! Missing: %s' % self.config_file)
