@@ -93,4 +93,4 @@ class Producer(Eventify):
         # send message
         response = requests.post(http_host, data=payload, headers=headers)
         if response.status_code != 200:
-            raise ValueError("Invalid payload provided: %s" % payload)
+            raise ValueError("Error at router!: %s %s" % (response.status_code, response.content))
