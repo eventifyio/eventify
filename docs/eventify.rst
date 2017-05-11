@@ -19,6 +19,14 @@ eventify\.consumer module
     :undoc-members:
     :show-inheritance:
 
+eventify\.event module
+----------------------
+
+.. automodule:: eventify.event
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 eventify\.persist module
 ------------------------
 
