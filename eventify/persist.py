@@ -2,17 +2,11 @@
 Persist Helper Module
 """
 from __future__ import print_function
+
+import json
 import os
+
 import psycopg2
-
-def persist_event(event):
-    """
-    Writes event to table to ensure
-    persistence
-
-    :param event: Event to save
-    """
-    print(event)
 
 def connect_pg(database_name):
     """
@@ -46,7 +40,8 @@ def persist_event(event_id, event, message, state='in-flight'):
 
     try:
         cur = conn.cursor()
-        cur.execute("INSERT INTO message_tracking (id, event, message, state) VALUES (%s, %s, %s, %s)", (event_id, event, json.dumps(message), state))
+        query = "INSERT INTO message_tracking (id, event, message, state) VALUES (%s, %s, %s, %s)"
+        cur.execute(query, (event_id, event, json.dumps(message), state))
         conn.commit()
         cur.close()
     except psycopg2.IntegrityError:

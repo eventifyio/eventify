@@ -26,7 +26,11 @@ class ConsumerApp(ApplicationSession):
 
         try:
             for topic in topics:
-                yield self.subscribe(self.config.extra['callback'], topic, options=subscribe_options)
+                yield self.subscribe(
+                    self.config.extra['callback'],
+                    topic,
+                    options=subscribe_options
+                )
                 print("subscribed to topic: %s" % topic)
         except Exception as error:
             print("could not subscribe to topic: {0}".format(error))

@@ -4,7 +4,6 @@ Event Module
 from datetime import datetime
 
 import json
-import re
 
 class Event:
     """
@@ -29,7 +28,7 @@ class Event:
                 self.message = json.dumps(message)
             else:
                 self.message = message
-        except ValueError as e:
+        except ValueError:
             self.message = message
 
         if kwargs is not None:

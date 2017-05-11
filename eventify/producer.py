@@ -32,7 +32,7 @@ class ProducerApp(ApplicationSession):
         # Publish Service Started
         yield self.publish(
             self.topic,
-            message,
+            event,
             options=self.pub_options
         )
 
