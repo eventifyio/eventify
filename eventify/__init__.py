@@ -9,7 +9,7 @@ from twisted.internet.defer import inlineCallbacks
 from autobahn.twisted.util import sleep
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 
-from eventify.exceptions import ConfigError
+from eventify.exceptions import EventifyConfigError
 
 class Eventify(object):
     """
@@ -38,4 +38,4 @@ class Eventify(object):
                 config = file_handle.read()
                 file_handle.close()
                 return json.loads(config)
-        raise ConfigError('Configuration is required! Missing: %s' % self.config_file)
+        raise EventifyConfigError('Configuration is required! Missing: %s' % self.config_file)

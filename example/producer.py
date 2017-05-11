@@ -1,13 +1,13 @@
+from eventify.event import Event
 from eventify.producer import Producer
 
-def send(producer, message):
+def send(producer, event):
     """
     send message on socket
     :param producer:
     :param message:
     """
-    producer.send_message(message)
-
+    producer.emit_event(event)
 
 def run(producer):
     """
@@ -21,4 +21,5 @@ if __name__ == '__main__':
     """
     print('Starting UI event message producer...')
     producer = Producer(config_file='config.json')
-    send(producer, {"hi": "what"})
+    event = Event('TestEvent', {"foo": "bar"})
+    send(producer, event)

@@ -1,5 +1,6 @@
-from eventify.consumer import Consumer
+import json
 
+from eventify.consumer import Consumer
 
 def handler(event=None, **kwargs):
     """
@@ -10,7 +11,10 @@ def handler(event=None, **kwargs):
     if event is not None:
         print(event)
 
-    print(kwargs)
+    event_name = kwargs.get('name')
+    event_body = json.loads(kwargs.get('message'))
+    event_timestamp = kwargs.get('timestamp')
+    print('Received event %s at %s with body: %s' % (event_name, event_timestamp, event_body))
 
 
 if __name__ == '__main__':
