@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/eventifyio/eventify.svg?branch=master)](https://travis-ci.org/eventifyio/eventify)
-[![Coverage Status](https://coveralls.io/repos/github/eventifyio/eventify/badge.svg?branch=master)](https://coveralls.io/github/eventifyio/eventify?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/morissette/eventify/badge.svg?branch=master)](https://coveralls.io/github/morissette/eventify?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/eventify/badge/?version=latest)](http://eventify.readthedocs.io/en/latest/?badge=latest)
 
 
