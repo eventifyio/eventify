@@ -1,11 +1,15 @@
+import unittest
+
 from eventify.event import Event
 from eventify.producer import Producer
+
 
 class TestProducer:
 
     def test_create_producer(self):
         producer = Producer(config_file='test/config-test.json')
 
+    @unittest.skip('no crossbar available')
     def test_emit_event(self):
         producer = Producer(config_file='test/config-test.json')
         event = Event('TestEvent', {'foo': 'bar'})
