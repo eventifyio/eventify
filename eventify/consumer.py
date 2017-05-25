@@ -3,11 +3,17 @@ Consumer helper
 """
 from __future__ import print_function
 
-from twisted.internet.defer import inlineCallbacks
+import logging
+
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions
+from twisted.internet.defer import inlineCallbacks
 
 from eventify import Eventify
+from eventify.producer import Producer
+
+logger = logging.getLogger('eventify.consumer')
+
 
 class ConsumerApp(ApplicationSession):
     """
@@ -20,7 +26,7 @@ class ConsumerApp(ApplicationSession):
         Upon joining crossbar session
         do things
         """
-        print("session ready")
+        logger.debug('connected to crossbar')
         topics = self.config.extra['config']['subscribed_topics']
         subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
 
@@ -31,9 +37,9 @@ class ConsumerApp(ApplicationSession):
                     topic,
                     options=subscribe_options
                 )
-                print("subscribed to topic: %s" % topic)
+                logger.debug('subscribed to topic: {0}'.format(topic))
         except Exception as error:
-            print("could not subscribe to topic: {0}".format(error))
+            logger.error('could not subscribe to topic: {0}'.format(error))
 
 
 class Consumer(Eventify):
@@ -45,6 +51,7 @@ class Consumer(Eventify):
         """
         Start the event loop
         """
+        logger.debug('starting event loop')
         runner = ApplicationRunner(
             url=self.config['transport_host'],
             realm=u'realm1',

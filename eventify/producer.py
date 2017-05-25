@@ -4,15 +4,18 @@ Producer Module
 from __future__ import print_function
 
 import json
+import logging
+
 import requests
-
-from twisted.internet.defer import inlineCallbacks, returnValue
-
 from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import PublishOptions
+from twisted.internet.defer import inlineCallbacks, returnValue
 
 from eventify import Eventify
 from eventify.event import Event
+
+logger = logging.getLogger('eventify.producer')
+
 
 class ProducerApp(ApplicationSession):
     """
@@ -25,40 +28,16 @@ class ProducerApp(ApplicationSession):
         """
         Called after connection to crossbar
         """
+        logger.debug('connected to crossbar')
         self.topic = self.config.extra['publish_topic']['topic']
         self.pub_options = PublishOptions(**self.config.extra['pub_options'])
-        event = Event("UiEventProducerStarted")
-
-        # Publish Service Started
-        yield self.publish(
-            self.topic,
-            event,
-            options=self.pub_options
-        )
+        logger.debug(details)
 
 
 class Producer(Eventify):
     """
     Producer class
     """
-
-    def start(self):
-        """
-	Run application
-	"""
-
-        # Configure application
-        runner = ApplicationRunner(
-	           url=self.config['transport_host'],
-	           realm=u"realm1",
-	           extra=self.config
-        )
-
-        # Start event loop
-        runner.run(
-            ProducerApp,
-            auto_reconnect=True
-        )
 
     @inlineCallbacks
     def emit_event(self, event):
@@ -70,6 +49,9 @@ class Producer(Eventify):
         :param asynchronous: Boolean
         :return: Boolean
         """
+        logger.warning('publishing over http is deprecated; see documentation')
+        logger.debug('emitting event: {0}'.format(event.name))
+
         host = self.config['transport_host']
         headers = {
             'Content-Type': 'application/json'
@@ -98,4 +80,6 @@ class Producer(Eventify):
 
         # send message
         response = yield requests.post(http_host, data=payload, headers=headers)
+        logger.debug('event {0} successfully emitted'.format(event['name']))
+
         returnValue(response)

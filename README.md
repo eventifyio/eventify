@@ -11,6 +11,11 @@ A lightweight python module for building event driven distributed systems.
 pip install eventify
 ```
 
+## Problem
+Developers need a easy and fast way to implement business logic in a modern asynchronous way. Developers should not have to worry about service communication.
+
+## Contributing
+
 ## Tutorial
 TBD
 
