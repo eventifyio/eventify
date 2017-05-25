@@ -1,4 +1,6 @@
 # Custom Ignores
+update.sh
+build_docs.sh
 venv/
 node-nfcu/
 creds
@@ -122,3 +124,6 @@ docs/_build/
 # PyBuilder
 target/
 .env
+
+# Other
+.idea/
