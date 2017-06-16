@@ -4,10 +4,11 @@ A simple module for implementing event driven systems
 """
 import logging
 import json
-
 import os
+import sys
 
 from eventify.exceptions import EventifyConfigError
+
 
 logger = logging.getLogger('eventify')
 
@@ -22,13 +23,46 @@ class Eventify(object):
         Args:
             Driver
         """
-        logger.debug('initializing eventify project on driver: {0}'.format(driver))
+        logger.debug('initializing eventify project on driver: %s', driver)
+        if callback is None:
+            logger.error("callback parameter is required")
+            sys.exit(1)
+
         self.driver = driver
         self.config_file = config_file
         self.config = self.load_config
-        logger.debug('configuration: {0}'.format(self.config))
-        logger.debug('callback registered: {0}'.format(callback))
         self.callback = callback
+        self.set_missing_defaults()
+        logger.debug('configuration: %s', self.config)
+
+    def set_missing_defaults(self):
+        """
+        Ensure that minimal configuration is
+        setup and set defaults for missing values
+        """
+        if 'pub_options' not in self.config:
+            self.config['pub_options'] = {
+                'acknowledge': True,
+                'retain': True
+            }
+
+        if 'sub_options' not in self.config:
+            self.config['sub_options'] = {
+                'get_retained': False
+            }
+
+        if 'replay_events' not in self.config:
+            self.config['replay_events'] = False
+
+        if 'subscribed_topics' not in self.config:
+            raise EventifyConfigError('Required configuration parameter missing! Please configure "subscribed_topics" as an array in your configuration.')
+
+        if 'publish_topic' not in self.config:
+            raise EventifyConfigError('Required configuration parameter missing! Please configure "public_topic" as an object in your configuration.')
+
+        if 'topic' not in self.config['publish_topic']:
+            raise EventifyConfigError('Required configuration parameter missing! Please configure "topic" as a key in your "public_topic object.')
+
 
     @property
     def load_config(self):
@@ -38,7 +72,7 @@ class Eventify(object):
         Args:
             config_file: Configuration file path
         """
-        logger.debug('loading config file: {0}'.format(self.config_file))
+        logger.debug('loading config file: %s', self.config_file)
         if os.path.exists(self.config_file):
             with open(self.config_file) as file_handle:
                 config = file_handle.read()

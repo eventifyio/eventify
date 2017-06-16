@@ -9,7 +9,7 @@
         "retain": true
     },
     "publish_topic": {
-        "topic": "ui-events",
+        "topic": "example",
         "timeout": 20,
         "reply_in": 0
     },
@@ -18,5 +18,6 @@
     },
     "subscribed_topics": [
         "ui-events"
-    ]
+    ],
+    "replay_events": true
 }

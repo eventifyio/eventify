@@ -6,45 +6,49 @@ import logging
 from datetime import datetime
 from uuid import uuid4
 
+
 logger = logging.getLogger('eventify.event')
 
 
-class Event:
+class Event(object):
     """
     Event object
     """
 
-    def __init__(self, name, message=None, timestamp=None, trace_id=None, **kwargs):
+    def __init__(self, event, **kwargs):
         """
         Create event
-        :param name: event name
-        :param message: event body
+        :param event: Dictionary object
         :param kwargs: allow for customizing event
         """
-        if timestamp is None:
-            timestamp = datetime.utcnow()
-        if trace_id is None:
-            trace_id = uuid4()
+        self.name = event.get('name')
+        self.timestamp = event.get('timestamp', str(datetime.utcnow()))
+        self.trace_id = event.get('trace_id', str(uuid4()))
+        self.event_id = event.get('event_id', str(uuid4()))
 
-        self.name = name
-        self.timestamp = timestamp
-
-        # Event Id - For Unique Event Identification
-        self.event_id = uuid4()
-
-        # Trace Id - For Tracking Flow Through a System
-        self.trace_id = trace_id
-
-        try:
-            if isinstance(message, dict):
-                self.message = json.dumps(message)
-            else:
-                self.message = message
-        except ValueError:
-            self.message = message
+        if event.get('message') is not None:
+            try:
+                if isinstance(event['message'], dict):
+                    self.message = json.dumps(event['message'])
+                else:
+                    self.message = event['message']
+            except ValueError:
+                self.message = event['message']
 
         if kwargs is not None:
             for (key, value) in kwargs.items():
                 setattr(self, key, value)
 
-        logger.debug('event object created: {0}'.format(self))
+
+def default_var(value, default, stringify=False):
+    """
+    Set default variables
+    :param value:
+    :param default:
+    :return: result
+    """
+    if value is None:
+        if stringify:
+            return str(value)
+        return default
+    return value
