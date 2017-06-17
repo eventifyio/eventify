@@ -5,9 +5,8 @@ A simple module for implementing event driven systems
 import logging
 import json
 import os
-import sys
 
-from eventify.exceptions import EventifyConfigError
+from eventify.exceptions import EventifyConfigError, EventifyInitError
 
 
 logger = logging.getLogger('eventify')
@@ -25,8 +24,7 @@ class Eventify(object):
         """
         logger.debug('initializing eventify project on driver: %s', driver)
         if callback is None:
-            logger.error("callback parameter is required")
-            sys.exit(1)
+            raise EventifyInitError("callback parameter is required")
 
         self.driver = driver
         self.config_file = config_file
