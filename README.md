@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/morissette/eventify.svg?branch=master)](https://travis-ci.org/morissette/eventify)
+[![Build Status](https://travis-ci.org/eventifyio/eventify.svg?branch=master)](https://travis-ci.org/eventifyio/eventify)
 [![Coverage Status](https://coveralls.io/repos/github/morissette/eventify/badge.svg?branch=master)](https://coveralls.io/github/morissette/eventify?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/eventify/badge/?version=latest)](http://eventify.readthedocs.io/en/latest/?badge=latest)
 
@@ -11,22 +11,22 @@ A lightweight python module for building event driven distributed systems.
 pip install eventify
 ```
 
-## Support
-Only current has support for one driver beanstalkd
-* http://kr.github.io/beanstalkd/
+## Problem
+Developers need a easy and fast way to implement business logic in a modern asynchronous way. Developers should not have to worry about service communication.
 
-Certainly encourage the open source community to submit bugs and new drivers!
+## Contributing
 
-## Dependencies
-* beanstalkd
+## Tutorial
+Quick and dirty tutorial to get up and running.
 
-See: http://kr.github.io/beanstalkd/download.html
+### Producer Service
+See examples/producer.py
 
-## Tour
-[![asciicast](https://asciinema.org/a/113052.png)](https://asciinema.org/a/113052)
+### Consumer Service
+See examples/consumer.py
 
-## Eventual Consistency Tour
-[![asciicast](https://asciinema.org/a/113057.png)](https://asciinema.org/a/113057)
+### Crossbar Driver
+docker run -d -p 8080:8080 -it crossbario/crossbar:latest
 
 ## Pypi
 https://pypi.python.org/pypi/eventify

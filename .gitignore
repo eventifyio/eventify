@@ -124,3 +124,6 @@ docs/_build/
 # PyBuilder
 target/
 .env
+
+# Other
+.idea/
