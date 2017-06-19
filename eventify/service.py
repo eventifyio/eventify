@@ -69,7 +69,6 @@ class Component(Session):
         Publish an event back to crossbar
         :param event: Event object
         """
-        logger.debug('publishing event')
         yield self.publish(
             self.publish_topic,
             event,

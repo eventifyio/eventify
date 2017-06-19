@@ -8,9 +8,16 @@ import logging
 import os
 
 import psycopg2
+import sqlalchemy.pool as pool
 
-from psycopg2 import sql
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from sqlalchemy import create_engine, inspect, select
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.exc import OperationalError
+
+from eventify.common import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
+                            EVENT_DB_POOL_SIZE
+from eventify.persist.models import get_table
 
 
 logger = logging.getLogger('eventify.persist')
@@ -22,18 +29,19 @@ def connect_pg(database_name):
     :param database_name: Name of database connecting to
     :return: Connection Ref
     """
-    pg_host = os.getenv('PG_HOST', 'localhost')
-    pg_user = os.getenv('PG_USER', 'dev')
-    pg_pass = os.getenv('PG_PASS', 'test1234')
-    try:
-        return psycopg2.connect(
-            dbname=database_name,
-            user=pg_user,
-            host=pg_host,
-            password=pg_pass,
-        )
-    except psycopg2.OperationalError as error:
-        raise RuntimeError("Unable to persist event! %s" % error)
+    engine = create_engine(
+        'postgresql+psycopg2://%s:%s@%s/%s' % (
+            EVENT_DB_USER,
+            EVENT_DB_PASS,
+            EVENT_DB_HOST,
+            database_name
+        ),
+        pool_size=EVENT_DB_POOL_SIZE,
+        max_overflow=0,
+        pool_recycle=3600,
+        pool_timeout=10
+    )
+    return engine
 
 
 def create_pg(database_name):
@@ -41,22 +49,18 @@ def create_pg(database_name):
     Create new postgres database
     :param database_name: Name of database to create
     """
-    conn = connect_pg('postgres')
-    conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    cur = conn.cursor()
-    cur.execute('CREATE DATABASE ' + database_name)
-    cur.close()
+    engine = connect_pg('postgres')
+    conn = engine.connect()
+    conn.execution_options(isolation_level="AUTOCOMMIT").execute('CREATE DATABASE ' + database_name)
     conn.close()
 
 
-def create_pg_table(table_name):
+def create_pg_table(table_name, conn):
     """
     Create table on event history
     :param table_name: The topic name
     """
     try:
-        conn = connect_pg('event_history')
-        cur = conn.cursor()
         query = """
             CREATE TABLE IF NOT EXISTS %s (
                 id SERIAL PRIMARY KEY,
@@ -64,14 +68,9 @@ def create_pg_table(table_name):
                 issued_at timestamp without time zone default (now() at time zone 'utc')
             )
         """ % table_name
-        cur.execute(query)
-        cur.close()
-        conn.commit()
+        conn.execute(query)
     except psycopg2.DatabaseError as error:
         logger.error(error)
-    finally:
-        if conn is not None:
-            conn.close()
 
 
 def persist_event(topic, event):
@@ -84,30 +83,26 @@ def persist_event(topic, event):
     # Event to json
     json_event = event.as_json()
 
-    # Create database if doesn't exist
-    try:
-        conn = connect_pg('event_history')
-    except RuntimeError as error:
-        create_pg('event_history')
-        conn = connect_pg('event_history')
+    # test
+    engine = connect_pg('event_history')
 
-    # Create table if doesn't exist
-    create_pg_table(topic)
+    try:
+        conn = engine.connect()
+    except OperationalError as error:
+        create_pg('event_history')
+        conn = engine.connect()
+
+    table = get_table(topic, engine)
 
     # Insert event if not processed
     try:
-        cur = conn.cursor()
-        cur.execute(sql.SQL("SELECT id FROM {} WHERE event->>'event_id'=%s")
-            .format(sql.Identifier(topic)),
-            [event.event_id])
-        exists = cur.fetchone()
+        select_stmt = select(table.c.event['event_id'].astext == event.event_id)
+        results = conn.execute(select_stmt)
+        exists = results.fetchone()
         if exists:
             raise SystemError("Attempted to reissue same event")
 
-        cur.execute(sql.SQL("INSERT INTO {} (event) VALUES (%s)")
-            .format(sql.Identifier(topic)),
-            [json_event])
-        conn.commit()
-        cur.close()
+        insert_stmt = insert(table).values(event=json_event)
+        conn.execute(insert_stmt)
     except psycopg2.IntegrityError as error:
         logger.error(error)

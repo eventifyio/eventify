@@ -41,9 +41,9 @@ class Event(object):
 
     def as_json(self):
         """
-        Convert to JSON
+        Convert to dictionary
         """
-        return json.dumps(self.__dict__)
+        return self.__dict__
 
 
 def default_var(value, default, stringify=False):
