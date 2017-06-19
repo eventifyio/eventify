@@ -16,7 +16,7 @@ crossbar==17.3.1
 cryptography==1.8.1
 docutils==0.13.1
 enum34==1.1.6
-eventify=0.2.5
+eventify==0.2.5
 idna==2.5
 imagesize==0.7.1
 incremental==16.10.1
