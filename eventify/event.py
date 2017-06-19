@@ -39,6 +39,12 @@ class Event(object):
             for (key, value) in kwargs.items():
                 setattr(self, key, value)
 
+    def as_json(self):
+        """
+        Convert to JSON
+        """
+        return json.dumps(self.__dict__)
+
 
 def default_var(value, default, stringify=False):
     """

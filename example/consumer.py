@@ -21,8 +21,8 @@ def my_example_event_handler(event, session=None):
 
     # Create and Publish an Event
     new_event = Event({
-        "name": "MyAwesomeEvent",
-        "message": "Jump twice",
+        "name": "ReceivedEvent",
+        "message": "Event received by consumer",
         "trace_id": event.trace_id
     })
 

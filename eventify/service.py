@@ -12,8 +12,10 @@ from autobahn.wamp.exception import ProtocolError
 from autobahn.twisted.wamp import Session, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 from twisted.internet.defer import inlineCallbacks, returnValue
+
 from eventify import Eventify
 from eventify.event import Event
+from eventify.persist import persist_event
 
 
 logger = logging.getLogger('eventify.service')
@@ -23,6 +25,25 @@ class Component(Session):
     """
     Handle subscribing to topics
     """
+
+    def publish(self, topic, event, options=None):
+        """
+        Override publish method to support
+        event store pattern
+        """
+        if self.config.extra['config']['pub_options']['retain']:
+            try:
+                persist_event(topic, event)
+            except SystemError as error:
+                logger.error(error)
+                return
+
+        super().publish(
+            topic,
+            event.as_json(),
+            options=self.publish_options
+        )
+
 
     def onConnect(self):
         """
@@ -64,7 +85,11 @@ class Component(Session):
             """
             Send event to application code
             """
-            self.callback(args[0]['kwargs'], session=self)
+            try:
+                event = args[0]['kwargs']
+            except IndexError:
+                event = kwargs
+            self.callback(event, session=self)
 
         for topic in self.subcribed_topics:
             pub = yield self.subscribe(
