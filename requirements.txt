@@ -12,8 +12,11 @@ cbor==1.0.0
 cffi==1.10.0
 click==6.7
 constantly==15.1.0
+coverage==4.4.1
+coveralls==1.1
 crossbar==17.3.1
 cryptography==1.8.1
+docopt==0.6.2
 docutils==0.13.1
 enum34==1.1.6
 eventify==0.2.5
