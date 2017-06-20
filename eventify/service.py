@@ -4,17 +4,12 @@ Service Module
 from __future__ import print_function
 
 import logging
-import json
 
-import requests
-
-from autobahn.wamp.exception import ProtocolError
 from autobahn.twisted.wamp import Session, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
-from twisted.internet.defer import inlineCallbacks, returnValue
+from twisted.internet.defer import inlineCallbacks
 
 from eventify import Eventify
-from eventify.event import Event
 from eventify.persist import persist_event
 
 
@@ -41,7 +36,7 @@ class Component(Session):
         super().publish(
             topic,
             event.as_json(),
-            options=self.publish_options
+            options=options
         )
 
 
@@ -78,7 +73,7 @@ class Component(Session):
 
     @inlineCallbacks
     def onJoin(self, details):
-        logger.debug("session attached: %s" % details)
+        logger.debug("session attached: %s", details)
 
         def transport_event(*args, **kwargs):
             """

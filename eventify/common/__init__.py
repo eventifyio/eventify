@@ -1,3 +1,6 @@
+"""
+Eventify Persistance Configuration
+"""
 import os
 
 
