@@ -6,39 +6,18 @@ Subpackages
 
 .. toctree::
 
+    eventify.common
+    eventify.event
     eventify.exceptions
+    eventify.persist
 
 Submodules
 ----------
 
-eventify\.consumer module
--------------------------
-
-.. automodule:: eventify.consumer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-eventify\.event module
-----------------------
-
-.. automodule:: eventify.event
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-eventify\.persist module
+eventify\.service module
 ------------------------
 
-.. automodule:: eventify.persist
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-eventify\.producer module
--------------------------
-
-.. automodule:: eventify.producer
+.. automodule:: eventify.service
     :members:
     :undoc-members:
     :show-inheritance:
