@@ -8,10 +8,8 @@ import logging
 import os
 
 import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-import sqlalchemy.pool as pool
-from sqlalchemy import create_engine, inspect, select
+from sqlalchemy import create_engine, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import OperationalError
 
@@ -53,24 +51,6 @@ def create_pg(database_name):
     conn = engine.connect()
     conn.execution_options(isolation_level="AUTOCOMMIT").execute('CREATE DATABASE ' + database_name)
     conn.close()
-
-
-def create_pg_table(table_name, conn):
-    """
-    Create table on event history
-    :param table_name: The topic name
-    """
-    try:
-        query = """
-            CREATE TABLE IF NOT EXISTS %s (
-                id SERIAL PRIMARY KEY,
-                event JSON NOT NULL,
-                issued_at timestamp without time zone default (now() at time zone 'utc')
-            )
-        """ % table_name
-        conn.execute(query)
-    except psycopg2.DatabaseError as error:
-        logger.error(error)
 
 
 def persist_event(topic, event):
