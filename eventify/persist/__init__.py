@@ -8,9 +8,9 @@ import logging
 import os
 
 import psycopg2
-import sqlalchemy.pool as pool
-
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
+import sqlalchemy.pool as pool
 from sqlalchemy import create_engine, inspect, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import OperationalError
