@@ -19,7 +19,7 @@ cryptography==1.8.1
 docopt==0.6.2
 docutils==0.13.1
 enum34==1.1.6
-eventify==0.2.5
+-e git+git@github.com:morissette/eventify.git@c42cad901407a880c69402b20f497d8e9dc9cd79#egg=eventify
 idna==2.5
 imagesize==0.7.1
 incremental==16.10.1
@@ -50,6 +50,7 @@ pyOpenSSL==16.2.0
 pyparsing==2.2.0
 PyQRCode==1.2.1
 pytest==3.0.7
+pytest-cov==2.5.1
 PyTrie==0.3
 pytz==2017.2
 PyYAML==3.12
