@@ -4,18 +4,23 @@ Minimal viable microservice
 import logging
 import sys
 
+from eventify.event import Event
 from eventify.service import Service
 
 
 FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
-logger = logging.getLogger('example.consumer')
+logger = logging.getLogger('watcher.consumer')
 
-def my_example_event_handler(*args, publish=None, **kwargs):
+
+def my_example_event_handler(event, session=None):
     """
     Example event handler
     """
-    logger.debug(kwargs)
+    # Load Event
+    event = Event(event)
+    logger.debug("handling event: %s", event.name)
+
 
 def run():
     logger.debug('service started')

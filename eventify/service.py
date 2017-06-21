@@ -7,10 +7,12 @@ import logging
 
 from autobahn.twisted.wamp import Session, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
+from sqlalchemy import select
 from twisted.internet.defer import inlineCallbacks
 
 from eventify import Eventify
-from eventify.persist import persist_event
+from eventify.persist import persist_event, connect_pg
+from eventify.persist.models import get_table
 
 
 logger = logging.getLogger('eventify.service')
@@ -81,8 +83,15 @@ class Component(Session):
             """
             try:
                 event = args[0]['kwargs']
-            except IndexError:
+            except KeyError as error:
+                if kwargs == {}:
+                    event = args[0]
+                else:
+                    event = kwargs
+            except IndexError as error:
                 event = kwargs
+
+
             self.callback(event, session=self)
 
         for topic in self.subcribed_topics:
@@ -92,6 +101,8 @@ class Component(Session):
                 options=self.subscribe_options
             )
 
+            # Use crossbar support for replaying events
+            # vs using an event store
             if self.config.extra['config']['replay_events']:
                 events = yield self.call(u"wamp.subscription.get_events", pub.id, 1000)
                 for event in reversed(events):
@@ -114,3 +125,28 @@ class Service(Eventify):
             extra={'config': self.config, 'callback': self.callback}
         )
         runner.run(Component, auto_reconnect=True)
+
+
+    def replay_events(self, timestamp=None, event_id=None):
+        """
+        Instantiate object
+        :param timestamp: Human readable datetime
+        :param event_id: UUID of a given event
+        """
+        engine = connect_pg('event_history')
+        conn = engine.connect()
+        table = get_table(self.config['publish_topic']['topic'], engine)
+        query = table.select()
+        if timestamp is not None and event_id is not None:
+            raise ValueError("Can only filter by timestamp OR event_id")
+        elif timestamp is not None:
+            query = query.where(table.c.issued_at >= timestamp)
+        elif event_id is not None:
+            get_id_query = table.select(table.c.event['event_id'].astext == event_id)
+            row = conn.execute(get_id_query).fetchone()
+            row_id = row[0]
+            query = query.where(table.c.id > row_id)
+
+        result = conn.execute(query).fetchall()
+        for row in result:
+            yield row[1]

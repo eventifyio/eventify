@@ -23,8 +23,8 @@ class Eventify(object):
             Driver
         """
         logger.debug('initializing eventify project on driver: %s', driver)
-        if callback is None:
-            raise EventifyInitError("callback parameter is required")
+        #if callback is None:
+        #    raise EventifyInitError("callback parameter is required")
 
         self.driver = driver
         self.config_file = config_file
