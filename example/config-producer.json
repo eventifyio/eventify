@@ -1,7 +1,7 @@
 {
     "_comment": "service configuration",
-    "name": "example",
-    "image": "example/service",
+    "name": "producer",
+    "image": "producer/service",
     "driver": "crossbar",
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
@@ -9,13 +9,9 @@
         "retain": true
     },
     "publish_topic": {
-        "topic": "example",
+        "topic": "ui-events",
         "timeout": 20,
         "reply_in": 0
     },
-    "subscribed_topics": [
-        "ui-events"
-    ],
-    "replay_events": true,
-    "replay_type": "event_store"
+    "subscribed_topics": []
 }

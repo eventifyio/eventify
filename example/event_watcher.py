@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 """
-Minimal viable microservice
+Watch Events in Realtime
 """
 import logging
 import sys
@@ -10,29 +11,22 @@ from eventify.service import Service
 
 FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
-logger = logging.getLogger('example.consumer')
+logger = logging.getLogger('watcher.consumer')
+
 
 def my_example_event_handler(event, session=None):
     """
     Example event handler
     """
-    # Parse Incoming Event
+    # Load Event
     event = Event(event)
-
-    # Create and Publish an Event
-    new_event = Event({
-        "name": "ReceivedEvent",
-        "message": "Event received by consumer",
-        "trace_id": event.trace_id
-    })
-
-    session.emit_event(new_event)
+    logger.debug("handling event: %s", event.name)
 
 
 def run():
     logger.debug('service started')
     service = Service(
-        config_file='config.json',
+        config_file='config-debug.json',
         callback=my_example_event_handler
     ).start()
 
