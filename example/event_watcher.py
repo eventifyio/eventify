@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 """
-Minimal viable microservice
+Watch Events in Realtime
 """
 import logging
 import sys

@@ -23,15 +23,16 @@ class Eventify(object):
             Driver
         """
         logger.debug('initializing eventify project on driver: %s', driver)
-        #if callback is None:
-        #    raise EventifyInitError("callback parameter is required")
+        if callback is None:
+            raise EventifyInitError("callback parameter is required")
 
         self.driver = driver
         self.config_file = config_file
         self.config = self.load_config
         self.callback = callback
         self.set_missing_defaults()
-        logger.debug('configuration: %s', self.config)
+        logger.debug('configuration loaded: %s', self.config)
+
 
     def set_missing_defaults(self):
         """
@@ -73,10 +74,7 @@ class Eventify(object):
         logger.debug('loading config file: %s', self.config_file)
         if os.path.exists(self.config_file):
             with open(self.config_file) as file_handle:
-                config = file_handle.read()
-                file_handle.close()
-                logger.debug('configuration file successfully loaded')
-                return json.loads(config)
+                return json.load(file_handle)
         else:
             logger.error('configuration file is required for eventify')
         logger.error('unable to load configuration for service')

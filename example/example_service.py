@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Minimal viable microservice
 """
@@ -34,13 +35,6 @@ def my_example_event_handler(event, session=None):
         "trace_id": event.trace_id
     })
     session.emit_event(new_event)
-
-
-    # Replay events from a timestamp
-
-
-    # Replay events from a event id
-
 
 
 def run():

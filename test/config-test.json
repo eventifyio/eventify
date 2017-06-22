@@ -19,5 +19,6 @@
     "subscribed_topics": [
         "ui-events"
     ],
-    "replay_events": true
+    "replay_events": true,
+    "replay_type": "event_store"
 }
