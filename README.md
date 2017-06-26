@@ -71,6 +71,31 @@ if __name__ == '__main__':
     run()
 ```
 
+### Minimum Configuration - config.json
+```json
+{
+    "_comment": "service configuration",
+    "name": "example",
+    "image": "example/service",
+    "driver": "crossbar",
+    "transport_host": "ws://events-server:8080/ws",
+    "pub_options": {
+        "acknowledge": true,
+        "retain": true
+    },
+    "publish_topic": {
+        "topic": "example",
+        "timeout": 20,
+        "reply_in": 0
+    },
+    "subscribed_topics": [
+        "ui-events"
+    ],
+    "replay_events": true,
+    "replay_type": "event_store"
+}
+```
+
 ### Crossbar Driver
 docker run -d -p 8080:8080 -it crossbario/crossbar:latest
 
