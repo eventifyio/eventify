@@ -98,15 +98,20 @@ if __name__ == '__main__':
 
 ### Environment variables
 * EVENT_DB_HOST
-Hostname of database server
+
+...Hostname of database server
 * EVENT_DB_USER
-Username for database server
+
+...Username for database server
 * EVENT_DB_PASS
-Password for username
+
+...Password for username
 * EVENT_DB_TYPE
-Database driver type - defaults to postgres
+
+...Database driver type - defaults to postgres
 * EVENT_DB_POOL_SIZE
-Database connection pool size - defaults to 5
+
+...Database connection pool size - defaults to 5
 
 ## Supported Drivers
 * Crossbar
