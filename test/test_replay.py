@@ -9,15 +9,28 @@ class TestReplay(unittest.TestCase):
 
     def setUp(self):
         self.component = Component()
-        self.component.config.extra = {
+        self.component.config.extra = {}
+        self.component.config.extra['config'] = {
             'replay_type': 'event_store',
+            'publish_topic': {
+                'topic': 'example'
+            },
             'subscribed_topics': [
                 'example'
             ],
-            'publish_topic': {
-                'topic': 'example'
+            'sub_options': {
+                'get_retained': False
+            },
+            'pub_options': {
+                'acknowledge': True,
+                'retain': True
             }
         }
+        self.component.config.extra['callback'] = self.test_replay_by_event_id
+        try:
+            self.component.onConnect()
+        except AttributeError:
+            pass
 
     def test_replay_by_timestamp(self):
         now = datetime.utcnow()
