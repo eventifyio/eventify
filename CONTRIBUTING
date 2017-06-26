@@ -1,11 +1,19 @@
-# Bug Reports
-
-# Feature Requests
-
 # Development Environment Setup
+pip install -r requirements-development.txt
 
-# Looking For
+# Running Tests
+(venv) [mharris@mori eventify]$ nosetests -sv
+test_event_custom (test_event.TestEvent) ... ok
+test_event_json (test_event.TestEvent) ... ok
+test_event_no_message (test_event.TestEvent) ... ok
+test_event_no_name (test_event.TestEvent) ... ok
+test_event_string (test_event.TestEvent) ... ok
+test_replay_by_event_id (test_replay.TestReplay) ... ok
+test_replay_by_timestamp (test_replay.TestReplay) ... ok
+test_create_consumer (test_service.TestService) ... ok
+test_receive_event (test_service.TestService) ... ok
 
-# Roadmap
+----------------------------------------------------------------------
+Ran 9 tests in 4.344s
 
-# Reaching out
+OK
