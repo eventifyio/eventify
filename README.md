@@ -17,7 +17,7 @@ Developers need a easy and fast way to implement business logic in a modern asyn
 ## Contributing
 
 ## Tutorial
-Quick and dirty tutorial to get up and running.
+Below is everything you need to get started using the eventify project.
 
 ### Minimum Viable Service
 ```python
@@ -95,6 +95,18 @@ if __name__ == '__main__':
     "replay_type": "event_store"
 }
 ```
+
+### Environment variables
+* EVENT_DB_HOST
+Hostname of database server
+* EVENT_DB_USER
+Username for database server
+* EVENT_DB_PASS
+Password for username
+* EVENT_DB_TYPE
+Database driver type - defaults to postgres
+* EVENT_DB_POOL_SIZE
+Database connection pool size - defaults to 5
 
 ## Supported Drivers
 * Crossbar
