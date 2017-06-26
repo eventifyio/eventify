@@ -44,17 +44,3 @@ class Event(object):
         Convert to dictionary
         """
         return self.__dict__
-
-
-def default_var(value, default, stringify=False):
-    """
-    Set default variables
-    :param value:
-    :param default:
-    :return: result
-    """
-    if value is None:
-        if stringify:
-            return str(value)
-        return default
-    return value

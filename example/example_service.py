@@ -1,26 +1,3 @@
-[![Build Status](https://travis-ci.org/eventifyio/eventify.svg?branch=master)](https://travis-ci.org/eventifyio/eventify)
-[![Coverage Status](https://coveralls.io/repos/github/morissette/eventify/badge.svg?branch=master)](https://coveralls.io/github/morissette/eventify?branch=master)
-[![Documentation Status](https://readthedocs.org/projects/eventify/badge/?version=latest)](http://eventify.readthedocs.io/en/latest/?badge=latest)
-
-
-# Eventify
-A lightweight python module for building event driven distributed systems.
-
-## Installation
-```bash
-pip install eventify
-```
-
-## Problem
-Developers need a easy and fast way to implement business logic in a modern asynchronous way. Developers should not have to worry about service communication.
-
-## Contributing
-
-## Tutorial
-Quick and dirty tutorial to get up and running.
-
-### Minimum Viable Service
-```python
 #!/usr/bin/env python
 """
 Minimal viable microservice
@@ -34,7 +11,7 @@ from eventify.service import Service
 
 FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
-logger = logging.getLogger('example.service')
+logger = logging.getLogger('example.consumer')
 
 def my_example_event_handler(event, session=None):
     """
@@ -69,13 +46,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-```
-
-### Crossbar Driver
-docker run -d -p 8080:8080 -it crossbario/crossbar:latest
-
-## Pypi
-https://pypi.python.org/pypi/eventify
-
-## Read The Docs
-http://eventify.readthedocs.io/en/latest/
