@@ -96,8 +96,19 @@ if __name__ == '__main__':
 }
 ```
 
-### Crossbar Driver
+## Supported Drivers
+* Crossbar
+
+## Crossbar
+Quickest way to get started with crossbar is to use docker
+
+### Running Crossbar
+```bash
 docker run -d -p 8080:8080 -it crossbario/crossbar:latest
+```
+
+### See More
+http://crossbar.io
 
 ## Pypi
 https://pypi.python.org/pypi/eventify
