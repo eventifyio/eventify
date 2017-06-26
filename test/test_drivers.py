@@ -11,4 +11,4 @@ class TestDrivers(unittest.TestCase):
         pass
 
     def test_load_driver(self):
-        service = Service(config_file='test/config-test.json')
+        service = Service(config_file='test/config-test.json', callback=self.test_load_driver)
