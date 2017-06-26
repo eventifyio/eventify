@@ -30,7 +30,7 @@ class Component(ApplicationSession):
         """
 
         # subscription setup
-        self.subcribed_topics = self.config.extra['config']['subscribed_topics']
+        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
         self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
 
         # publishing setup
@@ -104,7 +104,7 @@ class Component(ApplicationSession):
 
         # Subscribe to all of the topics in configuration
         if self.producer is None:
-            for topic in self.subcribed_topics:
+            for topic in self.subscribed_topics:
                 logger.debug("subscribing to topic %s", topic)
                 pub = yield self.subscribe(
                     transport_event,
@@ -135,7 +135,7 @@ class Component(ApplicationSession):
         """
         engine = connect_pg('event_history')
         conn = engine.connect()
-        for topic in self.subcribed_topics:
+        for topic in self.subscribed_topics:
             logger.debug("replaying events for topic %s", topic)
             table = get_table(topic, engine)
             query = table.select()
@@ -146,8 +146,9 @@ class Component(ApplicationSession):
             elif event_id is not None:
                 get_id_query = table.select(table.c.event['event_id'].astext == event_id)
                 row = conn.execute(get_id_query).fetchone()
-                row_id = row[0]
-                query = query.where(table.c.id > row_id)
+                if row is not None:
+                    row_id = row[0]
+                    query = query.where(table.c.id > row_id)
             result = conn.execute(query).fetchall()
             for row in result:
                 yield row[1]
