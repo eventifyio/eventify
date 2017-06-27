@@ -13,8 +13,8 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import OperationalError
 
-from eventify.common import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-                            EVENT_DB_POOL_SIZE
+from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
+                                       EVENT_DB_POOL_SIZE
 from eventify.persist.models import get_table
 
 

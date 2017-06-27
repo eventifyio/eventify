@@ -17,7 +17,7 @@ Developers need a easy and fast way to implement business logic in a modern asyn
 ## Contributing
 
 ## Tutorial
-Quick and dirty tutorial to get up and running.
+Below is everything you need to get started using the eventify project.
 
 ### Minimum Viable Service
 ```python
@@ -71,8 +71,61 @@ if __name__ == '__main__':
     run()
 ```
 
-### Crossbar Driver
+### Minimum Configuration - config.json
+```json
+{
+    "_comment": "service configuration",
+    "name": "example",
+    "image": "example/service",
+    "driver": "crossbar",
+    "transport_host": "ws://events-server:8080/ws",
+    "pub_options": {
+        "acknowledge": true,
+        "retain": true
+    },
+    "publish_topic": {
+        "topic": "example",
+        "timeout": 20,
+        "reply_in": 0
+    },
+    "subscribed_topics": [
+        "ui-events"
+    ],
+    "replay_events": true,
+    "replay_type": "event_store"
+}
+```
+
+### Environment variables
+* EVENT_DB_HOST
+
+Hostname of database server
+* EVENT_DB_USER
+
+Username for database server
+* EVENT_DB_PASS
+
+Password for username
+* EVENT_DB_TYPE
+
+Database driver type - defaults to postgres
+* EVENT_DB_POOL_SIZE
+
+Database connection pool size - defaults to 5
+
+## Supported Drivers
+* Crossbar
+
+## Crossbar
+Quickest way to get started with crossbar is to use docker
+
+### Running Crossbar
+```bash
 docker run -d -p 8080:8080 -it crossbario/crossbar:latest
+```
+
+### See More
+http://crossbar.io
 
 ## Pypi
 https://pypi.python.org/pypi/eventify

@@ -3,7 +3,7 @@ import unittest
 
 from datetime import datetime, timedelta
 
-from eventify.service import Component
+from eventify.drivers.crossbar import Component
 
 class TestReplay(unittest.TestCase):
 
