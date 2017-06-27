@@ -7,7 +7,6 @@ constantly==15.1.0
 coverage==4.4.1
 coveralls==1.1
 cryptography==1.9
-eventify==0.2.6
 hyperlink==17.2.1
 idna==2.5
 incremental==17.5.0
