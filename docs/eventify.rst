@@ -6,7 +6,7 @@ Subpackages
 
 .. toctree::
 
-    eventify.common
+    eventify.drivers
     eventify.event
     eventify.exceptions
     eventify.persist

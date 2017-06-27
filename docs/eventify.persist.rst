@@ -4,6 +4,14 @@ eventify\.persist package
 Submodules
 ----------
 
+eventify\.persist\.constants module
+-----------------------------------
+
+.. automodule:: eventify.persist.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 eventify\.persist\.models module
 --------------------------------
 
