@@ -3,7 +3,7 @@ attrs==17.2.0
 autobahn==17.6.2
 Automat==0.6.0
 constantly==15.1.0
-incremental==16.10.1
+incremental==17.5.0
 packaging==16.8
 pyparsing==2.2.0
 six==1.10.0
