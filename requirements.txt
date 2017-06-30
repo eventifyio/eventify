@@ -15,7 +15,7 @@ psycopg2==2.7.1
 pyasn1==0.2.3
 pyasn1-modules==0.0.9
 pycparser==2.17
-pyOpenSSL==17.0.0
+pyOpenSSL==17.1.0
 pytest==3.0.7
 pytest-cov==2.5.1
 service-identity==17.0.0
