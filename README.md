@@ -15,6 +15,10 @@ pip install eventify
 Developers need a easy and fast way to implement business logic in a modern asynchronous way. Developers should not have to worry about service communication.
 
 ## Contributing
+TBD
+
+## Architecture
+![ArchDiagram](https://raw.githubusercontent.com/eventifyio/eventify/master/docs/eventify.png)
 
 ## Tutorial
 Below is everything you need to get started using the eventify project.
