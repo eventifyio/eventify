@@ -104,6 +104,9 @@ Each application (service, microservice, etc.) can publish to 0 or 1 topic and s
 }
 ```
 
+### Event History Support
+To add event history support add the @event_tracker decorator to any event handler your define.
+
 ### Environment variables
 * EVENT_DB_HOST
 
