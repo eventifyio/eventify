@@ -3,14 +3,15 @@ Crossbar Driver Module
 """
 from __future__ import print_function
 
+import asyncio
 import logging
 
-from autobahn.twisted.wamp import ApplicationSession, ApplicationRunner
+from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 from sqlalchemy import select
-from twisted.internet.defer import inlineCallbacks
 
 from eventify import Eventify
+from eventify.event import replay_events
 from eventify.persist import persist_event, connect_pg
 from eventify.persist.models import get_table
 
@@ -31,6 +32,7 @@ class Component(ApplicationSession):
         # subscription setup
         self.subscribed_topics = self.config.extra['config']['subscribed_topics']
         self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
+        self.replay_events = self.config.extra['config']['replay_events']
 
         # publishing setup
         self.publish_topic = self.config.extra['config']['publish_topic']['topic']
@@ -39,17 +41,25 @@ class Component(ApplicationSession):
         # setup callback
         self.callback = self.config.extra['callback']
 
+        # put name on session
+        self.name = self.config.extra['config']['name']
+
         # config producer
         try:
             self.producer = self.config.extra['producer']
         except KeyError:
             self.producer = None
 
+        # Check for replay option
+        if self.replay_events:
+           for event in replay_events(self.subscribed_topics):
+               self.callback(event, session=self)
+
         # join topic
+        logger.debug("connected")
         self.join(self.config.realm)
 
 
-    @inlineCallbacks
     def emit_event(self, event):
         """
         Publish an event back to crossbar
@@ -65,19 +75,17 @@ class Component(ApplicationSession):
                 logger.error(error)
                 return
 
-            published = self.publish(
-                self.publish_topic,
-                event.as_json(),
-                options=self.publish_options
-            )
-            logger.debug("event published")
-            yield published
+        logger.debug("publishing event")
+        self.publish(
+            self.publish_topic,
+            event.as_json(),
+            options=self.publish_options
+        )
+        logger.debug("event published")
 
 
-    @inlineCallbacks
-    def onJoin(self, details):
+    async def onJoin(self, details):
         logger.debug("joined websocket realm: %s", details)
-
 
         def transport_event(*args, **kwargs):
             """
@@ -100,19 +108,17 @@ class Component(ApplicationSession):
             logger.debug("detected producer only service")
             self.callback(self)
 
-
         # Subscribe to all of the topics in configuration
         if self.producer is None:
             for topic in self.subscribed_topics:
                 logger.debug("subscribing to topic %s", topic)
-                yield self.subscribe(
+                await self.subscribe(
                     transport_event,
                     topic,
                 )
                 logger.debug("subscribed to topic: %s", topic)
 
 
-    @inlineCallbacks
     def show_sessions(self):
         """
         Returns an object with a lists of the session IDs
@@ -120,48 +126,38 @@ class Component(ApplicationSession):
 
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
-        res = yield self.call("wamp.session.list")
-        for session_id in res:
-            info = yield self.call("wamp.session.get", session_id)
-            print(info)
+        res = self.call("wamp.session.list")
+        res.add_done_callback(self.printer_list)
 
 
-    @inlineCallbacks
     def total_sessions(self):
         """
         Returns the number of sessions currently attached to the realm.
 
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
-        res = yield self.call("wamp.session.count")
-        print(res)
+        res = self.call("wamp.session.count")
+        res.add_done_callback(self.printer)
 
 
-    def replay_events(self, timestamp=None, event_id=None):
+    def lookup_session(self, topic_name):
         """
-        Replay events from a given timestamp or event_id
-        :param timestamp: Human readable datetime
-        :param event_id: UUID of a given event
+        Attempts to find the session id for a given topic
+
+        http://crossbar.io/docs/Subscription-Meta-Events-and-Procedures/
         """
-        engine = connect_pg('event_history')
-        conn = engine.connect()
-        for topic in self.subscribed_topics:
-            logger.debug("replaying events for topic %s", topic)
-            table = get_table(topic, engine)
-            query = table.select()
-            if timestamp is not None and event_id is not None:
-                raise ValueError("Can only filter by timestamp OR event_id")
-            elif timestamp is not None:
-                query = query.where(table.c.issued_at >= timestamp)
-            elif event_id is not None:
-                get_id_query = table.select(table.c.event['event_id'].astext == event_id)
-                row = conn.execute(get_id_query).fetchone()
-                if row is not None:
-                    row_id = row[0]
-                    query = query.where(table.c.id > row_id)
-            result = conn.execute(query).fetchall()
-            for row in result:
-                yield row[1]
+        res = self.call("wamp.subscription.lookup", topic_name)
+        res.add_done_callback(self.printer)
+
+    def printer(self, result):
+        print(result.result())
+
+
+    def printer_list(self, result):
+        sessions = result.result()
+        for session_id in sessions:
+            res = self.call("wamp.session.get", session_id)
+            res.add_done_callback(self.printer)
 
 
 def create_service():
@@ -181,6 +177,8 @@ def create_service():
             Start a producer/consumer service
             """
             logger.debug('starting producer/consumer service')
+
+            # Connect to crossbar
             runner = ApplicationRunner(
                 url=self.config['transport_host'],
                 realm=u'realm1',
@@ -189,7 +187,7 @@ def create_service():
                     'callback': self.callback
                 }
             )
-            runner.run(Component, auto_reconnect=True)
+            runner.run(Component)
 
 
         def start_producer(self):
@@ -206,6 +204,6 @@ def create_service():
                     'callback': self.callback
                 }
             )
-            runner.run(Component, auto_reconnect=True)
+            runner.run(Component)
 
     return Service

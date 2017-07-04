@@ -2,17 +2,20 @@
 """
 Minimal viable microservice
 """
+import asyncio
 import logging
 import sys
 
 from eventify.event import Event
-from eventify.service import Service
+from eventify.service import Service, event_tracker
 
 
 FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('example.consumer')
 
+
+@event_tracker
 def my_example_event_handler(event, session=None):
     """
     Example event handler - This function is implemented as
@@ -25,16 +28,16 @@ def my_example_event_handler(event, session=None):
 
     # See the event that was received
     logger.debug("received event %s", event.name)
-
+    print('received event %s' % event.name)
 
     # Create and Publish an Event
     # you can also use the publish method directly
-    new_event = Event({
-        "name": "ReceivedEvent",
-        "message": "Event received by consumer",
-        "trace_id": event.trace_id
-    })
-    session.emit_event(new_event)
+    #new_event = Event({
+    #    "name": "ReceivedEvent",
+    #    "message": "Event received by consumer",
+    #    "trace_id": event.trace_id
+    #})
+    #session.emit_event(new_event)
 
 
 def run():

@@ -63,9 +63,8 @@ def persist_event(topic, event):
     # Event to json
     json_event = event.as_json()
 
-    # test
+    # Connect to database or create and connect if non existent
     engine = connect_pg('event_history')
-
     try:
         conn = engine.connect()
     except OperationalError as error:

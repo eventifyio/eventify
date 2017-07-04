@@ -4,21 +4,22 @@ from setuptools import find_packages
 setup(
     name='eventify',
     packages=find_packages(),
-    version='0.2.7',
+    version='0.2.8',
     description='Event Driven Asynchronous Framework',
     author='Matthew Harris',
     author_email='matt@x-qa.com',
     url='https://github.com/eventifyio/eventify',
-    download_url='https://github.com/eventifyio/eventify/raw/master/dist/eventify-0.2.7.tar.gz',
+    download_url='https://github.com/eventifyio/eventify/raw/master/dist/eventify-0.2.8.tar.gz',
     keywords=['event', 'event-driven', 'async',
               'framework', 'producer', 'consumer'],
     classifiers=[],
     install_requires=[
-        'twisted',
+        'asyncio',
         'pyOpenSSL',
         'autobahn',
         'service_identity',
         'sqlalchemy',
-        'psycopg2'
+        'psycopg2',
+        'redis'
     ]
 )

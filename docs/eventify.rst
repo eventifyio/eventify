@@ -10,6 +10,7 @@ Subpackages
     eventify.event
     eventify.exceptions
     eventify.persist
+    eventify.tracking
 
 Submodules
 ----------

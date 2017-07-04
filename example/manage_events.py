@@ -19,11 +19,11 @@ def display_stats(session):
     session.show_sessions()
 
     # show total sessions
-    #session.total_sessions()
+    session.total_sessions()
 
-
-
+    # lookup session
+    session.lookup_session('example')
 
 if __name__ == '__main__':
-    service = Service(config_file='config-producer.json', callback=display_stats)
+    service = Service(config_file='config-manage.json', callback=display_stats)
     service.start_producer()
