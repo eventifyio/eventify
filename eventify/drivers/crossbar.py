@@ -127,9 +127,7 @@ class Component(ApplicationSession):
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
         res = self.call("wamp.session.list")
-        for session_id in res:
-            info = self.call("wamp.session.get", session_id)
-            print(info)
+        res.add_done_callback(self.printer_list)
 
 
     def total_sessions(self):
@@ -139,7 +137,7 @@ class Component(ApplicationSession):
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
         res = self.call("wamp.session.count")
-        print(res)
+        res.add_done_callback(self.printer)
 
 
     def lookup_session(self, topic_name):
@@ -149,7 +147,17 @@ class Component(ApplicationSession):
         http://crossbar.io/docs/Subscription-Meta-Events-and-Procedures/
         """
         res = self.call("wamp.subscription.lookup", topic_name)
-        print(res)
+        res.add_done_callback(self.printer)
+
+    def printer(self, result):
+        print(result.result())
+
+
+    def printer_list(self, result):
+        sessions = result.result()
+        for session_id in sessions:
+            res = self.call("wamp.session.get", session_id)
+            res.add_done_callback(self.printer)
 
 
 def create_service():

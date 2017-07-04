@@ -3,7 +3,6 @@
 Minimal viable microservice that publishes events
 to test how system works
 """
-import asyncio
 import logging
 import sys
 
@@ -15,17 +14,15 @@ FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('event.producer')
 
-async def display_stats(session):
+def display_stats(session):
     # show all session data
-    #session.show_sessions()
+    session.show_sessions()
 
     # show total sessions
-    #session.total_sessions()
+    session.total_sessions()
 
     # lookup session
-    stuff = session.lookup_session('price_source_data')
-    print(stuff)
-    await asyncio.gather(stuff)
+    session.lookup_session('example')
 
 if __name__ == '__main__':
     service = Service(config_file='config-manage.json', callback=display_stats)
