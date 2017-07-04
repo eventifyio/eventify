@@ -129,12 +129,22 @@ For use with replay functionality - host of in memory cache
 * Crossbar
 
 ## Crossbar
-Quickest way to get started with crossbar is to use docker
+Quickest way to get started with crossbar is to use docker; both redis and postgresql are required for a minimal working service.
 
 ### Running Crossbar
 ```bash
 docker run -d -p 8080:8080 -it crossbario/crossbar:latest
 ```
+### Running Redis
+```bash
+docker run -d -p 6379:6379 -t redis:latest
+```
+
+### Running Postgresql
+```bash
+docker run --name postgres-container -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
+Note: This does not have a volume or persistant storage so in a production environment you would want to configure a volume
 
 ### See More
 http://crossbar.io
