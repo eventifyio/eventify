@@ -24,6 +24,8 @@ TBD
 Below is everything you need to get started using the eventify project.
 
 ### Minimum Viable Service
+Create an Event handler function to receive events.  To publish events, use session.emit_event() within the Event handler function. To start your service (and begin listening for events), pass the Event handler function as a callback to run a Service.
+
 ```python
 #!/usr/bin/env python
 """
@@ -76,6 +78,8 @@ if __name__ == '__main__':
 ```
 
 ### Minimum Configuration - config.json
+Each application (service, microservice, etc.) can publish to 0 or 1 topic and subscribe to 0 or more topics. Thus each application requires its own configuration file which defines its publications & subscriptions. Each configuration file also specifies the location of the transport host.
+
 ```json
 {
     "_comment": "service configuration",
