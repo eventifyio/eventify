@@ -113,6 +113,10 @@ Database driver type - defaults to postgres
 
 Database connection pool size - defaults to 5
 
+* EVENT_TRACKING_HOST
+
+For use with replay functionality - host of in memory cache
+
 ## Supported Drivers
 * Crossbar
 

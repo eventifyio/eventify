@@ -53,6 +53,9 @@ class Eventify(object):
         if 'replay_events' not in self.config:
             self.config['replay_events'] = False
 
+        if 'name' not in self.config:
+            raise EventifyConfigError('Required configuration parameter missing! Please configure "name" as a string in your configuration.')
+
         if 'subscribed_topics' not in self.config:
             raise EventifyConfigError('Required configuration parameter missing! Please configure "subscribed_topics" as an array in your configuration.')
 

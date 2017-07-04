@@ -1,21 +1,18 @@
 {
     "_comment": "service configuration",
-    "name": "example",
-    "image": "example/service",
+    "name": "producer",
+    "image": "producer/service",
     "driver": "crossbar",
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
         "acknowledge": true,
-        "retain": true
+        "retain": false,
+        "exclude_me": false
     },
     "publish_topic": {
-        "topic": "example",
+        "topic": "manager",
         "timeout": 20,
         "reply_in": 0
     },
-    "subscribed_topics": [
-        "example.topic"
-    ],
-    "replay_events": true,
-    "replay_type": "event_store"
+    "subscribed_topics": []
 }

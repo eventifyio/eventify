@@ -19,6 +19,7 @@ setup(
         'autobahn',
         'service_identity',
         'sqlalchemy',
-        'psycopg2'
+        'psycopg2',
+        'redis'
     ]
 )

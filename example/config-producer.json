@@ -6,10 +6,11 @@
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
         "acknowledge": true,
-        "retain": true
+        "retain": false,
+        "exclude_me": false
     },
     "publish_topic": {
-        "topic": "ui-events",
+        "topic": "example.topic",
         "timeout": 20,
         "reply_in": 0
     },

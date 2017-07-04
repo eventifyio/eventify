@@ -8,7 +8,10 @@ import logging
 from functools import wraps
 
 from eventify import Eventify
+from eventify.event import Event
 from eventify.exceptions import EventifyConfigError
+from eventify.tracking import track_event
+from eventify.tracking.constants import EventState
 
 
 logger = logging.getLogger('eventify.service')
@@ -41,6 +44,21 @@ def driver_function(func):
             call_method = getattr(service, function_name)(args[0])
         except KeyError as error:
             logger.error(error)
+    return wrapper
+
+
+def event_tracker(func):
+    """
+    Event tracking handler
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        event = Event(args[0])
+        session = kwargs['session']
+        service_name = session.name
+        track_event(event, EventState.started, service_name)
+        func(*args, **kwargs)
+        track_event(event, EventState.completed, service_name)
     return wrapper
 
 
