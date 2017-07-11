@@ -12,14 +12,6 @@ eventify\.persist\.constants module
     :undoc-members:
     :show-inheritance:
 
-eventify\.persist\.models module
---------------------------------
-
-.. automodule:: eventify.persist.models
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
