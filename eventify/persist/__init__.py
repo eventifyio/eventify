@@ -3,19 +3,14 @@ Persist Helper Module
 """
 from __future__ import print_function
 from datetime import datetime
-from uuid import UUID
 
 import asyncio
 import asyncpg
 import json
-import logging
 import os
 import pytz
 
 from eventify.exceptions import EventifySanityError
-
-
-logger = logging.getLogger('eventify.persist')
 
 
 async def persist_event(topic, event, pool):

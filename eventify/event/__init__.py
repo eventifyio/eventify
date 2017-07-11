@@ -7,11 +7,6 @@ import logging
 from datetime import datetime
 from uuid import uuid4
 
-from eventify.persist.models import get_table
-
-
-logger = logging.getLogger('eventify.event')
-
 
 class Event(object):
     """

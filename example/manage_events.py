@@ -14,15 +14,15 @@ FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('event.producer')
 
-def display_stats(session):
+async def display_stats(session):
     # show all session data
-    session.show_sessions()
+    await session.show_sessions()
 
     # show total sessions
-    session.total_sessions()
+    await session.total_sessions()
 
     # lookup session
-    session.lookup_session('example')
+    await session.lookup_session('example')
 
 if __name__ == '__main__':
     service = Service(config_file='config-manage.json', callback=display_stats)

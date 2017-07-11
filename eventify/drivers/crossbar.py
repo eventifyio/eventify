@@ -10,13 +10,12 @@ import asyncpg
 
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
-from sqlalchemy import select
 
 from eventify import Eventify
 from eventify.event import replay_events
 from eventify.persist import persist_event
 from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-                                       EVENT_DB_POOL_SIZE, EVENT_DB_NAME
+                                       EVENT_DB_NAME
 
 
 logger = logging.getLogger('eventify.drivers.crossbar')
@@ -60,7 +59,6 @@ class Component(ApplicationSession):
             host=EVENT_DB_HOST,
             database=EVENT_DB_NAME
         )
-
 
         # Check for replay option
         #if self.replay_events:
@@ -132,45 +130,37 @@ class Component(ApplicationSession):
                 logger.debug("subscribed to topic: %s", topic)
 
 
-    def show_sessions(self):
+    async def show_sessions(self):
         """
         Returns an object with a lists of the session IDs
         for all sessions currently attached to the realm
 
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
-        res = self.call("wamp.session.list")
-        res.add_done_callback(self.printer_list)
+        res = await self.call("wamp.session.list")
+        for session_id in res:
+            session = await self.call("wamp.session.get", session_id)
+            print(session)
 
 
-    def total_sessions(self):
+    async def total_sessions(self):
         """
         Returns the number of sessions currently attached to the realm.
 
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
-        res = self.call("wamp.session.count")
-        res.add_done_callback(self.printer)
+        res = await self.call("wamp.session.count")
+        print(res)
 
 
-    def lookup_session(self, topic_name):
+    async def lookup_session(self, topic_name):
         """
         Attempts to find the session id for a given topic
 
         http://crossbar.io/docs/Subscription-Meta-Events-and-Procedures/
         """
-        res = self.call("wamp.subscription.lookup", topic_name)
-        res.add_done_callback(self.printer)
-
-    def printer(self, result):
-        print(result.result())
-
-
-    def printer_list(self, result):
-        sessions = result.result()
-        for session_id in sessions:
-            res = self.call("wamp.session.get", session_id)
-            res.add_done_callback(self.printer)
+        res = await self.call("wamp.subscription.lookup", topic_name)
+        print(res)
 
 
 def create_service():
