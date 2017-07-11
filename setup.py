@@ -19,6 +19,7 @@ setup(
         'asyncpg',
         'pyOpenSSL',
         'autobahn',
-        'service_identity'
+        'service_identity',
+        'pytz'
     ]
 )
