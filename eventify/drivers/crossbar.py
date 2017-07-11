@@ -6,14 +6,17 @@ from __future__ import print_function
 import asyncio
 import logging
 
+import asyncpg
+
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 from sqlalchemy import select
 
 from eventify import Eventify
 from eventify.event import replay_events
-from eventify.persist import persist_event, connect_pg
-from eventify.persist.models import get_table
+from eventify.persist import persist_event
+from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
+                                       EVENT_DB_POOL_SIZE, EVENT_DB_NAME
 
 
 logger = logging.getLogger('eventify.drivers.crossbar')
@@ -24,7 +27,7 @@ class Component(ApplicationSession):
     Handle subscribing to topics
     """
 
-    def onConnect(self):
+    async def onConnect(self):
         """
         Configure the component
         """
@@ -50,17 +53,25 @@ class Component(ApplicationSession):
         except KeyError:
             self.producer = None
 
+        # setup db pool
+        self.pool = await asyncpg.create_pool(
+            user=EVENT_DB_USER,
+            password=EVENT_DB_PASS,
+            host=EVENT_DB_HOST,
+            database=EVENT_DB_NAME
+        )
+
+
         # Check for replay option
-        if self.replay_events:
-           for event in replay_events(self.subscribed_topics):
-               self.callback(event, session=self)
+        #if self.replay_events:
+        #   await replay_events(self)
 
         # join topic
-        logger.debug("connected")
+        print("connected")
         self.join(self.config.realm)
 
 
-    def emit_event(self, event):
+    async def emit_event(self, event):
         """
         Publish an event back to crossbar
         :param event: Event object
@@ -69,25 +80,27 @@ class Component(ApplicationSession):
         if self.config.extra['config']['pub_options']['retain']:
             try:
                 logger.debug("persisting event")
-                persist_event(self.publish_topic, event)
+                await persist_event(
+                    self.publish_topic,
+                    event,
+                    self.pool
+                )
                 logger.debug("event persisted")
             except SystemError as error:
                 logger.error(error)
                 return
 
-        logger.debug("publishing event")
-        self.publish(
+        await self.publish(
             self.publish_topic,
             event.as_json(),
             options=self.publish_options
         )
-        logger.debug("event published")
 
 
     async def onJoin(self, details):
         logger.debug("joined websocket realm: %s", details)
 
-        def transport_event(*args, **kwargs):
+        async def transport_event(*args, **kwargs):
             """
             Send event to application code
             """
@@ -101,12 +114,12 @@ class Component(ApplicationSession):
             except IndexError as error:
                 event = kwargs
             logger.debug("received event %s", event['event_id'])
-            self.callback(event, session=self)
+            await self.callback(event, session=self)
 
 
         if self.producer:
             logger.debug("detected producer only service")
-            self.callback(self)
+            await self.callback(self)
 
         # Subscribe to all of the topics in configuration
         if self.producer is None:

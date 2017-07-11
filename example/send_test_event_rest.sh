@@ -6,7 +6,8 @@ json=$(cat <<EOF
 {
     "topic": "example.topic",
     "kwargs": {
-        "event_id": "$uuid",
+        "event_id": "a3fc874b-f5ec-45d2-a0b4-8e8006de88c0",
+        "old_event_id": "$uuid",
         "message": "stuff and things",
         "timestamp": $timestamp,
         "name": "TestEvent",

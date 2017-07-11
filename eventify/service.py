@@ -52,13 +52,13 @@ def event_tracker(func):
     Event tracking handler
     """
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    async def wrapper(*args, **kwargs):
         event = Event(args[0])
         session = kwargs['session']
         service_name = session.name
-        track_event(event, EventState.started, service_name)
-        func(*args, **kwargs)
-        track_event(event, EventState.completed, service_name)
+        await track_event(event, EventState.started, service_name)
+        await func(*args, **kwargs)
+        await track_event(event, EventState.completed, service_name)
     return wrapper
 
 

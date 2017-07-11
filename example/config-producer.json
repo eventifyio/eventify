@@ -6,7 +6,7 @@
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
         "acknowledge": true,
-        "retain": false,
+        "retain": true,
         "exclude_me": false
     },
     "publish_topic": {

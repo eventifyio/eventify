@@ -16,7 +16,7 @@ logger = logging.getLogger('example.consumer')
 
 
 @event_tracker
-def my_example_event_handler(event, session=None):
+async def my_example_event_handler(event, session=None):
     """
     Example event handler - This function is implemented as
     a callback method to the eventify service
@@ -32,12 +32,13 @@ def my_example_event_handler(event, session=None):
 
     # Create and Publish an Event
     # you can also use the publish method directly
-    #new_event = Event({
-    #    "name": "ReceivedEvent",
-    #    "message": "Event received by consumer",
-    #    "trace_id": event.trace_id
-    #})
-    #session.emit_event(new_event)
+    new_event = Event({
+        "name": "ReceivedEvent",
+        "message": "Event received by consumer",
+        "trace_id": event.trace_id
+    })
+    await session.emit_event(new_event)
+    print("emitted event")
 
 
 def run():

@@ -1,12 +1,12 @@
 """
 Event Module
 """
+import asyncio
 import json
 import logging
 from datetime import datetime
 from uuid import uuid4
 
-from eventify.persist import connect_pg
 from eventify.persist.models import get_table
 
 
@@ -50,29 +50,11 @@ class Event(object):
         return self.__dict__
 
 
-def replay_events(subscribed_topics, timestamp=None, event_id=None):
+async def replay_events(self):
     """
     Replay events from a given timestamp or event_id
     :param timestamp: Human readable datetime
     :param event_id: UUID of a given event
     """
-    logger.debug("replaying events")
-    engine = connect_pg('event_history')
-    conn = engine.connect()
-    for topic in subscribed_topics:
-        logger.debug("replaying events for topic %s", topic)
-        table = get_table(topic, engine)
-        query = table.select()
-        if timestamp is not None and event_id is not None:
-            raise ValueError("Can only filter by timestamp OR event_id")
-        elif timestamp is not None:
-            query = query.where(table.c.issued_at >= timestamp)
-        elif event_id is not None:
-            get_id_query = table.select(table.c.event['event_id'].astext == event_id)
-            row = conn.execute(get_id_query).fetchone()
-            if row is not None:
-                row_id = row[0]
-                query = query.where(table.c.id > row_id)
-        result = conn.execute(query).fetchall()
-        for row in result:
-            yield row[1]
+    # todo: redo
+    await asyncio.sleep(1)

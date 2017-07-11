@@ -2,58 +2,23 @@
 Persist Helper Module
 """
 from __future__ import print_function
+from datetime import datetime
+from uuid import UUID
 
+import asyncio
+import asyncpg
 import json
 import logging
 import os
+import pytz
 
-import psycopg2
-
-from sqlalchemy import create_engine, select
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.exc import OperationalError
-
-from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-                                       EVENT_DB_POOL_SIZE
-from eventify.persist.models import get_table
+from eventify.exceptions import EventifySanityError
 
 
 logger = logging.getLogger('eventify.persist')
 
 
-def connect_pg(database_name):
-    """
-    Connect to Postgres Server
-    :param database_name: Name of database connecting to
-    :return: Connection Ref
-    """
-    engine = create_engine(
-        'postgresql+psycopg2://%s:%s@%s/%s' % (
-            EVENT_DB_USER,
-            EVENT_DB_PASS,
-            EVENT_DB_HOST,
-            database_name
-        ),
-        pool_size=EVENT_DB_POOL_SIZE,
-        max_overflow=0,
-        pool_recycle=3600,
-        pool_timeout=10
-    )
-    return engine
-
-
-def create_pg(database_name):
-    """
-    Create new postgres database
-    :param database_name: Name of database to create
-    """
-    engine = connect_pg('postgres')
-    conn = engine.connect()
-    conn.execution_options(isolation_level="AUTOCOMMIT").execute('CREATE DATABASE ' + database_name)
-    conn.close()
-
-
-def persist_event(topic, event):
+async def persist_event(topic, event, pool):
     """
     Track event to prevent duplication of work
     and potential loss of event
@@ -61,27 +26,16 @@ def persist_event(topic, event):
     :param event: The event object
     """
     # Event to json
-    json_event = event.as_json()
+    json_event = json.dumps(event.as_json())
 
     # Connect to database or create and connect if non existent
-    engine = connect_pg('event_history')
-    try:
-        conn = engine.connect()
-    except OperationalError as error:
-        create_pg('event_history')
-        conn = engine.connect()
-
-    table = get_table(topic, engine)
+    conn = await pool.acquire()
 
     # Insert event if not processed
     try:
-        select_stmt = select(table.c.event['event_id'].astext == event.event_id)
-        results = conn.execute(select_stmt)
-        exists = results.fetchone()
-        if exists:
-            raise SystemError("Attempted to reissue same event")
-
-        insert_stmt = insert(table).values(event=json_event)
-        conn.execute(insert_stmt)
-    except psycopg2.IntegrityError as error:
-        logger.error(error)
+        utc = pytz.timezone('UTC')
+        issued_at = utc.localize(datetime.utcnow())
+        query = 'INSERT INTO %s (event, issued_at) VALUES ($1, $2)' % topic
+        await conn.execute(query, json_event, issued_at)
+    finally:
+        await pool.release(conn)
