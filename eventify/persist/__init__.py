@@ -8,7 +8,6 @@ import asyncio
 import asyncpg
 import json
 import os
-import pytz
 
 from eventify.exceptions import EventifySanityError
 
@@ -28,9 +27,8 @@ async def persist_event(topic, event, pool):
 
     # Insert event if not processed
     try:
-        utc = pytz.timezone('UTC')
-        issued_at = utc.localize(datetime.utcnow())
-        query = 'INSERT INTO %s (event, issued_at) VALUES ($1, $2)' % topic
+        issued_at = datetime.utcnow()
+        query = 'INSERT INTO "%s" (event, issued_at) VALUES ($1, $2)' % topic
         await conn.execute(query, json_event, issued_at)
     finally:
         await pool.release(conn)
