@@ -31,6 +31,7 @@ Create an Event handler function to receive events.  To publish events, use sess
 """
 Minimal viable microservice
 """
+import asyncio
 import logging
 import sys
 
@@ -42,7 +43,7 @@ FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
 logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('example.service')
 
-def my_example_event_handler(event, session=None):
+async def my_example_event_handler(event, session=None):
     """
     Example event handler - This function is implemented as
     a callback method to the eventify service
@@ -63,7 +64,7 @@ def my_example_event_handler(event, session=None):
         "message": "Event received by consumer",
         "trace_id": event.trace_id
     })
-    session.emit_event(new_event)
+    await session.emit_event(new_event)
 
 
 def run():
