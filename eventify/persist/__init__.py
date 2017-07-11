@@ -27,6 +27,21 @@ async def persist_event(topic, event, pool):
 
     # Insert event if not processed
     try:
+        query = """
+            CREATE TABLE IF NOT EXISTS public."topic_placeholder"
+            (
+              id SERIAL PRIMARY KEY,
+              event json NOT NULL,
+              issued_at timestamp without time zone NOT NULL
+            )
+            WITH (
+              OIDS=FALSE
+            );
+            ALTER TABLE public."topic_placeholder"
+              OWNER TO root;
+        """
+        query = query.replace('topic_placeholder', topic)
+        await conn.execute(query)
         issued_at = datetime.utcnow()
         query = 'INSERT INTO "%s" (event, issued_at) VALUES ($1, $2)' % topic
         await conn.execute(query, json_event, issued_at)
