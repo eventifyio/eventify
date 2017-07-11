@@ -31,7 +31,6 @@ async def produce_events(session):
         })
         await session.emit_event(event)
         counter = counter + 1
-        await asyncio.sleep(1)
 
 
 if __name__ == '__main__':

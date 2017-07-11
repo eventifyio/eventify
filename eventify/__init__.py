@@ -2,12 +2,17 @@
 Eventify!
 A simple module for implementing event driven systems
 """
+import asyncio
 import logging
 import json
 import os
+import uvloop
 
 from eventify.exceptions import EventifyConfigError, EventifyInitError
 
+
+# Set uvloop as event loop for performance gains
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 logger = logging.getLogger('eventify')
 
