@@ -2,6 +2,7 @@
 """
 Watch Events in Realtime
 """
+import asyncio
 import logging
 import sys
 
@@ -14,13 +15,12 @@ logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('watcher.consumer')
 
 
-def my_example_event_handler(event, session=None):
+async def my_example_event_handler(event, session=None):
     """
     Example event handler
     """
-    # Load Event
-    event = Event(event)
-    logger.debug("handling event: %s", event.name)
+    print(event)
+    asyncio.sleep(0)
 
 
 def run():

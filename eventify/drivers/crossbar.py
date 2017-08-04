@@ -4,6 +4,8 @@ Crossbar Driver Module
 from __future__ import print_function
 
 import logging
+import sys
+import traceback
 
 import asyncpg
 
@@ -14,7 +16,6 @@ from eventify.persist import persist_event
 from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
     EVENT_DB_NAME
 from eventify import Eventify
-import sys, traceback
 
 logger = logging.getLogger('eventify.drivers.crossbar')
 
@@ -107,7 +108,7 @@ class Component(ApplicationSession):
                 while True:
                     try:
                         await handler.worker()
-                    except Exception as e:
+                    except Exception:
                         print("Operation failed. Go to next item...")
                         traceback.print_exc(file=sys.stdout)
                         continue

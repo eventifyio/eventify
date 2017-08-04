@@ -17,7 +17,7 @@
         "get_retained": false
     },
     "subscribed_topics": [
-        "example"
+        "usage-source"
     ],
-    "replay_events": true
+    "replay_events": false
 }

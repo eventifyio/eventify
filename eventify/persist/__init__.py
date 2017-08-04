@@ -4,10 +4,11 @@ Persist Helper Module
 from __future__ import print_function
 from datetime import datetime
 
-import asyncio
-import asyncpg
 import json
 import os
+
+import asyncio
+import asyncpg
 
 from eventify.exceptions import EventifySanityError
 

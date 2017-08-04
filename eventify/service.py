@@ -22,6 +22,10 @@ def event_tracker(func):
     """
     @wraps(func)
     async def wrapper(*args, **kwargs):
+        """
+        Wraps function to provide redis
+        tracking
+        """
         event = Event(args[0])
         session = kwargs['session']
         service_name = session.name
@@ -32,4 +36,7 @@ def event_tracker(func):
 
 
 class Service(CrossbarService):
+    """
+    Crossbar Service
+    """
     pass

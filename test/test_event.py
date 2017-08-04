@@ -26,7 +26,7 @@ class TestEvent(unittest.TestCase):
             }
         })
         self.assertIsInstance(event, Event)
-        message = json.loads(event.message)
+        message = event.message
         self.assertIsNotNone(message.get('foo', None))
 
 

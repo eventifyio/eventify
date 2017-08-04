@@ -3,9 +3,10 @@ Event Tracking Module
 """
 from datetime import datetime
 
-import aioredis
 import asyncio
 import json
+
+import aioredis
 
 from eventify.tracking.constants import EVENT_TRACKING_HOST
 

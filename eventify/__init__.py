@@ -24,11 +24,12 @@ class Eventify(object):
     Base Class for eventify
     """
 
-    def __init__(self, driver='crossbar', config_file='config.json', handlers=[]):
+    def __init__(self, driver='crossbar', config_file='config.json', handlers=None):
         """
         Args:
             Driver
         """
+        handlers = handlers or []
         logger.debug('initializing eventify project on driver: %s', driver)
         if not handlers:
             raise EventifyInitError("callback parameter is required")
