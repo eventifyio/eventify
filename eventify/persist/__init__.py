@@ -19,6 +19,8 @@ async def persist_event(topic, event, pool):
     :param topic: The event topic
     :param event: The event object
     """
+    # Event to json
+    json_event = json.dumps(event.__dict__)
 
     # Connect to database or create and connect if non existent
     conn = await pool.acquire()
@@ -42,6 +44,6 @@ async def persist_event(topic, event, pool):
         await conn.execute(query)
         issued_at = datetime.utcnow()
         query = 'INSERT INTO "%s" (event, issued_at) VALUES ($1, $2)' % topic
-        await conn.execute(query, dict(event), issued_at)
+        await conn.execute(query, json_event, issued_at)
     finally:
         await pool.release(conn)

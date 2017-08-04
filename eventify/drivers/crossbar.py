@@ -81,7 +81,7 @@ class Component(ApplicationSession):
 
         await self.publish(
             self.publish_topic,
-            dict(event),
+            event.__dict__,
             options=self.publish_options
         )
 
