@@ -38,13 +38,6 @@ class Event(object):
                 setattr(self, key, value)
 
 
-    def as_json(self):
-        """
-        Convert to dictionary
-        """
-        return self.__dict__
-
-
 async def replay_events(self):
     """
     Replay events from a given timestamp or event_id
