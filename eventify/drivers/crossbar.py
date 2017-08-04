@@ -3,7 +3,6 @@ Crossbar Driver Module
 """
 from __future__ import print_function
 
-import asyncio
 import logging
 
 import asyncpg
@@ -11,12 +10,11 @@ import asyncpg
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
-from eventify import Eventify
-from eventify.event import replay_events
 from eventify.persist import persist_event
 from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-                                       EVENT_DB_NAME
-
+    EVENT_DB_NAME
+from eventify import Eventify
+import sys, traceback
 
 logger = logging.getLogger('eventify.drivers.crossbar')
 
@@ -41,16 +39,10 @@ class Component(ApplicationSession):
         self.publish_options = PublishOptions(**self.config.extra['config']['pub_options'])
 
         # setup callback
-        self.callback = self.config.extra['callback']
+        self.handlers = self.config.extra['handlers']
 
         # put name on session
         self.name = self.config.extra['config']['name']
-
-        # config producer
-        try:
-            self.producer = self.config.extra['producer']
-        except KeyError:
-            self.producer = None
 
         # setup db pool
         self.pool = await asyncpg.create_pool(
@@ -61,13 +53,12 @@ class Component(ApplicationSession):
         )
 
         # Check for replay option
-        #if self.replay_events:
+        # if self.replay_events:
         #   await replay_events(self)
 
         # join topic
         print("connected")
         self.join(self.config.realm)
-
 
     async def emit_event(self, event):
         """
@@ -94,41 +85,32 @@ class Component(ApplicationSession):
             options=self.publish_options
         )
 
-
     async def onJoin(self, details):
         logger.debug("joined websocket realm: %s", details)
 
-        async def transport_event(*args, **kwargs):
-            """
-            Send event to application code
-            """
-            try:
-                event = args[0]['kwargs']
-            except KeyError as error:
-                if kwargs == {}:
-                    event = args[0]
-                else:
-                    event = kwargs
-            except IndexError as error:
-                event = kwargs
-            logger.debug("received event %s", event['event_id'])
-            await self.callback(event, session=self)
+        for handler in self.handlers:
+            handler.set_session(self)
+            if hasattr(handler, 'init'):
+                await handler.init()
+            if hasattr(handler, 'on_event'):
+                # Subscribe to all of the topics in configuration
+                for topic in self.subscribed_topics:
+                    logger.debug("subscribing to topic %s", topic)
+                    await self.subscribe(
+                        handler.on_event,
+                        handler.subscribe_topic,
+                    )
+                    logger.debug("subscribed to topic: %s", topic)
 
-
-        if self.producer:
-            logger.debug("detected producer only service")
-            await self.callback(self)
-
-        # Subscribe to all of the topics in configuration
-        if self.producer is None:
-            for topic in self.subscribed_topics:
-                logger.debug("subscribing to topic %s", topic)
-                await self.subscribe(
-                    transport_event,
-                    topic,
-                )
-                logger.debug("subscribed to topic: %s", topic)
-
+            if hasattr(handler, 'worker'):
+                # or just await handler.worker()
+                while True:
+                    try:
+                        await handler.worker()
+                    except Exception as e:
+                        print("Operation failed. Go to next item...")
+                        traceback.print_exc(file=sys.stdout)
+                        continue
 
     async def show_sessions(self):
         """
@@ -142,7 +124,6 @@ class Component(ApplicationSession):
             session = await self.call("wamp.session.get", session_id)
             print(session)
 
-
     async def total_sessions(self):
         """
         Returns the number of sessions currently attached to the realm.
@@ -151,7 +132,6 @@ class Component(ApplicationSession):
         """
         res = await self.call("wamp.session.count")
         print(res)
-
 
     async def lookup_session(self, topic_name):
         """
@@ -163,50 +143,28 @@ class Component(ApplicationSession):
         print(res)
 
 
-def create_service():
+class Service(Eventify):
+    """
+    Create crossbar service
+    """
 
-    class Service(object):
+    # def __init__(self, config, callback):
+    #     self.config = config
+    #     self.callback = callback
+
+    def start(self):
         """
-        Create crossbar service
+        Start a producer/consumer service
         """
+        logger.debug('starting producer/consumer service')
 
-        def __init__(self, config, callback):
-            self.config = config
-            self.callback = callback
-
-
-        def start(self):
-            """
-            Start a producer/consumer service
-            """
-            logger.debug('starting producer/consumer service')
-
-            # Connect to crossbar
-            runner = ApplicationRunner(
-                url=self.config['transport_host'],
-                realm=u'realm1',
-                extra={
-                    'config': self.config,
-                    'callback': self.callback
-                }
-            )
-            runner.run(Component)
-
-
-        def start_producer(self):
-            """
-            Start a pure producer service
-            """
-            logger.debug('starting producer service')
-            runner = ApplicationRunner(
-                url=self.config['transport_host'],
-                realm=u'realm1',
-                extra={
-                    'config': self.config,
-                    'producer': True,
-                    'callback': self.callback
-                }
-            )
-            runner.run(Component)
-
-    return Service
+        # Connect to crossbar
+        runner = ApplicationRunner(
+            url=self.config['transport_host'],
+            realm=u'realm1',
+            extra={
+                'config': self.config,
+                'handlers': self.handlers,
+            }
+        )
+        runner.run(Component)

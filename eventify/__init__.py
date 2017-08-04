@@ -6,13 +6,15 @@ import asyncio
 import logging
 import json
 import os
-import uvloop
-
 from eventify.exceptions import EventifyConfigError, EventifyInitError
 
-
 # Set uvloop as event loop for performance gains
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+try:
+    import uvloop
+
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+except ImportError:
+    pass
 
 logger = logging.getLogger('eventify')
 
@@ -22,22 +24,21 @@ class Eventify(object):
     Base Class for eventify
     """
 
-    def __init__(self, driver='crossbar', config_file='config.json', callback=None):
+    def __init__(self, driver='crossbar', config_file='config.json', handlers=[]):
         """
         Args:
             Driver
         """
         logger.debug('initializing eventify project on driver: %s', driver)
-        if callback is None:
+        if not handlers:
             raise EventifyInitError("callback parameter is required")
 
         self.driver = driver
         self.config_file = config_file
         self.config = self.load_config
-        self.callback = callback
+        self.handlers = handlers
         self.set_missing_defaults()
         logger.debug('configuration loaded: %s', self.config)
-
 
     def set_missing_defaults(self):
         """
@@ -59,17 +60,20 @@ class Eventify(object):
             self.config['replay_events'] = False
 
         if 'name' not in self.config:
-            raise EventifyConfigError('Required configuration parameter missing! Please configure "name" as a string in your configuration.')
+            raise EventifyConfigError(
+                'Required configuration parameter missing! Please configure "name" as a string in your configuration.')
 
         if 'subscribed_topics' not in self.config:
-            raise EventifyConfigError('Required configuration parameter missing! Please configure "subscribed_topics" as an array in your configuration.')
+            raise EventifyConfigError(
+                'Required configuration parameter missing! Please configure "subscribed_topics" as an array in your configuration.')
 
         if 'publish_topic' not in self.config:
-            raise EventifyConfigError('Required configuration parameter missing! Please configure "public_topic" as an object in your configuration.')
+            raise EventifyConfigError(
+                'Required configuration parameter missing! Please configure "public_topic" as an object in your configuration.')
 
         if 'topic' not in self.config['publish_topic']:
-            raise EventifyConfigError('Required configuration parameter missing! Please configure "topic" as a key in your "public_topic object.')
-
+            raise EventifyConfigError(
+                'Required configuration parameter missing! Please configure "topic" as a key in your "public_topic object.')
 
     @property
     def load_config(self):

@@ -19,7 +19,6 @@ setup(
         'asyncpg',
         'pyOpenSSL',
         'autobahn',
-        'service_identity',
-        'uvloop'
+        'service_identity'
     ]
 )
