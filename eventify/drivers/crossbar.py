@@ -81,7 +81,7 @@ class Component(ApplicationSession):
 
         await self.publish(
             self.publish_topic,
-            event.as_json(),
+            event,
             options=self.publish_options
         )
 
