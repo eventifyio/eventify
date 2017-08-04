@@ -25,13 +25,7 @@ class Event(object):
         self.event_id = event.get('event_id', str(uuid4()))
 
         if event.get('message') is not None:
-            try:
-                if isinstance(event['message'], dict):
-                    self.message = json.dumps(event['message'])
-                else:
-                    self.message = event['message']
-            except ValueError:
-                self.message = event['message']
+            self.message = event['message']
 
         if kwargs is not None:
             for (key, value) in kwargs.items():
