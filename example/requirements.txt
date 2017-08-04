@@ -1,5 +1,5 @@
 appdirs==1.4.3
-attrs==16.3.0
+attrs==17.2.0
 autobahn==0.18.2
 Automat==0.5.0
 constantly==15.1.0
