@@ -20,7 +20,7 @@ async def persist_event(topic, event, pool):
     :param event: The event object
     """
     # Event to json
-    json_event = json.dumps(event.as_json())
+    json_event = json.dumps(event.__dict__)
 
     # Connect to database or create and connect if non existent
     conn = await pool.acquire()
