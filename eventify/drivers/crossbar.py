@@ -90,24 +90,26 @@ class Component(ApplicationSession):
         logger.debug("joined websocket realm: %s", details)
 
         for handler in self.handlers:
-            handler.set_session(self)
-            if hasattr(handler, 'init'):
-                await handler.init()
-            if hasattr(handler, 'on_event'):
+            # initialize handler
+            handler_instance = handler()
+            handler_instance.set_session(self)
+            if hasattr(handler_instance, 'init'):
+                await handler_instance.init()
+            if hasattr(handler_instance, 'on_event'):
                 # Subscribe to all of the topics in configuration
                 for topic in self.subscribed_topics:
                     logger.debug("subscribing to topic %s", topic)
                     await self.subscribe(
-                        handler.on_event,
-                        handler.subscribe_topic,
+                        handler_instance.on_event,
+                        handler_instance.subscribe_topic,
                     )
                     logger.debug("subscribed to topic: %s", topic)
 
-            if hasattr(handler, 'worker'):
+            if hasattr(handler_instance, 'worker'):
                 # or just await handler.worker()
                 while True:
                     try:
-                        await handler.worker()
+                        await handler_instance.worker()
                     except Exception:
                         print("Operation failed. Go to next item...")
                         traceback.print_exc(file=sys.stdout)
