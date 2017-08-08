@@ -148,12 +148,7 @@ class Service(Eventify):
     """
     Create crossbar service
     """
-
-    # def __init__(self, config, callback):
-    #     self.config = config
-    #     self.callback = callback
-
-    def start(self):
+    def start(self, start_loop=True):
         """
         Start a producer/consumer service
         """
@@ -168,4 +163,7 @@ class Service(Eventify):
                 'handlers': self.handlers,
             }
         )
-        runner.run(Component)
+        if start_loop:
+            runner.run(Component)
+        else:
+            return runner.run(Component, start_loop=start_loop)
