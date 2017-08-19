@@ -11,7 +11,7 @@ constantly==15.1.0
 cryptography==2.0.3
 docutils==0.13.1
 -e git+git@github.com:morissette/eventify.git@251f1ce3c1b5fc0bdfd99e573a9cbc09697dcc28#egg=eventify
-hyperlink==17.2.1
+hyperlink==17.3.1
 idna==2.6
 imagesize==0.7.1
 incremental==17.5.0
