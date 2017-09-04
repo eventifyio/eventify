@@ -31,7 +31,6 @@ class Component(ApplicationSession):
         """
 
         # subscription setup
-        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
         self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
         self.replay_events = self.config.extra['config']['replay_events']
 
@@ -96,14 +95,12 @@ class Component(ApplicationSession):
             if hasattr(handler_instance, 'init'):
                 await handler_instance.init()
             if hasattr(handler_instance, 'on_event'):
-                # Subscribe to all of the topics in configuration
-                for topic in self.subscribed_topics:
-                    logger.debug("subscribing to topic %s", topic)
-                    await self.subscribe(
-                        handler_instance.on_event,
-                        handler_instance.subscribe_topic,
-                    )
-                    logger.debug("subscribed to topic: %s", topic)
+                logger.debug("subscribing to topic %s", handler_instance.subscribe_topic)
+                await self.subscribe(
+                    handler_instance.on_event,
+                    handler_instance.subscribe_topic,
+                )
+                logger.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
 
             if hasattr(handler_instance, 'worker'):
                 # or just await handler.worker()
