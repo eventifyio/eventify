@@ -36,6 +36,6 @@ sphinxcontrib-napoleon==0.6.1
 sphinxcontrib-websupport==1.0.1
 SQLAlchemy==1.1.11
 Twisted==17.5.0
-txaio==2.8.1
+txaio==2.8.2
 urllib3==1.21.1
 zope.interface==4.4.2
