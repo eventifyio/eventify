@@ -178,12 +178,15 @@ class Service(Eventify):
         run_component(runner, start_loop)
 
 
-    @staticmethod
-    def run_component(runner, start_loop=True):
+    def run_component(self, runner, start_loop=True):
+        """
+        Support autoconnecting for asyncio
+        and cross bar
+        """
         try:
             if start_loop:
                 runner.run(Component)
             else:
                 return runner.run(Component, start_loop=start_loop)
         except ConnectionError:
-            run_component(runner, start_loop)
+            self.run_component(runner, start_loop)
