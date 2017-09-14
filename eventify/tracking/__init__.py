@@ -34,11 +34,3 @@ async def track_event(event, state, service_name):
     await redis.rpush(service_name, tracking_data)
     redis.close()
     await redis.wait_closed()
-
-
-async def get_last_event(service_name):
-    """
-    Get the last event on cache
-    :param service_name: Name of service
-    """
-    pass

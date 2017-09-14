@@ -3,9 +3,11 @@ Crossbar Driver Module
 """
 from __future__ import print_function
 
-import logging
+import asyncio
+
 import sys
 import traceback
+import txaio
 
 import asyncpg
 
@@ -17,13 +19,12 @@ from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PA
     EVENT_DB_NAME
 from eventify import Eventify
 
-logger = logging.getLogger('eventify.drivers.crossbar')
-
 
 class Component(ApplicationSession):
     """
     Handle subscribing to topics
     """
+    log = txaio.make_logger()
 
     async def onConnect(self):
         """
@@ -31,7 +32,6 @@ class Component(ApplicationSession):
         """
 
         # subscription setup
-        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
         self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
         self.replay_events = self.config.extra['config']['replay_events']
 
@@ -42,23 +42,27 @@ class Component(ApplicationSession):
         # setup callback
         self.handlers = self.config.extra['handlers']
 
+        # optional subscribed topics from config.json
+        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
+
         # put name on session
         self.name = self.config.extra['config']['name']
 
-        # setup db pool
-        self.pool = await asyncpg.create_pool(
-            user=EVENT_DB_USER,
-            password=EVENT_DB_PASS,
-            host=EVENT_DB_HOST,
-            database=EVENT_DB_NAME
-        )
+        # setup db pool - optionally
+        if self.publish_options['retain'] is True:
+            self.pool = await asyncpg.create_pool(
+                user=EVENT_DB_USER,
+                password=EVENT_DB_PASS,
+                host=EVENT_DB_HOST,
+                database=EVENT_DB_NAME
+            )
 
         # Check for replay option
         # if self.replay_events:
         #   await replay_events(self)
 
         # join topic
-        print("connected")
+        self.log.debug("connected")
         self.join(self.config.realm)
 
     async def emit_event(self, event):
@@ -66,18 +70,17 @@ class Component(ApplicationSession):
         Publish an event back to crossbar
         :param event: Event object
         """
-        logger.debug("publishing event on %s", self.publish_topic)
+        self.log.debug("publishing event on %s", self.publish_topic)
         if self.config.extra['config']['pub_options']['retain']:
             try:
-                logger.debug("persisting event")
                 await persist_event(
                     self.publish_topic,
                     event,
                     self.pool
                 )
-                logger.debug("event persisted")
             except SystemError as error:
-                logger.error(error)
+                self.log.error(error)
+                self.log.error(error)
                 return
 
         await self.publish(
@@ -86,24 +89,47 @@ class Component(ApplicationSession):
             options=self.publish_options
         )
 
+    async def onClose(self, wasClean, code, reason):
+        """
+        Auto reconnect with crossbar if connection
+        is lost
+        """
+
+        loop = asyncio.get_event_loop()
+        loop.stop()
+        raise ConnectionError("Lost connection to crossbar")
+
+
     async def onJoin(self, details):
-        logger.debug("joined websocket realm: %s", details)
+        self.log.debug("joined websocket realm: %s", details)
 
         for handler in self.handlers:
             # initialize handler
             handler_instance = handler()
             handler_instance.set_session(self)
+
             if hasattr(handler_instance, 'init'):
                 await handler_instance.init()
+
             if hasattr(handler_instance, 'on_event'):
-                # Subscribe to all of the topics in configuration
-                for topic in self.subscribed_topics:
-                    logger.debug("subscribing to topic %s", topic)
+                self.log.debug("subscribing to topic %s", handler_instance.subscribe_topic)
+
+                # Used with base handler defined subscribe_topic
+                if handler_instance.subscribe_topic is not None:
                     await self.subscribe(
                         handler_instance.on_event,
                         handler_instance.subscribe_topic,
                     )
-                    logger.debug("subscribed to topic: %s", topic)
+                    self.log.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
+                else:
+                    # Used with config.json defined topics
+                    if self.subscribed_topics is not None:
+                        for topic in self.subscribed_topics:
+                            await self.subscribe(
+                                handler_instance.on_event,
+                                topic
+                            )
+                            self.log.debug("subscribed to topic: %s", topic)
 
             if hasattr(handler_instance, 'worker'):
                 # or just await handler.worker()
@@ -154,7 +180,7 @@ class Service(Eventify):
         """
         Start a producer/consumer service
         """
-        logger.debug('starting producer/consumer service')
+        self.log.debug('starting producer/consumer service')
 
         # Connect to crossbar
         runner = ApplicationRunner(
@@ -165,7 +191,18 @@ class Service(Eventify):
                 'handlers': self.handlers,
             }
         )
-        if start_loop:
-            runner.run(Component)
-        else:
-            return runner.run(Component, start_loop=start_loop)
+        run_component(runner, start_loop)
+
+
+    def run_component(self, runner, start_loop=True):
+        """
+        Support autoconnecting for asyncio
+        and cross bar
+        """
+        try:
+            if start_loop:
+                runner.run(Component)
+            else:
+                return runner.run(Component, start_loop=start_loop)
+        except ConnectionError:
+            self.run_component(runner, start_loop)
