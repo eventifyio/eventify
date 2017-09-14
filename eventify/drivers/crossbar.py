@@ -86,6 +86,16 @@ class Component(ApplicationSession):
             options=self.publish_options
         )
 
+    async def onClose(self):
+        """
+        Auto reconnect with crossbar if connection
+        is lost
+        """
+        loop = asyncio.get_event_loop()
+        loop.stop()
+        raise ConnectionError("Lost connection to crossbar")
+
+
     async def onJoin(self, details):
         logger.debug("joined websocket realm: %s", details)
 
@@ -165,7 +175,15 @@ class Service(Eventify):
                 'handlers': self.handlers,
             }
         )
-        if start_loop:
-            runner.run(Component)
-        else:
-            return runner.run(Component, start_loop=start_loop)
+        run_component(runner, start_loop)
+
+
+    @staticmethod
+    def run_component(runner, start_loop=True):
+        try:
+            if start_loop:
+                runner.run(Component)
+            else:
+                return runner.run(Component, start_loop=start_loop)
+        except ConnectionError:
+            run_component(runner, start_loop)
