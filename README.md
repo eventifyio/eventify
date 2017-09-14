@@ -35,43 +35,39 @@ import asyncio
 import logging
 import sys
 
+from eventify.base_handler import BaseHandler
 from eventify.event import Event
 from eventify.service import Service
 
 
-FORMAT = '%(asctime)-15s %(name)s %(levelname)s %(message)s'
-logging.basicConfig(stream=sys.stdout, format=FORMAT, level=logging.DEBUG)
-logger = logging.getLogger('example.service')
-
-async def my_example_event_handler(event, session=None):
+class GoogleCollector:
     """
-    Example event handler - This function is implemented as
-    a callback method to the eventify service
-    :param event: An event dictionary
-    :param session: Access to the underlying methods of eventify
+    Google Specific Collector
     """
-    # Parse Incoming Event from Dict to Object
-    event = Event(event)
 
-    # See the event that was received
-    logger.debug("received event %s", event.name)
+    async def collect_vm_data(self):
+        print('...collecting data from gce api...')
+        await asyncio.sleep(1)
 
+class Collector(BaseHandler, GoogleCollector):
+    """
+    Generic collector
+    """
 
-    # Create and Publish an Event
-    # you can also use the publish method directly
-    new_event = Event({
-        "name": "ReceivedEvent",
-        "message": "Event received by consumer",
-        "trace_id": event.trace_id
-    })
-    await session.emit_event(new_event)
+    async def init(self):
+        """
+        Service initialization
+        """
+        print('...service initialized...')
 
 
 def run():
-    logger.debug('service started')
-    service = Service(
+    """
+    Run an eventify service
+    """
+    Service(
         config_file='config.json',
-        callback=my_example_event_handler
+        handlers=[Collector]
     ).start()
 
 if __name__ == '__main__':
