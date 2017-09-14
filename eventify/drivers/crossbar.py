@@ -3,6 +3,8 @@ Crossbar Driver Module
 """
 from __future__ import print_function
 
+import asyncio
+
 import logging
 import sys
 import traceback
