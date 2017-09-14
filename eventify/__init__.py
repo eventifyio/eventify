@@ -57,6 +57,9 @@ class Eventify(object):
                 'get_retained': False
             }
 
+        if 'subscribed_topics' not in self.config:
+            self.config['subscribed_topics'] = None
+
         if 'replay_events' not in self.config:
             self.config['replay_events'] = False
 

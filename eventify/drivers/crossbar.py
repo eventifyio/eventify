@@ -43,16 +43,20 @@ class Component(ApplicationSession):
         # setup callback
         self.handlers = self.config.extra['handlers']
 
+        # optional subscribed topics from config.json
+        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
+
         # put name on session
         self.name = self.config.extra['config']['name']
 
-        # setup db pool
-        self.pool = await asyncpg.create_pool(
-            user=EVENT_DB_USER,
-            password=EVENT_DB_PASS,
-            host=EVENT_DB_HOST,
-            database=EVENT_DB_NAME
-        )
+        # setup db pool - optionally
+        if self.publish_options['retain'] is True:
+            self.pool = await asyncpg.create_pool(
+                user=EVENT_DB_USER,
+                password=EVENT_DB_PASS,
+                host=EVENT_DB_HOST,
+                database=EVENT_DB_NAME
+            )
 
         # Check for replay option
         # if self.replay_events:
@@ -104,15 +108,29 @@ class Component(ApplicationSession):
             # initialize handler
             handler_instance = handler()
             handler_instance.set_session(self)
+
             if hasattr(handler_instance, 'init'):
                 await handler_instance.init()
+
             if hasattr(handler_instance, 'on_event'):
                 logger.debug("subscribing to topic %s", handler_instance.subscribe_topic)
-                await self.subscribe(
-                    handler_instance.on_event,
-                    handler_instance.subscribe_topic,
-                )
-                logger.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
+
+                # Used with base handler defined subscribe_topic
+                if handler_instance.subscribe_topic is not None:
+                    await self.subscribe(
+                        handler_instance.on_event,
+                        handler_instance.subscribe_topic,
+                    )
+                    logger.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
+                else:
+                    # Used with config.json defined topics
+                    if self.subscribed_topics is not None:
+                        for topic in self.subscribed_topics:
+                            await self.subscribe(
+                                handler_instance.on_event,
+                                topic
+                            )
+                            logger.debug("subscribed to topic: %s", topic)
 
             if hasattr(handler_instance, 'worker'):
                 # or just await handler.worker()
