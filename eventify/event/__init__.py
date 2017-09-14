@@ -32,7 +32,7 @@ class Event(object):
                 setattr(self, key, value)
 
 
-async def replay_events(self):
+async def replay_events():
     """
     Replay events from a given timestamp or event_id
     :param timestamp: Human readable datetime

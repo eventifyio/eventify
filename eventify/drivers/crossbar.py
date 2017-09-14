@@ -89,11 +89,14 @@ class Component(ApplicationSession):
             options=self.publish_options
         )
 
-    async def onClose(self, wasClean, code, reason):
+    def onClose(self, wasClean, code, reason):
         """
         Auto reconnect with crossbar if connection
         is lost
         """
+        self.log.error(wasClean)
+        self.log.error(code)
+        self.log.error(reason)
 
         loop = asyncio.get_event_loop()
         loop.stop()
@@ -180,8 +183,6 @@ class Service(Eventify):
         """
         Start a producer/consumer service
         """
-        self.log.debug('starting producer/consumer service')
-
         # Connect to crossbar
         runner = ApplicationRunner(
             url=self.config['transport_host'],
@@ -191,7 +192,7 @@ class Service(Eventify):
                 'handlers': self.handlers,
             }
         )
-        run_component(runner, start_loop)
+        self.run_component(runner, start_loop)
 
 
     def run_component(self, runner, start_loop=True):
@@ -205,4 +206,11 @@ class Service(Eventify):
             else:
                 return runner.run(Component, start_loop=start_loop)
         except ConnectionError:
-            self.run_component(runner, start_loop)
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    asyncio.set_event_loop(asyncio.new_event_loop())
+                    self.run_component(runner, start_loop)
+            except Exception as error:
+                print(error)
+                sys.exit(1)
