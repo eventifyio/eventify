@@ -64,10 +64,6 @@ class Eventify(object):
             raise EventifyConfigError(
                 'Required configuration parameter missing! Please configure "name" as a string in your configuration.')
 
-        if 'subscribed_topics' not in self.config:
-            raise EventifyConfigError(
-                'Required configuration parameter missing! Please configure "subscribed_topics" as an array in your configuration.')
-
         if 'publish_topic' not in self.config:
             raise EventifyConfigError(
                 'Required configuration parameter missing! Please configure "public_topic" as an object in your configuration.')
