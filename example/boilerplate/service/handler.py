@@ -20,19 +20,8 @@ class Collector(BaseHandler, GoogleCollector):
     Generic collector
     """
 
-    def __init__(self):
+    async def init(self):
         """
         Service initialization
         """
         print('...service initialized...')
-
-    async def worker(self):
-        """
-        Collect data for required data points
-        https://bpaste.net/show/044ae52dc5bb
-        """
-        print('...working...')
-        await self.collect_vm_data()
-        await asyncio.sleep(5)
-
-
