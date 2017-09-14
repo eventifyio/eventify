@@ -49,7 +49,7 @@ class Component(ApplicationSession):
         self.name = self.config.extra['config']['name']
 
         # setup db pool - optionally
-        if self.publish_options['retain'] is True:
+        if self.config.extra['config']['pub_options']['retain'] is True:
             self.pool = await asyncpg.create_pool(
                 user=EVENT_DB_USER,
                 password=EVENT_DB_PASS,
