@@ -6,12 +6,14 @@ from __future__ import print_function
 import asyncio
 import logging
 import sys
+import time
 import traceback
 import txaio
 
 import asyncpg
 
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
+from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
 from eventify.persist import persist_event
@@ -19,7 +21,9 @@ from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PA
     EVENT_DB_NAME
 from eventify import Eventify
 
+
 txaio.use_asyncio()
+
 
 class Component(ApplicationSession):
     """
@@ -31,6 +35,8 @@ class Component(ApplicationSession):
         """
         Configure the component
         """
+        # setup transport host
+        self.transport_host = self.config.extra['config']['transport_host']
 
         # subscription setup
         self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
@@ -66,6 +72,7 @@ class Component(ApplicationSession):
         self.log.info("connected")
         self.join(self.config.realm)
 
+
     async def emit_event(self, event):
         """
         Publish an event back to crossbar
@@ -81,7 +88,6 @@ class Component(ApplicationSession):
                 )
             except SystemError as error:
                 self.log.error(error)
-                self.log.error(error)
                 return
 
         await self.publish(
@@ -93,21 +99,21 @@ class Component(ApplicationSession):
 
     def onClose(self, wasClean):
         """
-        Auto reconnect with crossbar if connection
-        is lost
+        Disconnect when connection to message
+        broker is lost
         """
-        print('lost connection to crossbar')
-        try:
-            loop = asyncio.get_event_loop()
-            if loop.is_closed():
-                asyncio.set_event_loop(asyncio.new_event_loop())
-        except Exception as error:
-            print(error)
-            sys.exit(1)
+        self.log.error('lost connection to crossbar on session ' + str(self.session_id))
+        loop = asyncio.get_event_loop()
+        loop.stop()
+        loop.close()
 
 
     async def onJoin(self, details):
         self.log.info("joined websocket realm: %s", details)
+
+        # set session_id for reconnect
+        self.session_id = details.session
+        self.realm_id = details.realm
 
         for handler in self.handlers:
             # initialize handler
@@ -147,6 +153,7 @@ class Component(ApplicationSession):
                         traceback.print_exc(file=sys.stdout)
                         continue
 
+
     async def show_sessions(self):
         """
         Returns an object with a lists of the session IDs
@@ -158,6 +165,7 @@ class Component(ApplicationSession):
         for session_id in res:
             session = await self.call("wamp.session.get", session_id)
             print(session)
+
 
     async def total_sessions(self):
         """
@@ -182,11 +190,10 @@ class Service(Eventify):
     """
     Create crossbar service
     """
-    def start(self, start_loop=True):
+    def setup_runner(self):
         """
-        Start a producer/consumer service
+        Setup instance of runner var
         """
-        # Connect to crossbar
         runner = ApplicationRunner(
             url=self.config['transport_host'],
             realm=u'realm1',
@@ -195,8 +202,57 @@ class Service(Eventify):
                 'handlers': self.handlers,
             }
         )
+        return runner
+
+
+    def start(self, start_loop=True):
+        """
+        Start a producer/consumer service
+        """
+        txaio.start_logging(level='info')
+        runner = self.setup_runner()
         if start_loop:
-            txaio.start_logging(level='info')
-            runner.run(Component)
+
+            # Initial connection
+            try:
+                runner.run(Component)
+            except ConnectionRefusedError:
+                logging.error('Unable to connect to crossbar instance. Is it running?')
+                sys.exit(1)
+            except KeyboardInterrupt:
+                logging.info('User initiated shutdown')
+                loop.get_event_loop()
+                loop.stop()
+                sys.exit(1)
+
+            # Handle reconnect logic
+            connect_attempt = 0
+            max_retries = self.config['max_reconnect_retries']
+            while True:
+
+                # Stop service if unable to connect
+                # after max retries is reached
+                if connect_attempt == max_retries:
+                    logging.info('max retries reached; stopping service')
+                    sys.exit(1)
+
+                # Setup new event loop
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
+                try:
+                    loop.run_until_complete(runner.run(Component))
+                except RuntimeError as error:
+                    logging.error(error)
+                except ConnectionRefusedError as error:
+                    logging.error(error)
+
+                # Add delay for reconnect
+                time.sleep(5)
+                connect_attempt += 1
+
         else:
-            return runner.run(Component, start_loop=start_loop)
+            return runner.run(
+                Component,
+                start_loop=start_loop
+            )
