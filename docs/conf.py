@@ -5,11 +5,11 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify'))
-sys.path.insert(1, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/producer'))
-sys.path.insert(2, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/consumer'))
-sys.path.insert(3, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/stream'))
-sys.path.insert(4, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/persist'))
-sys.path.insert(5, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/example'))
+sys.path.insert(1, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/drivers'))
+sys.path.insert(2, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/exceptions'))
+sys.path.insert(3, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/event'))
+sys.path.insert(4, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/tracking'))
+sys.path.insert(5, os.path.abspath('/home/mharris/Projects/Personal/eventify/eventify/persist'))
 
 
 # -- General configuration ------------------------------------------------
@@ -60,13 +60,13 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**test**']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
 
 
 # -- Options for HTML output ----------------------------------------------

@@ -296,6 +296,7 @@ class Service(Eventify):
     def start(self, start_loop=True):
         """
         Start a producer/consumer service
+
         """
         txaio.start_logging(level='info')
         runner = self.setup_runner()
