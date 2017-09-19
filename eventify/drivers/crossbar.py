@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import asyncio
 import logging
+import socket
 import sys
 import time
 import traceback
@@ -103,13 +104,36 @@ class Component(ApplicationSession):
         broker is lost
         """
         self.log.error('lost connection to crossbar on session ' + str(self.session_id))
-        loop = asyncio.get_event_loop()
-        loop.stop()
-        loop.close()
+        for task in asyncio.Task.all_tasks():
+            task.cancel()
+        asyncio.get_event_loop().stop()
+
+
+    def onDisconnect(self):
+        """
+        Event fired when transport is lost
+        """
+        self.log.error('onDisconnect event fired')
+
+
+    def onLeave(self, reason=None, message=None):
+        """
+        :param reason:
+        :param message:
+        """
+        self.log.info('Leaving realm; reason: %s', reason)
+
+
+    def onUserError(self, fail, message):
+        """
+        Handle user errors
+        """
+        self.log.error(fail)
+        self.log.error(message)
 
 
     async def onJoin(self, details):
-        self.log.info("joined websocket realm: %s", details)
+        self.log.debug("joined websocket realm: %s", details)
 
         # set session_id for reconnect
         self.session_id = details.session
@@ -124,7 +148,7 @@ class Component(ApplicationSession):
                 await handler_instance.init()
 
             if hasattr(handler_instance, 'on_event'):
-                self.log.info("subscribing to topic %s", handler_instance.subscribe_topic)
+                self.log.debug("subscribing to topic %s", handler_instance.subscribe_topic)
 
                 # Used with base handler defined subscribe_topic
                 if handler_instance.subscribe_topic is not None:
@@ -132,7 +156,7 @@ class Component(ApplicationSession):
                         handler_instance.on_event,
                         handler_instance.subscribe_topic,
                     )
-                    self.log.info("subscribed to topic: %s", handler_instance.subscribe_topic)
+                    self.log.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
                 else:
                     # Used with config.json defined topics
                     if self.subscribed_topics is not None:
@@ -141,15 +165,15 @@ class Component(ApplicationSession):
                                 handler_instance.on_event,
                                 topic
                             )
-                            self.log.info("subscribed to topic: %s", topic)
+                            self.log.debug("subscribed to topic: %s", topic)
 
             if hasattr(handler_instance, 'worker'):
                 # or just await handler.worker()
                 while True:
                     try:
                         await handler_instance.worker()
-                    except Exception:
-                        print("Operation failed. Go to next item...")
+                    except Exception as error:
+                        self.log.error("Operation failed. %s", error)
                         traceback.print_exc(file=sys.stdout)
                         continue
 
@@ -164,7 +188,7 @@ class Component(ApplicationSession):
         res = await self.call("wamp.session.list")
         for session_id in res:
             session = await self.call("wamp.session.get", session_id)
-            print(session)
+            self.log.info(session)
 
 
     async def total_sessions(self):
@@ -174,7 +198,8 @@ class Component(ApplicationSession):
         http://crossbar.io/docs/Session-Metaevents-and-Procedures/
         """
         res = await self.call("wamp.session.count")
-        print(res)
+        self.log.info(res)
+
 
     async def lookup_session(self, topic_name):
         """
@@ -183,7 +208,7 @@ class Component(ApplicationSession):
         http://crossbar.io/docs/Subscription-Meta-Events-and-Procedures/
         """
         res = await self.call("wamp.subscription.lookup", topic_name)
-        print(res)
+        self.log.info(res)
 
 
 class Service(Eventify):
@@ -221,13 +246,14 @@ class Service(Eventify):
                 sys.exit(1)
             except KeyboardInterrupt:
                 logging.info('User initiated shutdown')
-                loop.get_event_loop()
+                loop = asyncio.get_event_loop()
                 loop.stop()
                 sys.exit(1)
 
             # Handle reconnect logic
             connect_attempt = 0
             max_retries = self.config['max_reconnect_retries']
+            print('attempting to reconnect to crossbar')
             while True:
 
                 # Stop service if unable to connect
@@ -237,18 +263,36 @@ class Service(Eventify):
                     sys.exit(1)
 
                 # Setup new event loop
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
+                loop = asyncio.get_event_loop()
+                if loop.is_closed() and start_loop:
+                    asyncio.set_event_loop(asyncio.new_event_loop())
 
                 try:
-                    loop.run_until_complete(runner.run(Component))
-                except RuntimeError as error:
-                    logging.error(error)
-                except ConnectionRefusedError as error:
-                    logging.error(error)
+                    print('...sleeping 10 seconds...')
+                    time.sleep(10)
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    result = sock.connect_ex(('events-server',8080))
 
-                # Add delay for reconnect
-                time.sleep(5)
+                    # TODO: Read from config vs using hard coded hostname
+                    if result == 0:
+                        print('port 8080 on crossbar is open!')
+                        print('waiting 10 seconds to ensure that crossbar has initialized before reconnecting')
+                        time.sleep(10)
+                        runner.run(Component)
+                    else:
+                        print('crossbar host port 8080 not available...')
+                except RuntimeError as error:
+                    logging.debug(error)
+                except ConnectionRefusedError as error:
+                    logging.debug(error)
+                except ConnectionError as error:
+                    logging.debug(error)
+                except KeyboardInterrupt:
+                    logging.info('User initiated shutdown')
+                    loop = asyncio.get_event_loop()
+                    loop.stop()
+                    sys.exit(1)
+
                 connect_attempt += 1
 
         else:
