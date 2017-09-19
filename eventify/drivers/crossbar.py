@@ -230,6 +230,69 @@ class Service(Eventify):
         return runner
 
 
+    @staticmethod
+    def check_event_loop():
+        """
+        Check if event loop is closed and
+        create a new event loop
+        """
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            asyncio.set_event_loop(asyncio.new_event_loop())
+
+
+    def check_transport_host(self):
+        """
+        Check if crossbar port is open
+        on transport host
+        """
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        result = sock.connect_ex(('events-server',8080)) # TODO: Read from config vs using hard coded hostname
+        if result == 0:
+            logging.info('port 8080 on crossbar is open!')
+            return True
+        return False
+
+
+    def reconnect(self):
+        """
+        Handle reconnect logic if connection
+        to crossbar is lost
+        """
+        connect_attempt = 0
+        max_retries = self.config['max_reconnect_retries']
+        logging.info('attempting to reconnect to crossbar')
+        runner = self.setup_runner()
+        while True:
+
+            if connect_attempt == max_retries:
+                logging.info('max retries reached; stopping service')
+                sys.exit(1)
+            self.check_event_loop()
+
+            try:
+                logging.info('waiting 5 seconds')
+                time.sleep(5)
+                if self.check_transport_host():
+                    logging.info('waiting 10 seconds to ensure that crossbar has initialized before reconnecting')
+                    time.sleep(10)
+                    runner.run(Component)
+                else:
+                    logging.error('crossbar host port 8080 not available...')
+            except RuntimeError as error:
+                logging.error(error)
+            except ConnectionRefusedError as error:
+                logging.error(error)
+            except ConnectionError as error:
+                logging.error(error)
+            except KeyboardInterrupt:
+                logging.info('User initiated shutdown')
+                loop = asyncio.get_event_loop()
+                loop.stop()
+                sys.exit(1)
+            connect_attempt += 1
+
+
     def start(self, start_loop=True):
         """
         Start a producer/consumer service
@@ -237,8 +300,6 @@ class Service(Eventify):
         txaio.start_logging(level='info')
         runner = self.setup_runner()
         if start_loop:
-
-            # Initial connection
             try:
                 runner.run(Component)
             except ConnectionRefusedError:
@@ -249,52 +310,8 @@ class Service(Eventify):
                 loop = asyncio.get_event_loop()
                 loop.stop()
                 sys.exit(1)
-
-            # Handle reconnect logic
-            connect_attempt = 0
-            max_retries = self.config['max_reconnect_retries']
-            print('attempting to reconnect to crossbar')
-            while True:
-
-                # Stop service if unable to connect
-                # after max retries is reached
-                if connect_attempt == max_retries:
-                    logging.info('max retries reached; stopping service')
-                    sys.exit(1)
-
-                # Setup new event loop
-                loop = asyncio.get_event_loop()
-                if loop.is_closed() and start_loop:
-                    asyncio.set_event_loop(asyncio.new_event_loop())
-
-                try:
-                    print('...sleeping 10 seconds...')
-                    time.sleep(10)
-                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    result = sock.connect_ex(('events-server',8080))
-
-                    # TODO: Read from config vs using hard coded hostname
-                    if result == 0:
-                        print('port 8080 on crossbar is open!')
-                        print('waiting 10 seconds to ensure that crossbar has initialized before reconnecting')
-                        time.sleep(10)
-                        runner.run(Component)
-                    else:
-                        print('crossbar host port 8080 not available...')
-                except RuntimeError as error:
-                    logging.debug(error)
-                except ConnectionRefusedError as error:
-                    logging.debug(error)
-                except ConnectionError as error:
-                    logging.debug(error)
-                except KeyboardInterrupt:
-                    logging.info('User initiated shutdown')
-                    loop = asyncio.get_event_loop()
-                    loop.stop()
-                    sys.exit(1)
-
-                connect_attempt += 1
-
+            self.check_event_loop()
+            self.reconnect()
         else:
             return runner.run(
                 Component,
