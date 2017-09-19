@@ -11,7 +11,6 @@ from eventify.exceptions import EventifyConfigError, EventifyInitError
 # Set uvloop as event loop for performance gains
 try:
     import uvloop
-
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 except ImportError:
     pass
@@ -38,7 +37,10 @@ class Eventify(object):
         self.config_file = config_file
         self.config = self.load_config
         self.handlers = handlers
+
+        self.config_sanity_check()
         self.set_missing_defaults()
+
         logger.debug('configuration loaded: %s', self.config)
 
     def set_missing_defaults(self):
@@ -63,6 +65,14 @@ class Eventify(object):
         if 'replay_events' not in self.config:
             self.config['replay_events'] = False
 
+        if 'max_reconnect_retries' not in self.config:
+            self.config['max_reconnect_retries'] = 10
+
+
+    def config_sanity_check(self):
+        """
+        Base configuration sanity checks
+        """
         if 'name' not in self.config:
             raise EventifyConfigError(
                 'Required configuration parameter missing! Please configure "name" as a string in your configuration.')
@@ -74,6 +84,7 @@ class Eventify(object):
         if 'topic' not in self.config['publish_topic']:
             raise EventifyConfigError(
                 'Required configuration parameter missing! Please configure "topic" as a key in your "public_topic object.')
+
 
     @property
     def load_config(self):

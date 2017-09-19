@@ -24,4 +24,4 @@ class Collector(BaseHandler, GoogleCollector):
         """
         Service initialization
         """
-        print('...service initialized...')
+        await self.session.show_sessions()

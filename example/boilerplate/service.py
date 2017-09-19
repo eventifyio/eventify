@@ -20,6 +20,5 @@ def run():
         handlers=[Collector]
     ).start()
 
-
 if __name__ == '__main__':
     run()
