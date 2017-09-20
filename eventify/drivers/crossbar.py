@@ -15,6 +15,7 @@ import asyncpg
 
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
+from autobahn.wamp.exception import TransportLost
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
 from eventify.persist import persist_event
@@ -91,11 +92,17 @@ class Component(ApplicationSession):
                 self.log.error(error)
                 return
 
-        await self.publish(
-            self.publish_topic,
-            event.__dict__,
-            options=self.publish_options
-        )
+        try:
+            await self.publish(
+                self.publish_topic,
+                event.__dict__,
+                options=self.publish_options
+            )
+        except TransportLost as error:
+            for task in asyncio.Task.all_tasks():
+                task.cancel()
+            loop = asyncio.get_event_loop().stop()
+            self.log.error(error)
 
 
     def onClose(self, wasClean):
