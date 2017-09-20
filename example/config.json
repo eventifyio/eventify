@@ -1,21 +1,25 @@
 {
     "_comment": "service configuration",
-    "name": "example",
-    "image": "example/service",
+    "name": "gce-vm-collector",
+    "image": "gce/vm",
     "driver": "crossbar",
     "transport_host": "ws://events-server:8080/ws",
     "pub_options": {
         "acknowledge": true,
-        "retain": true
+        "retain": false,
+        "exclude_me": true
     },
     "publish_topic": {
-        "topic": "example",
+        "topic": "gce-vm",
         "timeout": 20,
         "reply_in": 0
     },
     "subscribed_topics": [
-        "example.topic"
+        "gce-vm"
     ],
-    "replay_events": true,
+    "sub_options": {
+        "get_retained": false
+    },
+    "replay_events": false,
     "replay_type": "event_store"
 }
