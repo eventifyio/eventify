@@ -14,7 +14,6 @@ import txaio
 import asyncpg
 
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
-from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
 from autobahn.wamp.exception import TransportLost
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
@@ -101,7 +100,7 @@ class Component(ApplicationSession):
         except TransportLost as error:
             for task in asyncio.Task.all_tasks():
                 task.cancel()
-            loop = asyncio.get_event_loop().stop()
+            asyncio.get_event_loop().stop()
             self.log.error(error)
 
 
@@ -254,7 +253,7 @@ class Service(Eventify):
         on transport host
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('events-server',8080)) # TODO: Read from config vs using hard coded hostname
+        result = sock.connect_ex(('events-server', 8080)) # TODO: Read from config vs using hard coded hostname
         if result == 0:
             logging.info('port 8080 on crossbar is open!')
             return True
