@@ -28,7 +28,7 @@ pyOpenSSL==17.0.0
 pytz==2017.2
 requests==2.18.4
 service-identity==17.0.0
-six==1.10.0
+six==1.11.0
 snowballstemmer==1.2.1
 Sphinx==1.6.3
 sphinx-rtd-theme==0.2.4
