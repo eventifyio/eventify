@@ -1,12 +1,1 @@
-appdirs==1.4.3
-attrs==16.3.0
-autobahn==17.9.2
-Automat==0.5.0
-constantly==15.1.0
-incremental==17.5.0
-packaging==16.8
-pyparsing==2.2.0
-six==1.11.0
-Twisted==17.1.0
-txaio==2.8.2
-zope.interface==4.3.3
+eventify==0.4.2
