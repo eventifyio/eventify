@@ -31,6 +31,24 @@ class Event(object):
             for (key, value) in kwargs.items():
                 setattr(self, key, value)
 
+    def __eq__(self, other):
+        """
+        Compare if event name is equal to
+        another event name for testing
+        :param other: A Event instance
+        """
+        if isinstance(other, self.__class__):
+            return self.name == other.name and self.message == other.message
+        return False
+
+    def __ne__(self, other):
+        """
+        Compare if event name is not equal
+        to another event name for testing
+        :param other: A Event instance
+        """
+        return not self.__eq__(other)
+
 
 async def replay_events():
     """

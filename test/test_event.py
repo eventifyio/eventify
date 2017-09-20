@@ -52,3 +52,36 @@ class TestEvent(unittest.TestCase):
             'name': 'TestEvent'
         })
         self.assertIsNotNone(event.name)
+
+
+    def test_event_name_not_equal(self):
+        event_one = Event({
+            'name': 'One'
+        })
+
+        event_two = Event({
+            'name': 'Two'
+        })
+
+        is_equal = event_one.__ne__(event_two)
+        self.assertTrue(is_equal)
+
+        is_equal = event_one.__eq__(event_two)
+        self.assertFalse(is_equal)
+
+    def test_event_name_matches(self):
+        event_one = Event({
+            'name': 'One',
+            'message': 'Test'
+        })
+
+        event_two = Event({
+            'name': 'One',
+            'message': 'Test'
+        })
+
+        is_equal = event_one.__eq__(event_two)
+        self.assertTrue(is_equal)
+
+        is_equal = event_one.__ne__(event_two)
+        self.assertFalse(is_equal)
