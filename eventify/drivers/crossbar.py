@@ -15,61 +15,29 @@ import asyncpg
 
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.exception import TransportLost
-from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
+from eventify import Eventify
+from eventify.drivers.base import BaseComponent
 from eventify.persist import persist_event
 from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
     EVENT_DB_NAME
-from eventify import Eventify
 
 
 txaio.use_asyncio()
 
 
-class Component(ApplicationSession):
+class Component(BaseComponent, ApplicationSession):
     """
     Handle subscribing to topics
     """
     log = logging.getLogger("eventify.drivers.crossbar")
 
+
     async def onConnect(self):
         """
-        Configure the component
+        Inherited from BaseComponent
         """
-        # setup transport host
-        self.transport_host = self.config.extra['config']['transport_host']
-
-        # subscription setup
-        self.subscribe_options = SubscribeOptions(**self.config.extra['config']['sub_options'])
-        self.replay_events = self.config.extra['config']['replay_events']
-
-        # publishing setup
-        self.publish_topic = self.config.extra['config']['publish_topic']['topic']
-        self.publish_options = PublishOptions(**self.config.extra['config']['pub_options'])
-
-        # setup callback
-        self.handlers = self.config.extra['handlers']
-
-        # optional subscribed topics from config.json
-        self.subscribed_topics = self.config.extra['config']['subscribed_topics']
-
-        # put name on session
-        self.name = self.config.extra['config']['name']
-
-        # setup db pool - optionally
-        if self.config.extra['config']['pub_options']['retain'] is True:
-            self.pool = await asyncpg.create_pool(
-                user=EVENT_DB_USER,
-                password=EVENT_DB_PASS,
-                host=EVENT_DB_HOST,
-                database=EVENT_DB_NAME
-            )
-
-        # Check for replay option
-        # if self.replay_events:
-        #   await replay_events(self)
-
-        # join topic
+        super(BaseComponent, self).onConnect()
         self.log.info("connected")
         self.join(self.config.realm)
 
@@ -236,17 +204,6 @@ class Service(Eventify):
         return runner
 
 
-    @staticmethod
-    def check_event_loop():
-        """
-        Check if event loop is closed and
-        create a new event loop
-        """
-        loop = asyncio.get_event_loop()
-        if loop.is_closed():
-            asyncio.set_event_loop(asyncio.new_event_loop())
-
-
     def check_transport_host(self):
         """
         Check if crossbar port is open
@@ -304,7 +261,7 @@ class Service(Eventify):
         Start a producer/consumer service
 
         """
-        txaio.start_logging(level='error')
+        txaio.start_logging()
         runner = self.setup_runner()
         if start_loop:
             try:
