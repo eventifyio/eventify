@@ -102,3 +102,13 @@ class Eventify(object):
             logger.error('configuration file is required for eventify')
         logger.error('unable to load configuration for service')
         raise EventifyConfigError('Configuration is required! Missing: %s' % self.config_file)
+
+    @staticmethod
+    def check_event_loop():
+        """
+        Check if event loop is closed and
+        create a new event loop
+        """
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            asyncio.set_event_loop(asyncio.new_event_loop())
