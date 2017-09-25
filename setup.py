@@ -15,6 +15,7 @@ setup(
     classifiers=[],
     install_requires=[
         'asyncio',
+        'aiokafka',
         'aioredis',
         'asyncpg',
         'pyOpenSSL',
