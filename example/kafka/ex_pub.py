@@ -1,5 +1,5 @@
 """
-ZeroMQ Example Message Transport
+Example Kafka Publisher
 """
 import asyncio
 import logging

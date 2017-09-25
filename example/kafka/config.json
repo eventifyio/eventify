@@ -2,8 +2,8 @@
     "_comment": "service configuration",
     "name": "gce-vm-collector",
     "image": "gce/vm",
-    "driver": "zeromq",
-    "transport_host": "tcp://events-server:5570",
+    "driver": "kafka",
+    "transport_host": "localhost:9092",
     "pub_options": {
         "acknowledge": true,
         "retain": false,

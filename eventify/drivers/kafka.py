@@ -76,7 +76,7 @@ class Component(BaseComponent):
         loop = asyncio.get_event_loop()
         producer = AIOKafkaProducer(
             loop=loop,
-            bootstrap_servers='localhost:9092'
+            bootstrap_servers=self.transport_host
         )
         await producer.start()
 
@@ -107,7 +107,7 @@ class Component(BaseComponent):
                 if handler_instance.subscribe_topic is not None:
                     consumer = AIOKafkaConsumer(
                         handler_instance.subscribe_topic,
-                        bootstrap_servers='localhost:9092',
+                        bootstrap_servers=self.transport_host,
                         loop=loop
                     )
                     await consumer.start()
@@ -115,10 +115,9 @@ class Component(BaseComponent):
 
                     try:
                         async for msg in consumer:
-                            print("consumed: ", msg.topic, msg.partition, msg.offset, msg.key, msg.value, msg.timestamp)
+                            await handler_instance.on_event(msg.value)
                     finally:
                         await consumer.stop()
-                        #await handler_instance.on_event(msg)
                 else:
                     # Used with config.json defined topics
                     if self.subscribed_topics is not None:
@@ -130,7 +129,7 @@ class Component(BaseComponent):
                         await consumer.start()
                         try:
                             async for msg in consumer:
-                                print("consumed: ", msg.topic, msg.partition, msg.offset, msg.key, msg.value, msg.timestamp)
+                                await handler_instance.on_event(msg.value)
                         finally:
                             await consumer.stop()
 

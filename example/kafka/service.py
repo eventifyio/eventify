@@ -1,5 +1,5 @@
 """
-ZeroMQ Example Message Transport
+Kafka Consumer Service
 """
 import asyncio
 import logging
