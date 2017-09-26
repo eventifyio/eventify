@@ -123,7 +123,7 @@ class Component(BaseComponent):
                     if self.subscribed_topics is not None:
                         consumer = AIOKafkaConsumer(
                             ''.join(self.subscribed_topics),
-                            bootstrap_servers='localhost:9092',
+                            bootstrap_servers=self.transport_host,
                             loop=loop
                         )
                         await consumer.start()

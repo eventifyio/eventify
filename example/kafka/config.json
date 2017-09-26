@@ -3,7 +3,7 @@
     "name": "gce-vm-collector",
     "image": "gce/vm",
     "driver": "kafka",
-    "transport_host": "localhost:9092",
+    "transport_host": "socket.opless.io:9092",
     "pub_options": {
         "acknowledge": true,
         "retain": false,
