@@ -61,4 +61,8 @@ class BaseComponent(object):
                 database=EVENT_DB_NAME
             )
 
-        await asyncio.sleep(0)
+        # Handle non crossbar drivers
+        try:
+            self.join(self.config.realm)
+        except AttributeError:
+            pass

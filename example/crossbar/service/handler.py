@@ -25,3 +25,6 @@ class Collector(BaseHandler, GoogleCollector):
         Service initialization
         """
         await self.session.show_sessions()
+
+    async def on_event(self, event):
+        print(event)

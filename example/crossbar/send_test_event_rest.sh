@@ -4,7 +4,7 @@ timestamp=$(date +%s)
 
 json=$(cat <<EOF 
 {
-    "topic": "example.topic",
+    "topic": "gce-vm",
     "kwargs": {
         "event_id": "a3fc874b-f5ec-45d2-a0b4-8e8006de88c0",
         "old_event_id": "$uuid",

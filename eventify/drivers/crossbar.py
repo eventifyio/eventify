@@ -33,15 +33,6 @@ class Component(BaseComponent, ApplicationSession):
     log = logging.getLogger("eventify.drivers.crossbar")
 
 
-    async def onConnect(self):
-        """
-        Inherited from BaseComponent
-        """
-        super(BaseComponent, self).onConnect()
-        self.log.info("connected")
-        self.join(self.config.realm)
-
-
     async def emit_event(self, event):
         """
         Publish an event back to crossbar
