@@ -3,19 +3,19 @@
     "name": "gce-vm-collector",
     "image": "gce/vm",
     "driver": "kafka",
-    "transport_host": "socket.opless.io:9092",
+    "transport_host": "34.207.161.89:9092",
     "pub_options": {
         "acknowledge": true,
         "retain": false,
         "exclude_me": true
     },
     "publish_topic": {
-        "topic": "gce-vm",
+        "topic": "test-topic",
         "timeout": 20,
         "reply_in": 0
     },
     "subscribed_topics": [
-        "gce-vm"
+        "test-topic"
     ],
     "sub_options": {
         "get_retained": false

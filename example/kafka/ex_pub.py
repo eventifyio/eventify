@@ -22,7 +22,6 @@ class Collector(BaseHandler):
                 'message': 'Hi!'
             })
             await self.session.emit_event(event)
-            time.sleep(1)
 
 def run():
     """

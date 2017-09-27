@@ -120,6 +120,7 @@ class Component(BaseComponent):
                         await consumer.stop()
                 else:
                     # Used with config.json defined topics
+                    print(self.transport_host)
                     if self.subscribed_topics is not None:
                         consumer = AIOKafkaConsumer(
                             ''.join(self.subscribed_topics),
@@ -129,7 +130,8 @@ class Component(BaseComponent):
                         await consumer.start()
                         try:
                             async for msg in consumer:
-                                await handler_instance.on_event(msg.value)
+                                value = msg.value.decode()
+                                await handler_instance.on_event(value)
                         finally:
                             await consumer.stop()
 
