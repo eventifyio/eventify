@@ -1,1 +1,1 @@
-eventify==0.4.5
+eventify==0.4.9
