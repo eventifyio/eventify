@@ -122,18 +122,23 @@ class Component(BaseComponent):
                     # Used with config.json defined topics
                     if self.subscribed_topics is not None:
                         consumer = AIOKafkaConsumer(
-                            ', '.join(self.subscribed_topics),
                             bootstrap_servers=self.transport_host,
                             loop=loop,
                             group_id='my-group'
                         )
                         await consumer.start()
+
+                        # Subscribe to all topics
+                        for topic in self.subscribed_topics:
+                            consumer.subscribe(topic)
+
                         try:
                             async for msg in consumer:
                                 value = msg.value.decode()
                                 await handler_instance.on_event(value)
-                        finally:
-                            await consumer.stop()
+                        except Exception as error:
+                            self.log.error("Consumer error. %s", error)
+                            await asyncio.sleep(0)
 
 
             if hasattr(handler_instance, 'worker'):
