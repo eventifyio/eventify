@@ -4,7 +4,7 @@ attrs==17.2.0
 autobahn==17.9.2
 Automat==0.6.0
 Babel==2.5.1
-certifi==2017.7.27.1
+certifi==2017.11.5
 cffi==1.11.0
 chardet==3.0.4
 constantly==15.1.0
