@@ -23,7 +23,9 @@ class Eventify(object):
     Base Class for eventify
     """
 
-    def __init__(self, driver='crossbar', config_file='config.json', handlers=None):
+    def __init__(self, driver='crossbar',
+                 config_file='config.json',
+                 handlers=None):
         """
         Args:
             Driver
@@ -68,23 +70,27 @@ class Eventify(object):
         if 'max_reconnect_retries' not in self.config:
             self.config['max_reconnect_retries'] = 10
 
-
     def config_sanity_check(self):
         """
         Base configuration sanity checks
         """
         if 'name' not in self.config:
             raise EventifyConfigError(
-                'Required configuration parameter missing! Please configure "name" as a string in your configuration.')
+                """Required configuration parameter missing!
+                Please configure "name" as a string in your
+                configuration.""")
 
         if 'publish_topic' not in self.config:
             raise EventifyConfigError(
-                'Required configuration parameter missing! Please configure "public_topic" as an object in your configuration.')
+                """Required configuration parameter missing!
+                Please configure "public_topic" as an object
+                in your configuration.""")
 
         if 'topic' not in self.config['publish_topic']:
             raise EventifyConfigError(
-                'Required configuration parameter missing! Please configure "topic" as a key in your "public_topic object.')
-
+                """Required configuration parameter missing!
+                Please configure "topic" as a key in your
+                "public_topic object.""")
 
     @property
     def load_config(self):
@@ -101,7 +107,9 @@ class Eventify(object):
         else:
             logger.error('configuration file is required for eventify')
         logger.error('unable to load configuration for service')
-        raise EventifyConfigError('Configuration is required! Missing: %s' % self.config_file)
+        raise EventifyConfigError(
+            'Configuration is required! Missing: %s' % self.config_file
+        )
 
     @staticmethod
     def check_event_loop():

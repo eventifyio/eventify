@@ -34,7 +34,6 @@ class Component(BaseComponent):
         self.config = config
         self.handlers = handlers
 
-
     def run(self):
         """
         start component
@@ -47,14 +46,12 @@ class Component(BaseComponent):
         txaio.start_logging()
         loop.run_until_complete(self.onConnect())
 
-
     async def onConnect(self):
         """
         Inherited from BaseComponent
         """
         await super().onConnect()
         await self.onJoin()
-
 
     async def emit_event(self, event):
         """
@@ -88,7 +85,6 @@ class Component(BaseComponent):
             )
         finally:
             await producer.stop()
-
 
     async def onJoin(self):
         loop = asyncio.get_event_loop()
@@ -139,7 +135,6 @@ class Component(BaseComponent):
                         except Exception as error:
                             self.log.error("Consumer error. %s", error)
                             await asyncio.sleep(0)
-
 
             if hasattr(handler_instance, 'worker'):
                 while True:

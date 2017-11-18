@@ -13,6 +13,7 @@ from eventify.tracking.constants import EVENT_TRACKING_HOST
 
 loop = asyncio.get_event_loop()
 
+
 async def track_event(event, state, service_name):
     """
     Store state of events in memory
