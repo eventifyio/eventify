@@ -7,6 +7,7 @@ import asyncpg
 
 from autobahn.wamp.types import SubscribeOptions, PublishOptions
 
+from eventify.exceptions import SENTRY_CLIENT, SENTRY_DSN
 from eventify.persist.constants import EVENT_DB_HOST, \
                                        EVENT_DB_USER, \
                                        EVENT_DB_PASS, \
@@ -66,3 +67,14 @@ class BaseComponent(object):
             self.join(self.config.realm)
         except AttributeError:
             pass
+
+    @staticmethod
+    def capture_exception():
+        """
+        Track exception in configured remote
+        exception tracking system
+        """
+        if SENTRY_DSN is not None:
+            SENTRY_CLIENT.captureException()
+            SENTRY_CLIENT.remote.get_transport().close()
+
