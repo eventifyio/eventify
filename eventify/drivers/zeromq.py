@@ -37,7 +37,6 @@ class Component(BaseComponent):
         self.config = config
         self.handlers = handlers
 
-
     def run(self):
         """
         start component
@@ -50,7 +49,6 @@ class Component(BaseComponent):
         txaio.start_logging()
         loop.run_until_complete(self.onConnect())
 
-
     async def onConnect(self):
         """
         Inherited from BaseComponent
@@ -58,7 +56,6 @@ class Component(BaseComponent):
         await super().onConnect()
         self.log.info("connected")
         await self.onJoin()
-
 
     async def emit_event(self, event):
         """
@@ -78,12 +75,6 @@ class Component(BaseComponent):
                 return
 
         await asyncio.sleep(1)
-        #self.publish(
-        #    self.publish_topic,
-        #    event.__dict__,
-        #    options=self.publish_options
-        #)
-
 
     async def onJoin(self):
         self.log.info("connected to zmq")
@@ -147,7 +138,6 @@ class Service(Eventify):
             logging.info('port 8080 on zmq is open!')
             return True
         return False
-
 
     def start(self):
         """

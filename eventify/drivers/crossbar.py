@@ -32,7 +32,6 @@ class Component(BaseComponent, ApplicationSession):
     """
     log = logging.getLogger("eventify.drivers.crossbar")
 
-
     async def emit_event(self, event):
         """
         Publish an event back to crossbar
@@ -62,7 +61,6 @@ class Component(BaseComponent, ApplicationSession):
             asyncio.get_event_loop().stop()
             self.log.error(error)
 
-
     def onClose(self, wasClean):
         """
         Disconnect when connection to message
@@ -73,13 +71,11 @@ class Component(BaseComponent, ApplicationSession):
             task.cancel()
         asyncio.get_event_loop().stop()
 
-
     def onDisconnect(self):
         """
         Event fired when transport is lost
         """
         self.log.error('onDisconnect event fired')
-
 
     def onLeave(self, reason=None, message=None):
         """
@@ -88,14 +84,12 @@ class Component(BaseComponent, ApplicationSession):
         """
         self.log.info('Leaving realm; reason: %s', reason)
 
-
     def onUserError(self, fail, message):
         """
         Handle user errors
         """
         self.log.error(fail)
         self.log.error(message)
-
 
     async def onJoin(self, details):
         self.log.debug("joined websocket realm: %s", details)
@@ -142,7 +136,6 @@ class Component(BaseComponent, ApplicationSession):
                         traceback.print_exc(file=sys.stdout)
                         continue
 
-
     async def show_sessions(self):
         """
         Returns an object with a lists of the session IDs
@@ -155,7 +148,6 @@ class Component(BaseComponent, ApplicationSession):
             session = await self.call("wamp.session.get", session_id)
             self.log.info(session)
 
-
     async def total_sessions(self):
         """
         Returns the number of sessions currently attached to the realm.
@@ -164,7 +156,6 @@ class Component(BaseComponent, ApplicationSession):
         """
         res = await self.call("wamp.session.count")
         self.log.info(res)
-
 
     async def lookup_session(self, topic_name):
         """
@@ -194,19 +185,17 @@ class Service(Eventify):
         )
         return runner
 
-
     def check_transport_host(self):
         """
         Check if crossbar port is open
         on transport host
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('events-server', 8080)) # TODO: Read from config vs using hard coded hostname
+        result = sock.connect_ex(('events-server', 8080))  # TODO: Read from config vs using hard coded hostname
         if result == 0:
             logging.info('port 8080 on crossbar is open!')
             return True
         return False
-
 
     def reconnect(self):
         """
@@ -245,7 +234,6 @@ class Service(Eventify):
                 loop.stop()
                 sys.exit(1)
             connect_attempt += 1
-
 
     def start(self, start_loop=True):
         """

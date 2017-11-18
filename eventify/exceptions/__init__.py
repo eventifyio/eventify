@@ -2,6 +2,7 @@
 Eventify exceptions
 """
 
+
 class EventifyConfigError(Exception):
     """
     Configuration related errors
@@ -10,6 +11,7 @@ class EventifyConfigError(Exception):
     def __init__(self, message):
         self.message = message
         super(EventifyConfigError, self).__init__(message)
+
 
 class EventifyInitError(Exception):
     """
@@ -20,6 +22,7 @@ class EventifyInitError(Exception):
         self.message = message
         super(EventifyInitError, self).__init__(message)
 
+
 class EventifyPersistanceConfigError(Exception):
     """
     Errors with persistance configuration
@@ -28,6 +31,7 @@ class EventifyPersistanceConfigError(Exception):
     def __init__(self, message):
         self.message = message
         super(EventifyPersistanceConfigError, self).__init__(message)
+
 
 class EventifySanityError(Exception):
     """

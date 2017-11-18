@@ -127,6 +127,7 @@ For use with replay functionality - host of in memory cache
 
 ## Supported Drivers
 * Crossbar
+* Kafka
 
 ## Crossbar
 Quickest way to get started with crossbar is to use docker; both redis and postgresql are required for a minimal working service.
@@ -135,6 +136,10 @@ Quickest way to get started with crossbar is to use docker; both redis and postg
 ```bash
 docker run -d -p 8080:8080 -it crossbario/crossbar:latest
 ```
+
+### Running Kafka
+* TBD
+
 ### Running Redis
 ```bash
 docker run -d -p 6379:6379 -t redis:latest
