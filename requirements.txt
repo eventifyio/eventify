@@ -2,7 +2,7 @@ asn1crypto==0.23.0
 attrs==17.3.0
 autobahn==17.10.1
 Automat==0.6.0
-cffi==1.11.2
+cffi==1.11.3
 constantly==15.1.0
 coverage==4.4.2
 coveralls==1.2.0
