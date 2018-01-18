@@ -3,17 +3,7 @@ Eventify exceptions
 """
 
 
-class EventifyError(Exception):
-    """
-    Configuration related errors
-    """
-
-    def __init__(self, message):
-        self.message = message
-        super(EventifyError, self).__init__(message)
-
-
-class EventifyConfigError(EventifyError):
+class EventifyConfigError(Exception):
     """
     Configuration related errors
     """
@@ -23,7 +13,7 @@ class EventifyConfigError(EventifyError):
         super(EventifyConfigError, self).__init__(message)
 
 
-class EventifyInitError(EventifyError):
+class EventifyInitError(Exception):
     """
     Initialization errors
     """
@@ -33,7 +23,7 @@ class EventifyInitError(EventifyError):
         super(EventifyInitError, self).__init__(message)
 
 
-class EventifyPersistanceConfigError(EventifyError):
+class EventifyPersistanceConfigError(Exception):
     """
     Errors with persistance configuration
     """
@@ -43,7 +33,7 @@ class EventifyPersistanceConfigError(EventifyError):
         super(EventifyPersistanceConfigError, self).__init__(message)
 
 
-class EventifySanityError(EventifyError):
+class EventifySanityError(Exception):
     """
     Errors with security and sanity
     """
@@ -53,7 +43,7 @@ class EventifySanityError(EventifyError):
         super(EventifySanityError, self).__init__(message)
 
 
-class EventifyHandlerInitializationFailed(EventifyError):
+class EventifyHandlerInitializationFailed(Exception):
     """
     Error initialization of handler. It means that we can not continue working so service should be stopped
      with non zero exit code

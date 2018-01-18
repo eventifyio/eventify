@@ -65,7 +65,7 @@ class Component(BaseComponent, ApplicationSession):
         Disconnect when connection to message
         broker is lost
         """
-        self.log.error('lost connection to crossbar on session ' + str(self.session_id))
+        self.log.error('lost connection to crossbar on session %' + str(self.session_id))
         for task in asyncio.Task.all_tasks():
             task.cancel()
         asyncio.get_event_loop().stop()
@@ -245,7 +245,7 @@ class Service(Eventify):
             try:
                 runner.run(Component)
             except EventifyHandlerInitializationFailed as initError:
-                logging.error('Unable to initialize handler: {0}.'.format(initError.message))
+                logging.error('Unable to initialize handler: %s.' % initError.message)
                 sys.exit(1)
             except ConnectionRefusedError:
                 logging.error('Unable to connect to crossbar instance. Is it running?')
