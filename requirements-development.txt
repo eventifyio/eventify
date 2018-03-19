@@ -8,7 +8,7 @@ certifi==2017.11.5
 cffi==1.11.2
 chardet==3.0.4
 constantly==15.1.0
-cryptography==2.1.3
+cryptography==2.2
 docutils==0.13.1
 -e git+git@github.com:morissette/eventify.git@251f1ce3c1b5fc0bdfd99e573a9cbc09697dcc28#egg=eventify
 hyperlink==17.3.1
