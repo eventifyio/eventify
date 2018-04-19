@@ -24,4 +24,4 @@ sphinx-rtd-theme==0.2.4
 sphinxcontrib-napoleon==0.6.1
 sphinxcontrib-websupport==1.0.1
 txaio==2.8.2
-zope.interface==4.4.3
+zope.interface==4.5.0
