@@ -38,4 +38,4 @@ SQLAlchemy==1.2.6
 Twisted==17.9.0
 txaio==2.8.2
 urllib3==1.21.1
-zope.interface==4.4.3
+zope.interface==4.5.0
