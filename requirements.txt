@@ -4,7 +4,7 @@ autobahn==18.3.1
 Automat==0.6.0
 cffi==1.11.2
 constantly==15.1.0
-coverage==4.4.2
+coverage==4.5.2
 coveralls==1.2.0
 cryptography==2.2.2
 hyperlink==17.3.1
