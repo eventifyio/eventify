@@ -27,7 +27,7 @@ Pygments==2.2.0
 pyOpenSSL==17.5.0
 pytz==2017.3
 requests==2.18.4
-service-identity==17.0.0
+service-identity==18.1.0
 six==1.11.0
 snowballstemmer==1.2.1
 Sphinx==1.7.2
