@@ -3,7 +3,7 @@
     "name": "gce-vm-collector",
     "image": "gce/vm",
     "driver": "crossbar",
-    "transport_host": "ws://events-server:8080/ws",
+    "transport_host": "ws://localhost:8080/ws",
     "pub_options": {
         "acknowledge": true,
         "retain": false,
