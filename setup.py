@@ -4,7 +4,7 @@ from setuptools import find_packages
 setup(
     name='eventify',
     packages=find_packages(),
-    version='0.5.2',
+    version='0.5.3',
     description='Event Driven Asynchronous Framework',
     author='Matthew Harris',
     author_email='matt@x-qa.com',
@@ -15,7 +15,6 @@ setup(
     classifiers=[],
     install_requires=[
         'asyncio',
-        'aiokafka',
         'aioredis',
         'asyncpg',
         'pyOpenSSL',
