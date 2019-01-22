@@ -4,7 +4,7 @@ from setuptools import find_packages
 setup(
     name='eventify',
     packages=find_packages(),
-    version='0.5.22',
+    version='0.5.23',
     description='Event Driven Asynchronous Framework',
     author='Matthew Harris',
     author_email='matt@x-qa.com',
