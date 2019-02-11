@@ -1,4 +1,5 @@
 # Custom Ignores
+envfile
 update.sh
 build_docs.sh
 venv/
