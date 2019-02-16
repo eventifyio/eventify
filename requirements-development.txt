@@ -11,7 +11,7 @@ autobahn==19.1.1
 Automat==0.7.0
 Babel==2.6.0
 certifi==2018.11.29
-cffi==1.11.5
+cffi==1.12.1
 chardet==3.0.4
 constantly==15.1.0
 coverage==4.5.2
