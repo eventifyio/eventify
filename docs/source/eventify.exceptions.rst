@@ -1,5 +1,5 @@
-eventify\.exceptions package
-============================
+eventify.exceptions package
+===========================
 
 Module contents
 ---------------

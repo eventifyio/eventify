@@ -15,18 +15,26 @@ Subpackages
 Submodules
 ----------
 
-eventify\.base\_handler module
-------------------------------
+eventify.base\_handler module
+-----------------------------
 
 .. automodule:: eventify.base_handler
     :members:
     :undoc-members:
     :show-inheritance:
 
-eventify\.service module
-------------------------
+eventify.service module
+-----------------------
 
 .. automodule:: eventify.service
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+eventify.util module
+--------------------
+
+.. automodule:: eventify.util
     :members:
     :undoc-members:
     :show-inheritance:

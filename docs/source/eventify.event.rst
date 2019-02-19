@@ -1,5 +1,5 @@
-eventify\.event package
-=======================
+eventify.event package
+======================
 
 Module contents
 ---------------

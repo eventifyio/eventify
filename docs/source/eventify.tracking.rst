@@ -1,11 +1,11 @@
-eventify\.tracking package
-==========================
+eventify.tracking package
+=========================
 
 Submodules
 ----------
 
-eventify\.tracking\.constants module
-------------------------------------
+eventify.tracking.constants module
+----------------------------------
 
 .. automodule:: eventify.tracking.constants
     :members:

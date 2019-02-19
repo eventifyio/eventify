@@ -1,11 +1,11 @@
-eventify\.persist package
-=========================
+eventify.persist package
+========================
 
 Submodules
 ----------
 
-eventify\.persist\.constants module
------------------------------------
+eventify.persist.constants module
+---------------------------------
 
 .. automodule:: eventify.persist.constants
     :members:
