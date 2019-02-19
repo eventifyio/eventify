@@ -2,8 +2,6 @@
 Event Module
 """
 import asyncio
-import json
-import logging
 from datetime import datetime
 from uuid import uuid4
 

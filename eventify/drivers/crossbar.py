@@ -11,8 +11,6 @@ import time
 import traceback
 import txaio
 
-import asyncpg
-
 from autobahn.asyncio.wamp import ApplicationSession, ApplicationRunner
 from autobahn.wamp.exception import TransportLost
 

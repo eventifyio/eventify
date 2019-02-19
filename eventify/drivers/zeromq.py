@@ -7,10 +7,7 @@ import asyncio
 import logging
 import socket
 import sys
-import time
 import traceback
-
-from asyncio import BaseProtocol
 
 import txaio
 import zmq
@@ -19,8 +16,6 @@ import zmq.asyncio
 from eventify import Eventify
 from eventify.drivers.base import BaseComponent
 from eventify.persist import persist_event
-from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-    EVENT_DB_NAME
 
 
 txaio.use_asyncio()

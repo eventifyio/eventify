@@ -5,12 +5,9 @@ from __future__ import print_function
 from datetime import datetime
 
 import json
-import os
 
 import asyncio
 import asyncpg
-
-from eventify.exceptions import EventifySanityError
 
 
 async def persist_event(topic, event, pool):

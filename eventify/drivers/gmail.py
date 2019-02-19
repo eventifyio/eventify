@@ -10,9 +10,7 @@ import json
 import logging
 import os
 import re
-import socket
 import sys
-import time
 import traceback
 import txaio
 
@@ -21,9 +19,6 @@ from aioimaplib import aioimaplib
 from eventify import Eventify
 from eventify.drivers.base import BaseComponent
 from eventify.persist import persist_event
-from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-    EVENT_DB_NAME
-
 
 txaio.use_asyncio()
 
@@ -36,6 +31,10 @@ txaio.use_asyncio()
 # google account you attempt to use.
 GMAIL_USERNAME = os.getenv('GMAIL_USERNAME')
 GMAIL_PASSWORD = os.getenv('GMAIL_PASSWORD')
+IMAP_HOST = os.getenv('IMAP_HOST', 'imap.gmail.com')
+SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.gmail.com')
+SMTP_PORT = os.getenv('SMTP_PORT', 465)
+BODY_PATTERN = re.compile('Subject:[^{]*(.*)}')
 
 
 class Component(BaseComponent):
@@ -67,8 +66,8 @@ class Component(BaseComponent):
         """
         await super().onConnect()
         self.smtp = aiosmtplib.SMTP(
-            hostname="smtp.gmail.com",
-            port=465,
+            hostname=SMTP_HOST,
+            port=SMTP_PORT,
             loop=self.loop,
             use_tls=True
         )
@@ -98,6 +97,7 @@ class Component(BaseComponent):
         data = json.dumps(event.__dict__)
 
         # test message
+        # TODO: make configurable
         message = MIMEText(data)
         message["From"] = "eventify.service.app@gmail.com"
         message["To"] = "eventify.service.app@gmail.com"
@@ -106,8 +106,18 @@ class Component(BaseComponent):
         # send message
         await self.smtp.send_message(message)
 
+    async def fetch_emails(self):
+        """
+        Get emails from server
+        """
+        imap_client = aioimaplib.IMAP4_SSL(host=IMAP_HOST)
+        await imap_client.wait_hello_from_server()
+        await imap_client.login(GMAIL_USERNAME, GMAIL_PASSWORD)
+        emails = await imap_client.fetch('20', 'BODY[]')
+        return emails
+
     async def onJoin(self):
-        self.log.info("connected to gmail")
+        self.log.info("connected to server")
 
         for handler in self.handlers:
             # initialize handler
@@ -125,31 +135,19 @@ class Component(BaseComponent):
                     self.log.debug("subscribed to topic: %s", handler_instance.subscribe_topic)
                     while True:
                         imap_client = aioimaplib.IMAP4_SSL(host='imap.gmail.com')
-                        await imap_client.wait_hello_from_server()
-                        await imap_client.login(GMAIL_USERNAME, GMAIL_PASSWORD)
-                        res, data = await imap_client.select()
-                        print('there is %s messages INBOX' % data[0])
-                    #while True: - get msg from gmail and send to handler
-                    #    msg = await session.recv_multipart()
-                    #    await handler_instance.on_event(msg)
+                        emails = await self.fetch_emails()
+                        for mail in emails:
+                            groups = re.search(BODY_PATTERN, str(mail))
+                            if groups:
+                                await handler_instance.on_event(groups[1])
                 else:
                     # Used with config.json defined topics
                     if self.subscribed_topics is not None:
-                        # test
-                        imap_client = aioimaplib.IMAP4_SSL(host='imap.gmail.com')
-                        await imap_client.wait_hello_from_server()
-                        await imap_client.login(GMAIL_USERNAME, GMAIL_PASSWORD)
-                        res, data = await imap_client.select()
-                        if res == 'OK':
-                            result, emails = await imap_client.fetch('20', 'BODY[]')
-                            if result == 'OK':
-                                body_pattern = re.compile('Subject:[^{]*(.*)}')
-                                for mail in emails:
-                                    groups = re.search(body_pattern, str(mail))
-                                    if groups:
-                                        json_message = groups[1]
-                                        await handler_instance.on_event(json_message)
-                                        
+                        emails = await imap_client.fetch('20', 'BODY[]')
+                        for mail in emails:
+                            groups = re.search(BODY_PATTERN, str(mail))
+                            if groups:
+                                await handler_instance.on_event(groups[1])
                         else:
                             raise Exception("Failed to connect to gmail")
 
