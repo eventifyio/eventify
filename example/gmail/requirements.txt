@@ -1,1 +1,1 @@
-eventify==0.5.1
+-e git://github.com/eventifyio/eventify.git@f0aa0dd33b56be48b95ef238e03d3acf59d9d7e8#egg=eventify
