@@ -6,7 +6,7 @@ cffi==1.12.1
 constantly==15.1.0
 coverage==4.5.2
 coveralls==1.6.0
-cryptography==2.4.2
+cryptography==2.6
 hyperlink==18.0.0
 idna==2.8
 incremental==17.5.0
