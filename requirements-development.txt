@@ -10,7 +10,7 @@ attrs==19.1.0
 autobahn==19.1.1
 Automat==0.7.0
 Babel==2.6.0
-certifi==2018.11.29
+certifi==2019.3.9
 cffi==1.12.1
 chardet==3.0.4
 constantly==15.1.0
