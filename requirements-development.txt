@@ -1,4 +1,4 @@
-aiokafka==0.5.0
+aiokafka==0.5.1
 aioredis==1.2.0
 alabaster==0.7.12
 asn1crypto==0.24.0
