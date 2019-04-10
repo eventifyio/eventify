@@ -53,7 +53,7 @@ sphinx-rtd-theme==0.4.3
 sphinxcontrib-napoleon==0.7
 sphinxcontrib-websupport==1.1.0
 SQLAlchemy==1.2.17
-Twisted==18.9.0
+Twisted==19.2.0
 txaio==18.8.1
 urllib3==1.24.1
 zope.interface==4.6.0
