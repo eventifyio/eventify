@@ -10,7 +10,8 @@ from raven_aiohttp import AioHttpTransport
 SENTRY_DSN = os.getenv('SENTRY_DSN', None)
 if SENTRY_DSN is not None:
     SENTRY_CLIENT = Client(SENTRY_DSN, transport=AioHttpTransport)
-
+else:
+    SENTRY_CLIENT = None
 
 class EventifyConfigError(Exception):
     """
