@@ -14,11 +14,15 @@ setup(
               'framework', 'producer', 'consumer'],
     classifiers=[],
     install_requires=[
+        'aiokafka',
         'asyncio',
         'aioredis',
+        'asyncio',
         'asyncpg',
-        'pyOpenSSL',
         'autobahn',
+        'pyOpenSSL',
+        'raven',
+        'raven_aiohttp',
         'service_identity',
         'txaio'
     ]

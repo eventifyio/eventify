@@ -103,7 +103,10 @@ class Component(BaseComponent, ApplicationSession):
             handler_instance.set_session(self)
 
             if hasattr(handler_instance, 'init'):
-                await handler_instance.init()
+                try:
+                    await handler_instance.init()
+                except Exception:
+                    self.capture_exception()
 
             if hasattr(handler_instance, 'on_event'):
                 self.log.debug("subscribing to topic %s", handler_instance.subscribe_topic)
@@ -131,6 +134,7 @@ class Component(BaseComponent, ApplicationSession):
                     try:
                         await handler_instance.worker()
                     except Exception as error:
+                        self.capture_exception()
                         self.log.error("Operation failed. %s", error)
                         traceback.print_exc(file=sys.stdout)
                         continue
