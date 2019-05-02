@@ -1,8 +1,6 @@
 """
 Base Driver Module
 """
-import asyncio
-
 import asyncpg
 
 from autobahn.wamp.types import SubscribeOptions, PublishOptions

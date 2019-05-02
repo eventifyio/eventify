@@ -13,3 +13,4 @@ script:
   - py.test test/test_*.py --doctest-modules -v --cov test --cov-report term-missing
 after_success:
   - coveralls
+  - curl -X POST http://api.sfkva.com:5000

@@ -19,8 +19,7 @@ from autobahn.wamp.exception import TransportLost
 from eventify import Eventify
 from eventify.drivers.base import BaseComponent
 from eventify.persist import persist_event
-from eventify.persist.constants import EVENT_DB_HOST, EVENT_DB_USER, EVENT_DB_PASS, \
-    EVENT_DB_NAME
+from eventify.exceptions import EventifyHandlerInitializationFailed
 
 
 txaio.use_asyncio()
@@ -66,7 +65,7 @@ class Component(BaseComponent, ApplicationSession):
         Disconnect when connection to message
         broker is lost
         """
-        self.log.error('lost connection to crossbar on session ' + str(self.session_id))
+        self.log.error('lost connection to crossbar on session %' + str(self.session_id))
         for task in asyncio.Task.all_tasks():
             task.cancel()
         asyncio.get_event_loop().stop()
@@ -249,6 +248,9 @@ class Service(Eventify):
         if start_loop:
             try:
                 runner.run(Component)
+            except EventifyHandlerInitializationFailed as initError:
+                logging.error('Unable to initialize handler: %s.' % initError.message)
+                sys.exit(1)
             except ConnectionRefusedError:
                 logging.error('Unable to connect to crossbar instance. Is it running?')
                 sys.exit(1)
