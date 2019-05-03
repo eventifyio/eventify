@@ -16,7 +16,7 @@ pyasn1-modules==0.2.5
 pycparser==2.19
 pytest==4.4.1
 pyOpenSSL==19.0.0
-pytest-cov==2.6.1
+pytest-cov==2.7.1
 service-identity==18.1.0
 six==1.12.0
 Sphinx==2.0.1
