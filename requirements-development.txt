@@ -49,7 +49,7 @@ pytest-cov==2.7.1
 pytz==2019.1
 raven==6.10.0
 raven-aiohttp==0.7.0
-requests==2.21.0
+requests==2.22.0
 service-identity==18.1.0
 six==1.12.0
 snowballstemmer==1.2.1
