@@ -1,4 +1,4 @@
-aiohttp==3.5.4
+aiohttp==3.7.4
 aiokafka==0.5.1
 aioredis==1.2.0
 alabaster==0.7.12
